@@ -1,12 +1,13 @@
 #define OLC_PGE_APPLICATION
 #include "../inc/olcPixelGameEngine-master/olcPixelGameEngine.h"
+#include "./Player.h"
 
 class Example : public olc::PixelGameEngine
 {
 public:
 	Example()
 	{
-		sAppName = "Example";
+		sAppName = "Darwin's Odyssey";
 	}
 
 public:
@@ -19,9 +20,18 @@ public:
 	bool OnUserUpdate(float fElapsedTime) override
 	{
 		// called once per frame
-		for (int x = 0; x < ScreenWidth(); x++)
+		for (int x = 0; x <= ScreenWidth()/2; x++)
 			for (int y = 0; y < ScreenHeight(); y++)
-				Draw(x, y, olc::Pixel(rand() % 255, rand() % 255, rand()% 255));	
+				Draw(x, y, olc::Pixel(0, 0, 255));	
+	
+	Player P;			
+	DrawCircle(P.x, P.y, 10, olc::Pixel(255, 255, 255));
+	P.move();
+
+		for (int x = ScreenWidth()/2; x < ScreenWidth(); x++)
+			for (int y = 0; y < ScreenHeight(); y++)
+				Draw(x, y, olc::Pixel(0, 255, 0 ));	
+				
 		return true;
 	}
 };
@@ -30,11 +40,9 @@ public:
 int main()
 {
 	Example player1;
-	Example player2;
-	if ((player1.Construct(256, 240, 4, 4)) && (player2.Construct(100, 83, 10, 10))){
+
+	if (player1.Construct(240, 135, 8, 8))
 		player1.Start();
-		player2.Start();
-	}
 		
 
 	return 0;
