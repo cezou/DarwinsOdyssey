@@ -6,7 +6,7 @@
 class Game : public olc::PixelGameEngine
 {
 	public:
-		game()
+		Game()
 		{
 			sAppName = "Darwin's Odyssey";
 		}
@@ -24,8 +24,8 @@ class Game : public olc::PixelGameEngine
 
 		bool OnUserUpdate(float fElapsedTime) override
 		{
-
-
+			mapLevel1.setCamera(fElapsedTime);
+			return true;
 		}
 };
 
