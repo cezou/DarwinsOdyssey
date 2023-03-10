@@ -6,24 +6,31 @@ using namespace std;
 
 //constructeur par defaut
 Map::Map(){
-    nLevelWidth = 64;
-    nLevelHeight = 16;
-    sLevel += L"................................................................";
-    sLevel += L"................................................................";
-    sLevel += L"................................................................";
-    sLevel += L"................................................................";
-    sLevel += L"........................#.......................................";
-    sLevel += L"................................................................";
-    sLevel += L"................................................................";
-    sLevel += L"................................................................";
-    sLevel += L"................................................................";
-    sLevel += L"................................................................";
-    sLevel += L"...........................#....................................";
-    sLevel += L"................................................................";
-    sLevel += L"#######################################...######################";
-    sLevel += L"#######################################...######################";
-    sLevel += L".......................................###..............#.......";
-    sLevel += L"................................................................";
+        nLevelWidth = 64;
+		nLevelHeight = 16;
+		fCameraPosX = 0.0f;
+        fCameraPosY = 0.0f;
+
+        fPlayerPosX = 1.0f;
+	    fPlayerPosY = 1.0f;
+	    fPlayerVelX = 0.0f;
+	    fPlayerVelY = 0.0f;
+		sLevel += L"................................................................";
+		sLevel += L"................................................................";
+		sLevel += L"................................................................";
+		sLevel += L"................................................................";
+		sLevel += L".......................########.................................";
+		sLevel += L"......................###..............#.#......................";
+		sLevel += L"....................###................#.#......................";
+		sLevel += L"...................####.........................................";
+		sLevel += L".....................................##############.....########";
+		sLevel += L"...................................#.#...............###........";
+		sLevel += L"........................############.#............###...........";
+		sLevel += L"........................#............#.........###..............";
+		sLevel += L"........................#.############......###.................";
+		sLevel += L"........................#................###....................";
+		sLevel += L"........................#################.......................";
+		sLevel += L"................................................................";
 }
 
 //constructeur avec parametres
@@ -31,6 +38,14 @@ Map::Map(wstring sLevel_param, int nLevelWidth_param, int nLevelHeight_param){
     sLevel = sLevel_param;
     nLevelWidth = nLevelWidth_param;
     nLevelHeight = nLevelHeight_param;
+}
+
+void Map::setPlayerVelX(float fPlayerVelX_param){
+	fPlayerVelX = fPlayerVelX_param;
+}
+
+void Map::setPlayerVelY(float fPlayerVelY_param){
+	fPlayerVelY = fPlayerVelY_param;
 }
 
 int Map::getNLevelWidth(){
@@ -43,7 +58,6 @@ int Map::getNLevelHeight(){
 
 void Map::setCamera(float fElapsedTime){
 
-    Player player;
 
         // Utility Lambdas
 		auto GetTile = [&](int x, int y)
@@ -60,16 +74,34 @@ void Map::setCamera(float fElapsedTime){
 				sLevel[y*nLevelWidth + x] = c;
 		};
 
+        fPlayerVelY = 0.0f;
+        fPlayerVelX = 0.0f;
 
+        if(IsFocused()){
+            if(GetKey(olc::Key::UP).bHeld){
+                fPlayerVelY = -6.0f;
+            }
 
-        player.move(fElapsedTime);
+            if(GetKey(olc::Key::DOWN).bHeld){
+                fPlayerVelY = 6.0f;
+            }
 
+            if(GetKey(olc::Key::LEFT).bHeld){
+                fPlayerVelX = -6.0f;
+            }
 
+            if(GetKey(olc::Key::RIGHT).bHeld){
+                fPlayerVelX = 6.0f;
+            }
+        }
 
-        fCameraPosX = player.posX;
-        fCameraPosY = player.posY;
+        fPlayerPosX = fPlayerPosX + fPlayerVelX * fElapsedTime;
+        fPlayerPosY = fPlayerPosY + fPlayerVelY * fElapsedTime;
 
-        // Draw Level 
+        fCameraPosX = fPlayerPosX;
+		fCameraPosY = fPlayerPosY;
+
+		// Draw Level
 		int nTileWidth = 16;
 		int nTileHeight = 16;
 		int nVisibleTilesX = ScreenWidth() / nTileWidth;
@@ -84,6 +116,10 @@ void Map::setCamera(float fElapsedTime){
 		if (fOffsetY < 0) fOffsetY = 0;
 		if (fOffsetX > nLevelWidth - nVisibleTilesX) fOffsetX = nLevelWidth - nVisibleTilesX;
 		if (fOffsetY > nLevelHeight - nVisibleTilesY) fOffsetY = nLevelHeight - nVisibleTilesY;
+
+		// Get offsets for smooth movement
+		float fTileOffsetX = (fOffsetX - (int)fOffsetX) * nTileWidth;
+		float fTileOffsetY = (fOffsetY - (int)fOffsetY) * nTileHeight;
 
         for (int x = 0; x < nVisibleTilesX; x++){
             for(int y = 0; y < nVisibleTilesY; y++){
@@ -102,7 +138,5 @@ void Map::setCamera(float fElapsedTime){
             }
         }
 
-        FillRect((player.posX - fOffsetX) * nTileWidth, (player.posY - fOffsetY) * nTileWidth, (player.posX - fOffsetX + 1.0f) * nTileWidth, (player.posY - fOffsetY + 1.0f) * nTileHeight, olc::Pixel(0, 255, 0));
-
-
+        FillRect((fPlayerPosX - fOffsetX) * nTileWidth, (fPlayerPosY - fOffsetY) * nTileWidth, (fPlayerPosX - fOffsetX + 1.0f) * nTileWidth, (fPlayerPosY - fOffsetY + 1.0f) * nTileHeight, olc::Pixel(0, 255, 0));
 }

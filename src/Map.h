@@ -9,12 +9,17 @@ using namespace std;
 
 class Map : public olc::PixelGameEngine{
 
-    private:
+    public:
         wstring sLevel;
         int nLevelWidth;
 	    int nLevelHeight;
-        float fCameraPosX = 0.0f;
-        float fCameraPosY = 0.0f;
+        float fCameraPosX;
+        float fCameraPosY;
+
+        float fPlayerPosX;
+	    float fPlayerPosY;
+	    float fPlayerVelX;
+	    float fPlayerVelY;
     
     public:
 
@@ -23,6 +28,10 @@ class Map : public olc::PixelGameEngine{
 
         //constructeur avec parametres
         Map(wstring slevel_param, int nLevelWidth_param, int nLevelHeight_param);
+
+        void setPlayerVelX (float fPlayerVelX_param);
+
+        void setPlayerVelY (float fPlayerVelY);
 
         //retourne nLevelWidth
         int getNLevelWidth();

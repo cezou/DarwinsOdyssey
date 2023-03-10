@@ -10,11 +10,11 @@ class Player : public olc::PixelGameEngine{
     private:
 
     public:
-        float posX;
-        float posY;
+        float fPlayerPosX;
+        float fPlayerPosY;
 
-        float vitesseX;
-        float vitesseY;
+        float fPlayerVelX;
+        float fPlayerVelY;
         Player();
         void move (float fElapsedTime);
         
