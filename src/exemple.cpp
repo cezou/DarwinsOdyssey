@@ -52,7 +52,7 @@ class Game : public olc::PixelGameEngine
 			mapLevel1.player2.fPlayerVelY = 0.0f;
 
 			spriteTiles = new olc::Sprite("./data/water.png");
-			spritePlayer = new olc::Sprite("./data/Fish1.png");
+			spritePlayer = new olc::Sprite("./data/Fish.png");
 			spriteCellule = new olc::Sprite("./data/cellule.png");
 			spriteFond = new olc::Sprite("./data/Fond.png");
 
