@@ -143,7 +143,7 @@ class Game : public olc::PixelGameEngine
 
 		//coalitions à droite
 
-		if(mapLevel1.player1.fPlayerVelX > 0){
+		if(mapLevel1.player1.fPlayerVelX >= 0){
 			if(GetTile(mapLevel1.player1.fPlayerPosX + 1.0f, mapLevel1.player1.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player1.fPlayerPosX + 1.0f, mapLevel1.player1.fPlayerPosY + 0.9f) != L'.')
 			{
 				mapLevel1.player1.fPlayerPosX = (int)mapLevel1.player1.fPlayerPosX;
@@ -151,7 +151,7 @@ class Game : public olc::PixelGameEngine
 			}
 		}
 
-		if(mapLevel1.player2.fPlayerVelX > 0){
+		if(mapLevel1.player2.fPlayerVelX >= 0){
 			if(GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY + 0.9f) != L'.')
 			{
 				mapLevel1.player2.fPlayerPosX = (int)mapLevel1.player2.fPlayerPosX;
@@ -160,19 +160,40 @@ class Game : public olc::PixelGameEngine
 		}
 
 		//coalitions en bas
-		if(mapLevel1.player1.fPlayerVelY <= 0){ //il va en haut
-			if(GetTile(mapLevel1.player1.fPlayerPosX + 0.0f, mapLevel1.player1.fPlayerPosY) != L'.' || GetTile(mapLevel1.player1.fPlayerPosX + 0.9f, mapLevel1.player1.fPlayerPosY) != L'.')
+		if (mapLevel1.player1.fPlayerVelY <= 0) // Moving Up
+		{
+			if (GetTile(mapLevel1.player1.fPlayerPosX + 0.0f, mapLevel1.player1.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player1.fPlayerPosX + 0.9f, mapLevel1.player1.fPlayerPosY + 0.0f) != L'.')
 			{
-				mapLevel1.player1.fPlayerPosX = (int)mapLevel1.player1.fPlayerPosX;
-				mapLevel1.player1.fPlayerVelX = 0;
+				mapLevel1.player1.fPlayerPosY = (int)mapLevel1.player1.fPlayerPosY + 1;
+				mapLevel1.player1.fPlayerVelY = 0;
+			}
+		}
+		
+		if (mapLevel1.player2.fPlayerVelY <= 0) // Moving Up
+		{
+			if (GetTile(mapLevel1.player2.fPlayerPosX + 0.0f, mapLevel1.player2.fPlayerPosY) != L'.' || GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY) != L'.')
+			{
+				mapLevel1.player2.fPlayerPosY = (int)mapLevel1.player2.fPlayerPosY + 1;
+				mapLevel1.player2.fPlayerVelY = 0;
 			}
 		}
 
-		if(mapLevel1.player2.fPlayerVelX > 0){
-			if(GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY + 0.9f) != L'.')
+		//collitions en haut
+		if (mapLevel1.player1.fPlayerVelY >= 0) // Moving Down
+		{
+			if (GetTile(mapLevel1.player1.fPlayerPosX + 0.0f, mapLevel1.player1.fPlayerPosY + 1.0f) != L'.' || GetTile(mapLevel1.player1.fPlayerPosX + 0.9f, mapLevel1.player1.fPlayerPosY + 1.0f) != L'.')
 			{
-				mapLevel1.player2.fPlayerPosX = (int)mapLevel1.player2.fPlayerPosX;
-				mapLevel1.player2.fPlayerVelX = 0;
+				mapLevel1.player1.fPlayerPosY = (int)mapLevel1.player1.fPlayerPosY;
+				mapLevel1.player1.fPlayerVelY = 0;
+			}
+		}
+
+		if (mapLevel1.player2.fPlayerVelY >= 0) // Moving Down
+		{
+			if (GetTile(mapLevel1.player2.fPlayerPosX + 0.0f, mapLevel1.player2.fPlayerPosY + 1.0f) != L'.' || GetTile(mapLevel1.player2.fPlayerPosX + 0.9f, mapLevel1.player2.fPlayerPosY + 1.0f) != L'.')
+			{
+				mapLevel1.player2.fPlayerPosY = (int)mapLevel1.player2.fPlayerPosY;
+				mapLevel1.player2.fPlayerVelY = 0;
 			}
 		}
 
