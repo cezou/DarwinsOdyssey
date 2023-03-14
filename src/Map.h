@@ -26,6 +26,8 @@ class Map{
 	    int nLevelHeight;
 	    Player player1;
         Player player2;
+
+        int nb_cellules_prises;
         
     
     public:

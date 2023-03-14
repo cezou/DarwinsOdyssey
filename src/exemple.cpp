@@ -18,6 +18,8 @@ class Game : public olc::PixelGameEngine
 		}
 		olc::Sprite* spriteTiles = nullptr;
 		olc::Sprite* spritePlayer = nullptr;
+		olc::Sprite* spriteCellule = nullptr;
+		olc::Sprite* spriteFond = nullptr;
 		Map mapLevel1;
 		
 	public:
@@ -51,6 +53,8 @@ class Game : public olc::PixelGameEngine
 
 			spriteTiles = new olc::Sprite("./data/water.png");
 			spritePlayer = new olc::Sprite("./data/Fish1.png");
+			spriteCellule = new olc::Sprite("./data/cellule.png");
+			spriteFond = new olc::Sprite("./data/Fond.png");
 
 			return true;
 		}
@@ -117,86 +121,124 @@ class Game : public olc::PixelGameEngine
         }
 
 
-		mapLevel1.player1.fPlayerPosX = mapLevel1.player1.fPlayerPosX + mapLevel1.player1.fPlayerVelX * fElapsedTime;
-		mapLevel1.player1.fPlayerPosY = mapLevel1.player1.fPlayerPosY + mapLevel1.player1.fPlayerVelY * fElapsedTime;
+		float newPosX = mapLevel1.player1.fPlayerPosX + mapLevel1.player1.fPlayerVelX * fElapsedTime;
+		float newPosY = mapLevel1.player1.fPlayerPosY + mapLevel1.player1.fPlayerVelY * fElapsedTime;
+		float newPos2X = mapLevel1.player2.fPlayerPosX + mapLevel1.player2.fPlayerVelX * fElapsedTime;
+		float newPos2Y = mapLevel1.player2.fPlayerPosY + mapLevel1.player2.fPlayerVelY * fElapsedTime;
 
 		mapLevel1.player2.fPlayerPosX = mapLevel1.player2.fPlayerPosX + mapLevel1.player2.fPlayerVelX * fElapsedTime;
         mapLevel1.player2.fPlayerPosY = mapLevel1.player2.fPlayerPosY + mapLevel1.player2.fPlayerVelY * fElapsedTime;
 
-		//coaltions à gauche
+		//collitions player1 avec virus
 
-		if(mapLevel1.player1.fPlayerVelX <= 0){ // il va à gauche
-			if(GetTile(mapLevel1.player1.fPlayerPosX + 0.0f, mapLevel1.player1.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player1.fPlayerPosX + 0.0f, mapLevel1.player1.fPlayerPosY + 0.9f) != L'.')
+		if(mapLevel1.player1.fPlayerVelX <= 0){ // Moving left
+			if(GetTile(newPosX + 0.0f, newPosY + 0.0f) == L'#' || GetTile(newPosX + 0.0f, newPosY + 0.9f) == L'#')
 			{
-				mapLevel1.player1.fPlayerPosX = (int)mapLevel1.player1.fPlayerPosX + 1;
-				mapLevel1.player1.fPlayerVelX = 0;
+				newPosX = 1.0f;
+				newPosY = 1.0f;
 			}
 		}
 
-		if(mapLevel1.player2.fPlayerVelX <= 0){ // il va à gauche
-			if(GetTile(mapLevel1.player2.fPlayerPosX + 0.0f, mapLevel1.player2.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player2.fPlayerPosX + 0.0f, mapLevel1.player2.fPlayerPosY + 0.9f) != L'.')
+		else{ // Moving right
+			if(GetTile(newPosX + 1.0f, newPosY + 0.0f) == L'#' || GetTile(newPosX + 1.0f, newPosY + 0.9f) == L'#')
 			{
-				mapLevel1.player2.fPlayerPosX = (int)mapLevel1.player2.fPlayerPosX + 1;
-				mapLevel1.player2.fPlayerVelX = 0;
+				newPosX = 1.0f;
+				newPosY = 1.0f;
 			}
 		}
 
-		//coalitions à droite
-
-		if(mapLevel1.player1.fPlayerVelX >= 0){
-			if(GetTile(mapLevel1.player1.fPlayerPosX + 1.0f, mapLevel1.player1.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player1.fPlayerPosX + 1.0f, mapLevel1.player1.fPlayerPosY + 0.9f) != L'.')
-			{
-				mapLevel1.player1.fPlayerPosX = (int)mapLevel1.player1.fPlayerPosX;
-				mapLevel1.player1.fPlayerVelX = 0;
-			}
-		}
-
-		if(mapLevel1.player2.fPlayerVelX >= 0){
-			if(GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY + 0.9f) != L'.')
-			{
-				mapLevel1.player2.fPlayerPosX = (int)mapLevel1.player2.fPlayerPosX;
-				mapLevel1.player2.fPlayerVelX = 0;
-			}
-		}
-
-		//coalitions en bas
 		if (mapLevel1.player1.fPlayerVelY <= 0) // Moving Up
 		{
-			if (GetTile(mapLevel1.player1.fPlayerPosX + 0.0f, mapLevel1.player1.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player1.fPlayerPosX + 0.9f, mapLevel1.player1.fPlayerPosY + 0.0f) != L'.')
+			if (GetTile(newPosX + 0.0f, newPosY) == L'#' || GetTile(newPosX + 0.9f, newPosY) == L'#')
 			{
-				mapLevel1.player1.fPlayerPosY = (int)mapLevel1.player1.fPlayerPosY + 1;
-				mapLevel1.player1.fPlayerVelY = 0;
+				newPosX = 1.0f;
+				newPosY = 1.0f;
 			}
 		}
+
+		else{ //Moving down
+			if (GetTile(newPosX + 0.0f, newPosY + 1.0f) == L'#' || GetTile(newPosX + 0.9f, newPosY + 1.0f) == L'#')
+			{
+				newPosX = 1.0f;
+				newPosY = 1.0f;
+			}
+		}
+
+		//collitions player1 avec cellules
+		if(mapLevel1.player1.fPlayerVelX <= 0){ // Moving left
+			if(GetTile(newPosX + 0.0f, newPosY + 0.0f) == L'o' || GetTile(newPosX + 0.0f, newPosY + 0.9f) == L'o')
+			{
+				mapLevel1.nb_cellules_prises ++;
+				SetTile(newPosX, newPosY, L'.');
+			}
+		}
+
+		else{ // Moving right
+			if(GetTile(newPosX + 1.0f, newPosY + 0.0f) == L'o' || GetTile(newPosX + 1.0f, newPosY + 0.9f) == L'o')
+			{
+				mapLevel1.nb_cellules_prises ++;
+				SetTile(newPosX, newPosY, L'.');
+			}
+		}
+
+		if (mapLevel1.player1.fPlayerVelY <= 0) // Moving Up
+		{
+			if (GetTile(newPosX + 0.0f, newPosY) == L'o' || GetTile(newPosX + 0.9f, newPosY) == L'o')
+			{
+				mapLevel1.nb_cellules_prises ++;
+				SetTile(newPosX, newPosY, L'.');
+			}
+		}
+
+		else{ //Moving down
+			if (GetTile(newPosX + 0.0f, newPosY + 1.0f) == L'o' || GetTile(newPosX + 0.9f, newPosY + 1.0f) == L'o')
+			{
+				mapLevel1.nb_cellules_prises ++;
+				SetTile(newPosX, newPosY, L'.');
+			}
+		}
+
+		//collitions player2
 		
-		if (mapLevel1.player2.fPlayerVelY <= 0) // Moving Up
-		{
-			if (GetTile(mapLevel1.player2.fPlayerPosX + 0.0f, mapLevel1.player2.fPlayerPosY) != L'.' || GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY) != L'.')
+
+		if(newPos2X <= 0){ // Moving left
+			if(GetTile(newPos2X + 0.0f, newPos2Y + 0.0f) == L'#' || GetTile(newPos2X + 0.0f, newPos2Y + 0.9f) == L'#')
 			{
-				mapLevel1.player2.fPlayerPosY = (int)mapLevel1.player2.fPlayerPosY + 1;
-				mapLevel1.player2.fPlayerVelY = 0;
+				newPos2X = 1.0f;
+				newPos2Y = 1.0f;
 			}
 		}
 
-		//collitions en haut
-		if (mapLevel1.player1.fPlayerVelY >= 0) // Moving Down
-		{
-			if (GetTile(mapLevel1.player1.fPlayerPosX + 0.0f, mapLevel1.player1.fPlayerPosY + 1.0f) != L'.' || GetTile(mapLevel1.player1.fPlayerPosX + 0.9f, mapLevel1.player1.fPlayerPosY + 1.0f) != L'.')
+		else{ // Moving right
+			if(GetTile(newPos2X + 1.0f, newPos2Y + 0.0f) == L'#' || GetTile(newPos2X + 1.0f, newPos2Y + 0.9f) == L'#')
 			{
-				mapLevel1.player1.fPlayerPosY = (int)mapLevel1.player1.fPlayerPosY;
-				mapLevel1.player1.fPlayerVelY = 0;
+				newPos2X = 1.0f;
+				newPos2Y = 1.0f;
 			}
 		}
 
-		if (mapLevel1.player2.fPlayerVelY >= 0) // Moving Down
+		if (mapLevel1.player1.fPlayerVelY <= 0) // Moving Up
 		{
-			if (GetTile(mapLevel1.player2.fPlayerPosX + 0.0f, mapLevel1.player2.fPlayerPosY + 1.0f) != L'.' || GetTile(mapLevel1.player2.fPlayerPosX + 0.9f, mapLevel1.player2.fPlayerPosY + 1.0f) != L'.')
+			if (GetTile(newPos2X + 0.0f, newPos2Y) == L'#' || GetTile(newPos2X + 0.9f, newPos2Y) == L'#')
 			{
-				mapLevel1.player2.fPlayerPosY = (int)mapLevel1.player2.fPlayerPosY;
-				mapLevel1.player2.fPlayerVelY = 0;
+				newPos2X = 1.0f;
+				newPos2Y = 1.0f;
 			}
 		}
 
+		else{ //Moving down
+			if (GetTile(newPos2X + 0.0f, newPos2Y + 1.0f) == L'#' || GetTile(newPos2X + 0.9f, newPos2Y + 1.0f) == L'#')
+			{
+				newPos2X = 1.0f;
+				newPos2Y = 1.0f;
+			}
+		}
+
+		mapLevel1.player1.fPlayerPosX = newPosX;
+		mapLevel1.player1.fPlayerPosY = newPosY;
+
+		mapLevel1.player2.fPlayerPosX = newPos2X;
+		mapLevel1.player2.fPlayerPosY = newPos2Y;
 
         mapLevel1.player1.fCameraPosX = mapLevel1.player1.fPlayerPosX;
 		mapLevel1.player1.fCameraPosY = mapLevel1.player1.fPlayerPosY;
@@ -204,6 +246,9 @@ class Game : public olc::PixelGameEngine
 		mapLevel1.player2.fCameraPosX = mapLevel1.player2.fPlayerPosX;
 		mapLevel1.player2.fCameraPosY = mapLevel1.player2.fPlayerPosY;
 
+		if (mapLevel1.nb_cellules_prises != 0){
+			cout<<"Nb cellules = " << mapLevel1.nb_cellules_prises<< endl;
+		}
 		// Draw Level
 		int nTileWidth = 32;
 		int nTileHeight = 32;
@@ -233,7 +278,7 @@ class Game : public olc::PixelGameEngine
                 switch (sTileID)
                 {
                 case L'.':
-                    FillRect(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, (x + 1) * nTileWidth - fTileOffsetX, (y + 1) * nTileHeight - fTileOffsetY, olc::Pixel(0, 0, 255));
+                    DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteFond, 0 * nTileWidth, 0 * nTileHeight, nTileWidth, nTileHeight);
 					//DrawSprite(positionBackScreen, spriteTiles);
 					break;
                 case L'#':
@@ -241,7 +286,7 @@ class Game : public olc::PixelGameEngine
                     DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 2 * nTileWidth, 0 * nTileHeight, nTileWidth, nTileHeight);
 					break;
 				case L'o':
-                    FillRect(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, (x + 1) * nTileWidth - fTileOffsetX, (y + 1) * nTileHeight - fTileOffsetY, olc::Pixel(255, 255, 0));
+                    DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteCellule, 0 * nTileWidth, 0 * nTileHeight, nTileWidth, nTileHeight);
                     
 					break;                 
                 default:
@@ -252,9 +297,10 @@ class Game : public olc::PixelGameEngine
 
         
 		//FillRect((mapLevel1.player1.fPlayerPosX - fOffsetX) * nTileWidth, (mapLevel1.player1.fPlayerPosY - fOffsetY) * nTileWidth, 8.0f, 8.0f, olc::Pixel(0, 255, 0));
-		DrawPartialSprite((mapLevel1.player1.fPlayerPosX - fOffsetX) * nTileWidth, (mapLevel1.player1.fPlayerPosY - fOffsetY) * nTileWidth, spritePlayer, 2 * nTileWidth, 0 * nTileHeight, nTileWidth, nTileHeight);
+		DrawPartialSprite((mapLevel1.player1.fPlayerPosX - fOffsetX) * nTileWidth, (mapLevel1.player1.fPlayerPosY - fOffsetY) * nTileWidth, spritePlayer, 0 * nTileWidth, 0 * nTileHeight, nTileWidth, nTileHeight);
 		//DrawSprite((mapLevel1.player1.fPlayerPosX - fOffsetX) * nTileWidth, (mapLevel1.player1.fPlayerPosY - fOffsetY) * nTileWidth, spritePlayer);
-		FillRect((mapLevel1.player2.fPlayerPosX - fOffsetX) * nTileWidth, (mapLevel1.player2.fPlayerPosY - fOffsetY) * nTileWidth, 8.0f, 8.0f, olc::Pixel(0, 255, 255));
+		DrawPartialSprite((mapLevel1.player2.fPlayerPosX - fOffsetX) * nTileWidth, (mapLevel1.player2.fPlayerPosY - fOffsetY) * nTileWidth, spritePlayer, 0 * nTileWidth, 0 * nTileHeight, nTileWidth, nTileHeight);
+		
 		return true;
 		}
 };
