@@ -38,6 +38,8 @@ class Game : public olc::PixelGameEngine
 			mapLevel1.player1.fPlayerVelX = 0.0f;
 			mapLevel1.player1.fPlayerVelY = 0.0f;
 
+
+
 			// initialisation player 2
 			mapLevel1.player2.fCameraPosX = 0.0f;
     		mapLevel1.player2.fCameraPosY = 0.0f;
@@ -115,11 +117,65 @@ class Game : public olc::PixelGameEngine
         }
 
 
-        mapLevel1.player1.fPlayerPosX = mapLevel1.player1.fPlayerPosX + mapLevel1.player1.fPlayerVelX * fElapsedTime;
-        mapLevel1.player1.fPlayerPosY = mapLevel1.player1.fPlayerPosY + mapLevel1.player1.fPlayerVelY * fElapsedTime;
+		mapLevel1.player1.fPlayerPosX = mapLevel1.player1.fPlayerPosX + mapLevel1.player1.fPlayerVelX * fElapsedTime;
+		mapLevel1.player1.fPlayerPosY = mapLevel1.player1.fPlayerPosY + mapLevel1.player1.fPlayerVelY * fElapsedTime;
 
 		mapLevel1.player2.fPlayerPosX = mapLevel1.player2.fPlayerPosX + mapLevel1.player2.fPlayerVelX * fElapsedTime;
         mapLevel1.player2.fPlayerPosY = mapLevel1.player2.fPlayerPosY + mapLevel1.player2.fPlayerVelY * fElapsedTime;
+
+		//coaltions à gauche
+
+		if(mapLevel1.player1.fPlayerVelX <= 0){ // il va à gauche
+			if(GetTile(mapLevel1.player1.fPlayerPosX + 0.0f, mapLevel1.player1.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player1.fPlayerPosX + 0.0f, mapLevel1.player1.fPlayerPosY + 0.9f) != L'.')
+			{
+				mapLevel1.player1.fPlayerPosX = (int)mapLevel1.player1.fPlayerPosX + 1;
+				mapLevel1.player1.fPlayerVelX = 0;
+			}
+		}
+
+		if(mapLevel1.player2.fPlayerVelX <= 0){ // il va à gauche
+			if(GetTile(mapLevel1.player2.fPlayerPosX + 0.0f, mapLevel1.player2.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player2.fPlayerPosX + 0.0f, mapLevel1.player2.fPlayerPosY + 0.9f) != L'.')
+			{
+				mapLevel1.player2.fPlayerPosX = (int)mapLevel1.player2.fPlayerPosX + 1;
+				mapLevel1.player2.fPlayerVelX = 0;
+			}
+		}
+
+		//coalitions à droite
+
+		if(mapLevel1.player1.fPlayerVelX > 0){
+			if(GetTile(mapLevel1.player1.fPlayerPosX + 1.0f, mapLevel1.player1.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player1.fPlayerPosX + 1.0f, mapLevel1.player1.fPlayerPosY + 0.9f) != L'.')
+			{
+				mapLevel1.player1.fPlayerPosX = (int)mapLevel1.player1.fPlayerPosX;
+				mapLevel1.player1.fPlayerVelX = 0;
+			}
+		}
+
+		if(mapLevel1.player2.fPlayerVelX > 0){
+			if(GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY + 0.9f) != L'.')
+			{
+				mapLevel1.player2.fPlayerPosX = (int)mapLevel1.player2.fPlayerPosX;
+				mapLevel1.player2.fPlayerVelX = 0;
+			}
+		}
+
+		//coalitions en bas
+		if(mapLevel1.player1.fPlayerVelY <= 0){ //il va en haut
+			if(GetTile(mapLevel1.player1.fPlayerPosX + 0.0f, mapLevel1.player1.fPlayerPosY) != L'.' || GetTile(mapLevel1.player1.fPlayerPosX + 0.9f, mapLevel1.player1.fPlayerPosY) != L'.')
+			{
+				mapLevel1.player1.fPlayerPosX = (int)mapLevel1.player1.fPlayerPosX;
+				mapLevel1.player1.fPlayerVelX = 0;
+			}
+		}
+
+		if(mapLevel1.player2.fPlayerVelX > 0){
+			if(GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY + 0.0f) != L'.' || GetTile(mapLevel1.player2.fPlayerPosX + 1.0f, mapLevel1.player2.fPlayerPosY + 0.9f) != L'.')
+			{
+				mapLevel1.player2.fPlayerPosX = (int)mapLevel1.player2.fPlayerPosX;
+				mapLevel1.player2.fPlayerVelX = 0;
+			}
+		}
+
 
         mapLevel1.player1.fCameraPosX = mapLevel1.player1.fPlayerPosX;
 		mapLevel1.player1.fCameraPosY = mapLevel1.player1.fPlayerPosY;
@@ -128,8 +184,8 @@ class Game : public olc::PixelGameEngine
 		mapLevel1.player2.fCameraPosY = mapLevel1.player2.fPlayerPosY;
 
 		// Draw Level
-		int nTileWidth = 8;
-		int nTileHeight = 8;
+		int nTileWidth = 32;
+		int nTileHeight = 32;
 		int nVisibleTilesX = ScreenWidth() / nTileWidth;
 		int nVisibleTilesY = ScreenHeight() / nTileHeight;
 
@@ -147,8 +203,10 @@ class Game : public olc::PixelGameEngine
 		float fTileOffsetX = (fOffsetX - (int)fOffsetX) * nTileWidth;
 		float fTileOffsetY = (fOffsetY - (int)fOffsetY) * nTileHeight;
 
-        for (int x = 0; x < nVisibleTilesX; x++){
-            for(int y = 0; y < nVisibleTilesY; y++){
+
+
+        for (int x = -2; x < nVisibleTilesX + 2; x++){
+            for(int y = -2; y < nVisibleTilesY + 2; y++){
                 wchar_t sTileID = GetTile(x + fOffsetX, y + fOffsetY);
 				//olc::vf2d positionBackScreen(x + fOffsetX, y + fOffsetY);
                 switch (sTileID)
@@ -160,7 +218,11 @@ class Game : public olc::PixelGameEngine
                 case L'#':
                     //FillRect(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, (x + 1) * nTileWidth - fTileOffsetX, (y + 1) * nTileHeight - fTileOffsetY, olc::Pixel(255, 0, 0));
                     DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 2 * nTileWidth, 0 * nTileHeight, nTileWidth, nTileHeight);
-					break;               
+					break;
+				case L'o':
+                    FillRect(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, (x + 1) * nTileWidth - fTileOffsetX, (y + 1) * nTileHeight - fTileOffsetY, olc::Pixel(255, 255, 0));
+                    
+					break;                 
                 default:
                     break;
                 }
@@ -181,7 +243,7 @@ int main()
 {
 	Game game;
 
-	if (game.Construct(160, 120, 8, 8))
+	if (game.Construct(256, 240, 8, 8))
 		game.Start();
 	
 	
