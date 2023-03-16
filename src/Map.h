@@ -16,6 +16,18 @@ struct Player{
 	float fPlayerPosY;
 	float fPlayerVelX;
 	float fPlayerVelY;
+
+    int nTileWidth;
+    int nTileHeight;
+
+    int nVisibleTilesX;
+    int nVisibleTilesY;
+
+    float fOffsetX;
+    float fOffsetY;
+
+    float fTileOffsetX;
+    float fTileOffsetY;
 };
 
 class Map{
