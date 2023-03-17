@@ -13,6 +13,10 @@ public:
 	}
 	
 	olc::Sprite* spriteTiles = nullptr;
+    olc::Sprite* spritePlayer1 = nullptr;
+    olc::Sprite* spritePlayer2 = nullptr;
+    olc::Sprite* spriteFond = nullptr;
+
     Map mapLevel1;
 
 public:
@@ -38,7 +42,10 @@ public:
 		mapLevel1.player2.fPlayerVelX = 0.0f;
 		mapLevel1.player2.fPlayerVelY = 0.0f;
 
-		spriteTiles = new olc::Sprite("./data/water.png");
+		spriteTiles = new olc::Sprite("./data/wall2.png");
+        spritePlayer1 = new olc::Sprite("./data/Cell-J1.png");
+        spritePlayer2 = new olc::Sprite("./data/Cell-J2.png");
+        spriteFond = new olc::Sprite("./data/background.png");
 
 		return true;
 	}
@@ -196,9 +203,14 @@ public:
 
 		// Clamp camera to game boundaries
 		if (mapLevel1.player1.fOffsetX < 0) mapLevel1.player1.fOffsetX = 0;
-		if (mapLevel1.player1.fOffsetY < 0) mapLevel1.player1.fOffsetY = 0;
+		if (mapLevel1.player1.fOffsetY < 0){
+			mapLevel1.player1.fOffsetY = 0;
+		} 
 		if (mapLevel1.player1.fOffsetX > mapLevel1.nLevelWidth - mapLevel1.player1.nVisibleTilesX) mapLevel1.player1.fOffsetX = mapLevel1.nLevelWidth - mapLevel1.player1.nVisibleTilesX;
-		if (mapLevel1.player1.fOffsetY > mapLevel1.nLevelHeight - mapLevel1.player1.nVisibleTilesY) mapLevel1.player1.fOffsetY = mapLevel1.nLevelHeight - mapLevel1.player1.nVisibleTilesY;
+		if (mapLevel1.player1.fOffsetY > (mapLevel1.nLevelHeight - mapLevel1.player1.nVisibleTilesY) / 2){
+			cout<<"passed"<<endl;
+			mapLevel1.player1.fOffsetY = (mapLevel1.nLevelHeight - mapLevel1.player1.nVisibleTilesY) / 2;
+		}
 
 		// Get offsets for smooth movement
 		mapLevel1.player1.fTileOffsetX = (mapLevel1.player1.fOffsetX - (int)mapLevel1.player1.fOffsetX) *mapLevel1.player1.nTileWidth;
@@ -219,11 +231,10 @@ public:
 		if (mapLevel1.player2.fOffsetX < 0) mapLevel1.player2.fOffsetX = 0;
 		if (mapLevel1.player2.fOffsetY < 0) mapLevel1.player2.fOffsetY = 0;
 		if (mapLevel1.player2.fOffsetX > mapLevel1.nLevelWidth - mapLevel1.player2.nVisibleTilesX){
-			cout<<"passed 1"<< endl;
+
 			mapLevel1.player2.fOffsetX = mapLevel1.nLevelWidth - mapLevel1.player2.nVisibleTilesX;
 		}
 		if (mapLevel1.player2.fOffsetY > mapLevel1.nLevelHeight - mapLevel1.player2.nVisibleTilesY){
-			cout<<"passed 2" <<endl;
 			mapLevel1.player2.fOffsetY = (mapLevel1.nLevelHeight - mapLevel1.player2.nVisibleTilesY);
 		} 
 
@@ -232,54 +243,70 @@ public:
 		mapLevel1.player2.fTileOffsetY = (mapLevel1.player2.fOffsetY - (int)mapLevel1.player2.fOffsetY) * mapLevel1.player2.nTileHeight;
 
 
-		// called once per frame
-        for(int x = 0; x < ScreenWidth(); x++){
+		// Draw players screen 1
+		
+		//FillRect((mapLevel1.player1.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player1.nTileWidth, (mapLevel1.player1.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player1.nTileWidth, 8.0f, 8.0f, olc::Pixel(0, 255, 0));
+		//FillRect((mapLevel1.player2.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player2.nTileWidth, (mapLevel1.player2.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player2.nTileWidth, 8.0f, 8.0f, olc::Pixel(0, 0, 255));
 
-		    for (int y = 0; y < ScreenHeight() / 2; y++){
-
-
-				Draw(x, y, olc::Pixel(255, x, 0));
-				FillRect((mapLevel1.player1.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player1.nTileWidth, (mapLevel1.player1.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player1.nTileWidth, 8.0f, 8.0f, olc::Pixel(0, 255, 0));
-				FillRect((mapLevel1.player2.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player2.nTileWidth, (mapLevel1.player2.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player2.nTileWidth, 8.0f, 8.0f, olc::Pixel(0, 0, 255));
-			}
-					
-            for (int y = ScreenHeight() / 2; y < ScreenHeight(); y++){
-				Draw(x, y, olc::Pixel(255, 0, x));
-				FillRect((mapLevel1.player1.fPlayerPosX - mapLevel1.player2.fOffsetX) * mapLevel1.player1.nTileWidth, (mapLevel1.player1.fPlayerPosY - mapLevel1.player2.fOffsetY) * mapLevel1.player1.nTileWidth + (ScreenHeight() / 2), 8.0f, 8.0f, olc::Pixel(0, 255, 0));
-				FillRect((mapLevel1.player2.fPlayerPosX - mapLevel1.player2.fOffsetX) * mapLevel1.player2.nTileWidth, (mapLevel1.player2.fPlayerPosY - mapLevel1.player2.fOffsetY) * mapLevel1.player2.nTileWidth + (ScreenHeight() / 2), 8.0f, 8.0f, olc::Pixel(0, 0, 255));
-			}
-				
-        }
+		//DrawPartialSprite((mapLevel1.player1.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player1.nTileWidth, (mapLevel1.player1.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player1.nTileWidth, spritePlayer1, 0, 0, mapLevel1.player1.nTileWidth, mapLevel1.player1.nTileHeight);
+		//DrawPartialSprite((mapLevel1.player2.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player2.nTileWidth, (mapLevel1.player2.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player2.nTileWidth, spritePlayer2, 0, 0, mapLevel1.player2.nTileWidth, mapLevel1.player2.nTileHeight);
+	
+		// Draw players screen 2	
+		//FillRect((mapLevel1.player1.fPlayerPosX - mapLevel1.player2.fOffsetX) * mapLevel1.player1.nTileWidth, (mapLevel1.player1.fPlayerPosY - mapLevel1.player2.fOffsetY) * mapLevel1.player1.nTileWidth + (ScreenHeight() / 2), 8.0f, 8.0f, olc::Pixel(0, 255, 0));
+		//FillRect((mapLevel1.player2.fPlayerPosX - mapLevel1.player2.fOffsetX) * mapLevel1.player2.nTileWidth, (mapLevel1.player2.fPlayerPosY - mapLevel1.player2.fOffsetY) * mapLevel1.player2.nTileWidth + (ScreenHeight() / 2), 8.0f, 8.0f, olc::Pixel(0, 0, 255));
 
 
-        for (int x = 0; x < mapLevel1.player1.nVisibleTilesX; x++){
-            for(int y = 0; y < mapLevel1.player1.nVisibleTilesY; y++){
+
+        for (int x = -2; x < mapLevel1.player1.nVisibleTilesX + 2; x++){
+            for(int y = -2; y < mapLevel1.player1.nVisibleTilesY + 2; y++){
                 wchar_t sTileID = GetTile(x + mapLevel1.player1.fOffsetX, y + mapLevel1.player1.fOffsetY);
                 switch (sTileID)
                 {
-                case L'o':
-                    FillRect(x * mapLevel1.player1.nTileWidth - mapLevel1.player1.fTileOffsetX, y * mapLevel1.player1.nTileHeight - mapLevel1.player1.fTileOffsetY, mapLevel1.player1.nTileWidth, mapLevel1.player1.nTileHeight, olc::Pixel(255, 0, 0));
-					break;               
-                default:
+                case L'#':
+                    //FillRect(x * mapLevel1.player1.nTileWidth - mapLevel1.player1.fTileOffsetX, y * mapLevel1.player1.nTileHeight - mapLevel1.player1.fTileOffsetY - (ScreenHeight() / 2), mapLevel1.player1.nTileWidth, mapLevel1.player1.nTileHeight, olc::Pixel(0, 0, 0));
+					DrawPartialSprite(x * mapLevel1.player1.nTileWidth - mapLevel1.player1.fTileOffsetX, y * mapLevel1.player1.nTileHeight - mapLevel1.player1.fTileOffsetY - (ScreenHeight() / 2), spriteTiles, 0, 0, 32, 32);
+					break; 
+				case L'$':
+                    //FillRect(x * mapLevel1.player1.nTileWidth - mapLevel1.player1.fTileOffsetX, y * mapLevel1.player1.nTileHeight - mapLevel1.player1.fTileOffsetY, mapLevel1.player1.nTileWidth, mapLevel1.player1.nTileHeight, olc::Pixel(255, 255, 255));
+					DrawPartialSprite(x * mapLevel1.player1.nTileWidth - mapLevel1.player1.fTileOffsetX, y * mapLevel1.player1.nTileHeight - mapLevel1.player1.fTileOffsetY, spriteTiles, 0, 0, 32, 32);					
+					break; 
+				case L'.':
+					DrawPartialSprite(x * mapLevel1.player1.nTileWidth - mapLevel1.player1.fTileOffsetX, y * mapLevel1.player1.nTileHeight - mapLevel1.player1.fTileOffsetY, spriteFond, 0, 0, 32, 32);              
+					
+					break;
+				default:
                     break;
                 }
             }
         }
 
-        for (int x = 0; x < mapLevel1.player2.nVisibleTilesX; x++){
-            for(int y = 0; y < mapLevel1.player2.nVisibleTilesY; y++){
+        for (int x = -2; x < mapLevel1.player2.nVisibleTilesX + 2; x++){
+            for(int y = -2; y < mapLevel1.player2.nVisibleTilesY +2; y++){
                 wchar_t sTileID = GetTile(x + mapLevel1.player2.fOffsetX, y + mapLevel1.player2.fOffsetY);
                 switch (sTileID)
                 {
-                case L'o':
-					FillRect(x * mapLevel1.player2.nTileWidth - mapLevel1.player2.fTileOffsetX, y * mapLevel1.player2.nTileHeight - mapLevel1.player2.fTileOffsetY + (ScreenHeight() / 2), mapLevel1.player2.nTileWidth, mapLevel1.player2.nTileHeight, olc::Pixel(255, 0, 0));
-					break;               
+                case L'#':
+					//FillRect(x * mapLevel1.player2.nTileWidth - mapLevel1.player2.fTileOffsetX, y * mapLevel1.player2.nTileHeight - mapLevel1.player2.fTileOffsetY + (ScreenHeight() / 2), mapLevel1.player2.nTileWidth, mapLevel1.player2.nTileHeight, olc::Pixel(0, 0, 0));
+					DrawPartialSprite(x * mapLevel1.player2.nTileWidth - mapLevel1.player2.fTileOffsetX, y * mapLevel1.player2.nTileHeight - mapLevel1.player2.fTileOffsetY + (ScreenHeight() / 2), spriteTiles, 0, 0, 32, 32);
+					break;  
+				case L'$':
+                    //FillRect(x * mapLevel1.player2.nTileWidth - mapLevel1.player2.fTileOffsetX, y * mapLevel1.player2.nTileHeight - mapLevel1.player2.fTileOffsetY + (ScreenHeight() / 2), mapLevel1.player2.nTileWidth, mapLevel1.player2.nTileHeight, olc::Pixel(255, 255, 255));
+					DrawPartialSprite(x * mapLevel1.player2.nTileWidth - mapLevel1.player2.fTileOffsetX, y * mapLevel1.player2.nTileHeight - mapLevel1.player2.fTileOffsetY + (ScreenHeight() / 2), spriteTiles, 0, 0, 32, 32);					
+					break;     
+				case L'.':
+					DrawPartialSprite(x * mapLevel1.player2.nTileWidth - mapLevel1.player2.fTileOffsetX, y * mapLevel1.player2.nTileHeight - mapLevel1.player2.fTileOffsetY + (ScreenHeight() / 2), spriteFond, 0, 0, 32, 32);              		
+					break;      
                 default:
                     break;
                 }
             }
         }
-
+		//screen 1
+		DrawPartialSprite((mapLevel1.player1.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player1.nTileWidth, (mapLevel1.player1.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player1.nTileWidth , spritePlayer1, 0, 0, mapLevel1.player1.nTileWidth, mapLevel1.player1.nTileHeight);
+		DrawPartialSprite((mapLevel1.player2.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player2.nTileWidth, (mapLevel1.player2.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player2.nTileWidth, spritePlayer2, 0, 0, mapLevel1.player2.nTileWidth, mapLevel1.player2.nTileHeight);
+		//screen 2
+		DrawPartialSprite((mapLevel1.player1.fPlayerPosX - mapLevel1.player2.fOffsetX) * mapLevel1.player1.nTileWidth, (mapLevel1.player1.fPlayerPosY - mapLevel1.player2.fOffsetY) * mapLevel1.player1.nTileWidth + (ScreenHeight() / 2), spritePlayer1, 0, 0, mapLevel1.player1.nTileWidth, mapLevel1.player1.nTileHeight);
+		DrawPartialSprite((mapLevel1.player2.fPlayerPosX - mapLevel1.player2.fOffsetX) * mapLevel1.player2.nTileWidth, (mapLevel1.player2.fPlayerPosY - mapLevel1.player2.fOffsetY) * mapLevel1.player2.nTileWidth + (ScreenHeight() / 2), spritePlayer2, 0, 0, mapLevel1.player2.nTileWidth, mapLevel1.player2.nTileHeight);
 
 		    return true;
 	}
