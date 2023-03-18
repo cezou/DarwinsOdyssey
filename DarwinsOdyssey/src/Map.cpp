@@ -54,3 +54,7 @@ int Map::getNLevelWidth(){
 int Map::getNLevelHeight(){
     return nLevelHeight;
 }
+
+
+
+

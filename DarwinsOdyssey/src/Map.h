@@ -60,6 +60,7 @@ class Map{
         //retourne nLevelHeight
         int getNLevelHeight();
 
+      
         /*
 
         void setCamera(float fElapsedTime);
