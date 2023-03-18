@@ -1,12 +1,10 @@
 ﻿  test.cpp
-E:\OneDrive\OneDrive - etu.univ-lyon1.fr\L2 FAC\S2\LIFAPCD\PROJET FINAL\ProjetVisualStudio\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(191,1): warning C4305: '=' : troncation de 'double' à 'float'
-E:\OneDrive\OneDrive - etu.univ-lyon1.fr\L2 FAC\S2\LIFAPCD\PROJET FINAL\ProjetVisualStudio\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(223,1): warning C4305: '=' : troncation de 'double' à 'float'
-E:\OneDrive\OneDrive - etu.univ-lyon1.fr\L2 FAC\S2\LIFAPCD\PROJET FINAL\ProjetVisualStudio\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(241,145): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-E:\OneDrive\OneDrive - etu.univ-lyon1.fr\L2 FAC\S2\LIFAPCD\PROJET FINAL\ProjetVisualStudio\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(244,93): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-E:\OneDrive\OneDrive - etu.univ-lyon1.fr\L2 FAC\S2\LIFAPCD\PROJET FINAL\ProjetVisualStudio\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(267,55): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-E:\OneDrive\OneDrive - etu.univ-lyon1.fr\L2 FAC\S2\LIFAPCD\PROJET FINAL\ProjetVisualStudio\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(270,57): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-E:\OneDrive\OneDrive - etu.univ-lyon1.fr\L2 FAC\S2\LIFAPCD\PROJET FINAL\ProjetVisualStudio\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(288,65): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-E:\OneDrive\OneDrive - etu.univ-lyon1.fr\L2 FAC\S2\LIFAPCD\PROJET FINAL\ProjetVisualStudio\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(288,33): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-E:\OneDrive\OneDrive - etu.univ-lyon1.fr\L2 FAC\S2\LIFAPCD\PROJET FINAL\ProjetVisualStudio\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(327,65): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-E:\OneDrive\OneDrive - etu.univ-lyon1.fr\L2 FAC\S2\LIFAPCD\PROJET FINAL\ProjetVisualStudio\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(327,33): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-  DarwinsOdyssey.vcxproj -> E:\OneDrive\OneDrive - etu.univ-lyon1.fr\L2 FAC\S2\LIFAPCD\PROJET FINAL\ProjetVisualStudio\DarwinsOdyssey\x64\Debug\DarwinsOdyssey.exe
+E:\OneDrive\OneDrive - etu.univ-lyon1.fr\A COOL PROJET WITH JOFRIX\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(247,56): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+E:\OneDrive\OneDrive - etu.univ-lyon1.fr\A COOL PROJET WITH JOFRIX\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(251,57): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+E:\OneDrive\OneDrive - etu.univ-lyon1.fr\A COOL PROJET WITH JOFRIX\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(274,55): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+E:\OneDrive\OneDrive - etu.univ-lyon1.fr\A COOL PROJET WITH JOFRIX\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(277,57): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+E:\OneDrive\OneDrive - etu.univ-lyon1.fr\A COOL PROJET WITH JOFRIX\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(295,65): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+E:\OneDrive\OneDrive - etu.univ-lyon1.fr\A COOL PROJET WITH JOFRIX\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(295,33): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+E:\OneDrive\OneDrive - etu.univ-lyon1.fr\A COOL PROJET WITH JOFRIX\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(324,65): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+E:\OneDrive\OneDrive - etu.univ-lyon1.fr\A COOL PROJET WITH JOFRIX\DarwinsOdyssey\DarwinsOdyssey\src\test.cpp(324,33): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+  DarwinsOdyssey.vcxproj -> E:\OneDrive\OneDrive - etu.univ-lyon1.fr\A COOL PROJET WITH JOFRIX\DarwinsOdyssey\x64\Debug\DarwinsOdyssey.exe

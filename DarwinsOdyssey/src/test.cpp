@@ -146,7 +146,6 @@ public:
         }	
 
 		// Collisions
-
 		mapLevel1.player1.fPlayerPosX = mapLevel1.player1.fPlayerPosX + mapLevel1.player1.fPlayerVelX * fElapsedTime;
         mapLevel1.player1.fPlayerPosY = mapLevel1.player1.fPlayerPosY + mapLevel1.player1.fPlayerVelY * fElapsedTime;
 
@@ -159,8 +158,8 @@ public:
 		mapLevel1.player2.fCameraPosX = mapLevel1.player2.fPlayerPosX;
 		mapLevel1.player2.fCameraPosY = mapLevel1.player2.fPlayerPosY;
 
-		// Collisions Map
-
+		// Collisions Map - POUR NE PAS SORTIR DE LA CARTE
+		// PLAYER 1
 		if(mapLevel1.player1.fPlayerVelY <= 0){
 			if(mapLevel1.player1.fPlayerPosY <= 0){	
 				mapLevel1.player1.fPlayerVelY = 0;
@@ -168,7 +167,6 @@ public:
 			}	
 		}
 
-		
 		if(mapLevel1.player1.fPlayerVelY >= 0){
 			if(mapLevel1.player1.fPlayerPosY >= (float)mapLevel1.getNLevelHeight()){	
 				mapLevel1.player1.fPlayerVelY = 0;
@@ -176,7 +174,6 @@ public:
 			}	
 		}
 	
-
 		if(mapLevel1.player1.fPlayerVelX <= 0){
 			if(mapLevel1.player1.fPlayerPosX <= 0){	
 				mapLevel1.player1.fPlayerVelX = 0;
@@ -188,11 +185,12 @@ public:
 			if(mapLevel1.player1.fPlayerPosX >= (float)mapLevel1.getNLevelWidth()){	
 
 				mapLevel1.player1.fPlayerVelX = 0;
-				mapLevel1.player1.fPlayerPosX = 63.8;
+				mapLevel1.player1.fPlayerPosX = 64;
 			}	
 		}
 		
 
+		// PLAYER 2
 		if(mapLevel1.player2.fPlayerVelY <= 0){
 			if(mapLevel1.player2.fPlayerPosY <= 0){	
 				mapLevel1.player2.fPlayerVelY = 0;
@@ -200,7 +198,6 @@ public:
 			}	
 		}
 
-		
 		if(mapLevel1.player2.fPlayerVelY >= 0){
 			if(mapLevel1.player2.fPlayerPosY >= (float)mapLevel1.getNLevelHeight()){	
 				mapLevel1.player2.fPlayerVelY = 0;
@@ -220,9 +217,11 @@ public:
 			if(mapLevel1.player2.fPlayerPosX >= (float)mapLevel1.getNLevelWidth()){	
 
 				mapLevel1.player2.fPlayerVelX = 0;
-				mapLevel1.player2.fPlayerPosX = 63.8;
+				mapLevel1.player2.fPlayerPosX = 64;
 			}	
 		}
+
+
 		// Draw Level
 		mapLevel1.player1.nTileWidth = 32;
 		mapLevel1.player1.nTileHeight = 32;
@@ -230,18 +229,26 @@ public:
 		mapLevel1.player1.nVisibleTilesY = ScreenHeight() / mapLevel1.player1.nTileHeight;
 
 		// Calculate Top-Leftmost visible tile
-		mapLevel1.player1.fOffsetX = mapLevel1.player1.fCameraPosX - (float)mapLevel1.player1.nVisibleTilesX / 2.0f;
-		mapLevel1.player1.fOffsetY = mapLevel1.player1.fCameraPosY - (float)mapLevel1.player1.nVisibleTilesY / 2.0f;
+		mapLevel1.player1.fOffsetX = mapLevel1.player1.fCameraPosX  - (float)mapLevel1.player1.nVisibleTilesX / 2.0f + 7 ; // Explication du + 7 en dessous:
+		// + 7 Pour Centrer l'écran sur le milieu du Sprite du Joueur : 
+		// 7 car l'écran est en 16/9: 16 en horizontal. 16 - 1 taille du joueur - 1 taille de la ligne verticale du milieu.
+		// = 14 / 2 car il y a deux écrans.
+		// = 7
+		mapLevel1.player1.fOffsetY = mapLevel1.player1.fCameraPosY - (float)mapLevel1.player1.nVisibleTilesY / 2.0f + 2;  // + 2 Pour Centrer l'écran sur le milieu du Sprite du Joueur
 
 		// Clamp camera to game boundaries
-		if (mapLevel1.player1.fOffsetX < 0) mapLevel1.player1.fOffsetX = 0;
+		if (mapLevel1.player1.fOffsetX < 0) 
+			mapLevel1.player1.fOffsetX = 0;
 		if (mapLevel1.player1.fOffsetY < 0){
 			mapLevel1.player1.fOffsetY = 0;
 		} 
-		if (mapLevel1.player1.fOffsetX > mapLevel1.nLevelWidth - mapLevel1.player1.nVisibleTilesX) mapLevel1.player1.fOffsetX = mapLevel1.nLevelWidth - mapLevel1.player1.nVisibleTilesX;
-		if (mapLevel1.player1.fOffsetY > (mapLevel1.nLevelHeight - mapLevel1.player1.nVisibleTilesY) / 2){
-			//cout<<"passed"<<endl;
-			mapLevel1.player1.fOffsetY = (mapLevel1.nLevelHeight - mapLevel1.player1.nVisibleTilesY) / 2;
+
+		if (mapLevel1.player1.fOffsetX  > (mapLevel1.nLevelWidth - mapLevel1.player1.nVisibleTilesX/2))
+			mapLevel1.player1.fOffsetX = (mapLevel1.nLevelWidth - mapLevel1.player1.nVisibleTilesX/2) ;
+		
+
+		if (mapLevel1.player1.fOffsetY > (mapLevel1.nLevelHeight - mapLevel1.player1.nVisibleTilesY)) {
+			mapLevel1.player1.fOffsetY = (mapLevel1.nLevelHeight - mapLevel1.player1.nVisibleTilesY);
 		}
 
 		// Get offsets for smooth movement
@@ -255,16 +262,16 @@ public:
 		mapLevel1.player2.nVisibleTilesY = ScreenHeight() / mapLevel1.player2.nTileHeight;
 
 
-		// Calculate Top-Leftmost visible tile
-		mapLevel1.player2.fOffsetX = mapLevel1.player2.fCameraPosX - (float)mapLevel1.player2.nVisibleTilesX / 2.0f;
-		mapLevel1.player2.fOffsetY = mapLevel1.player2.fCameraPosY - (float)mapLevel1.player2.nVisibleTilesY / 2.0f;
+		// Calculate Top-Leftmost visible tile 
+		mapLevel1.player2.fOffsetX = mapLevel1.player2.fCameraPosX  - ((float)mapLevel1.player2.nVisibleTilesX / 2.0f - 7); // - 7 Pour Centrer l'écran sur le milieu du Sprite du Joueur
+		mapLevel1.player2.fOffsetY = mapLevel1.player2.fCameraPosY  - ((float)mapLevel1.player2.nVisibleTilesY / 2.0f -2); // - 2 Pour Centrer l'écran sur le milieu du Sprite du Joueur
 
 		// Clamp camera to game boundaries
 		if (mapLevel1.player2.fOffsetX < 0) mapLevel1.player2.fOffsetX = 0;
 		if (mapLevel1.player2.fOffsetY < 0) mapLevel1.player2.fOffsetY = 0;
-		if (mapLevel1.player2.fOffsetX > mapLevel1.nLevelWidth - mapLevel1.player2.nVisibleTilesX){
 
-			mapLevel1.player2.fOffsetX = mapLevel1.nLevelWidth - mapLevel1.player2.nVisibleTilesX;
+		if (mapLevel1.player2.fOffsetX > mapLevel1.nLevelWidth - mapLevel1.player2.nVisibleTilesX/2){
+			mapLevel1.player2.fOffsetX = mapLevel1.nLevelWidth - mapLevel1.player2.nVisibleTilesX/2;
 		}
 		if (mapLevel1.player2.fOffsetY > mapLevel1.nLevelHeight - mapLevel1.player2.nVisibleTilesY){
 			mapLevel1.player2.fOffsetY = (mapLevel1.nLevelHeight - mapLevel1.player2.nVisibleTilesY);
@@ -281,8 +288,8 @@ public:
 		SetDrawTarget(splitScreenLayerIndex);
 		Clear(olc::BLANK);
 		
-		// ECRAN 1
-		//SetDrawTarget(nLayerEcranGauche);
+		// MAP ECRAN 1
+		
 		for (int x = -1; x < mapLevel1.player1.nVisibleTilesX / 2 + 1; x++) {
 			for (int y = -2; y < mapLevel1.player1.nVisibleTilesY + 2; y++) {
 				wchar_t sTileID = GetTile(x + mapLevel1.player1.fOffsetX, y + mapLevel1.player1.fOffsetY);
@@ -306,22 +313,12 @@ public:
 			}
 		}
 		
-
-
-		// Players Screen 1
-		// 
-		// Player 1
-		olc::vf2d PosS1J1 = { (mapLevel1.player1.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player1.nTileWidth / 2 - mapLevel1.player2.nTileWidth / 2,
-		(mapLevel1.player1.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player1.nTileWidth - mapLevel1.player2.nTileWidth / 2 };
-		DrawDecal(PosS1J1, decPlayer1);
-		// Player 2
-		olc::vf2d PosS1J2 = { (mapLevel1.player2.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player2.nTileWidth / 2 - mapLevel1.player2.nTileWidth / 2 ,
-			(mapLevel1.player2.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player2.nTileWidth  };
-		DrawDecal(PosS1J2, decPlayer2);
+		//cout << "Joueur 1 Pos X = " << mapLevel1.player1.fPlayerPosX << " Joueur 1 Pos Y = " << mapLevel1.player1.fPlayerPosY << endl;
+		//cout << "Joueur 2 Pos X = " << mapLevel1.player2.fPlayerPosX << " Joueur 2 Pos Y = " << mapLevel1.player2.fPlayerPosY << endl << endl;
 
 		
-		// ECRAN 2
-		//SetDrawTarget(nLayerEcranDroit);
+		// MAP ECRAN 2
+
 		for (int x = 0; x < mapLevel1.player2.nVisibleTilesX/2 +2; x++) {
 			for (int y = -2; y < mapLevel1.player2.nVisibleTilesY + 2; y++) {
 				wchar_t sTileID = GetTile(x + mapLevel1.player2.fOffsetX, y + mapLevel1.player2.fOffsetY);
@@ -343,28 +340,47 @@ public:
 				}
 			}
 		}
-		
-
-
-
-		
-		// Players Screen 2
-		//SetDrawTarget(nLayerEcranDroit);
+		// Players Screen 1
+		//
 		// Player 1
-		olc::vf2d PosS2J1 = { (mapLevel1.player1.fPlayerPosX - mapLevel1.player2.fOffsetX) * mapLevel1.player1.nTileWidth + (ScreenWidth() / 2) *2,
-			(mapLevel1.player1.fPlayerPosY - mapLevel1.player2.fOffsetY) * mapLevel1.player1.nTileWidth };
-		DrawDecal(PosS2J1, decPlayer1);
+		olc::vf2d PosS1J1 = { (mapLevel1.player1.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player1.nTileWidth ,
+		(mapLevel1.player1.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player1.nTileHeight };
+		DrawDecal(PosS1J1, decPlayer1);
 		// Player 2
-		olc::vf2d PosS2J2 = { (mapLevel1.player2.fPlayerPosX - mapLevel1.player2.fOffsetX) * mapLevel1.player2.nTileWidth /2 - mapLevel1.player2.nTileWidth / 2 + (ScreenWidth() / 2),
-			(mapLevel1.player2.fPlayerPosY - mapLevel1.player2.fOffsetY) * mapLevel1.player2.nTileHeight - mapLevel1.player2.nTileWidth / 2 };
+		// On l'affiche seulement si il est à 7 blocs en X du Joueur 1.
+
+		cout << "OFFSET J1 = " << mapLevel1.player1.fOffsetX <<  "    OFFSET J2 = " << mapLevel1.player2.fOffsetX << endl;
+		if((mapLevel1.player2.fOffsetX - mapLevel1.player1.fOffsetX > -6.5 && 
+			mapLevel1.player2.fOffsetX - mapLevel1.player1.fOffsetX < 6.5) ||
+			(mapLevel1.player2.fPlayerPosX <= 6.5 && mapLevel1.player1.fPlayerPosX <= 6.5) &&
+			(mapLevel1.player2.fPlayerPosX >= mapLevel1.nLevelWidth - 6 && mapLevel1.player1.fPlayerPosX >= mapLevel1.nLevelWidth - 6))
+		{ 
+			olc::vf2d PosS1J2 = { (mapLevel1.player2.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player2.nTileWidth ,
+			(mapLevel1.player2.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player2.nTileHeight };
+			DrawDecal(PosS1J2, decPlayer2);
+		}
+		// Players Screen 2
+		//
+		// Player 1
+		if ((mapLevel1.player1.fOffsetX - mapLevel1.player2.fOffsetX > -6.5 &&
+			mapLevel1.player1.fOffsetX - mapLevel1.player2.fOffsetX < 6.5) ||
+			(mapLevel1.player2.fPlayerPosX <= 6.5 && mapLevel1.player1.fPlayerPosX <= 6.5) &&
+			(mapLevel1.player2.fPlayerPosX >= mapLevel1.nLevelWidth - 6 && mapLevel1.player1.fPlayerPosX >= mapLevel1.nLevelWidth - 6))
+		{
+			olc::vf2d PosS2J1 = { (mapLevel1.player1.fPlayerPosX - mapLevel1.player2.fOffsetX) * mapLevel1.player1.nTileWidth + (ScreenWidth() / 2) + 16,
+			(mapLevel1.player1.fPlayerPosY - mapLevel1.player2.fOffsetY) * mapLevel1.player1.nTileHeight };
+			DrawDecal(PosS2J1, decPlayer1);
+		}
+		// Player 2
+		olc::vf2d PosS2J2 = { (mapLevel1.player2.fPlayerPosX - mapLevel1.player2.fOffsetX) * mapLevel1.player2.nTileWidth  + (ScreenWidth() / 2) + 16,
+		(mapLevel1.player2.fPlayerPosY - mapLevel1.player2.fOffsetY) * mapLevel1.player2.nTileHeight };
 		DrawDecal(PosS2J2, decPlayer2);
-
 		Clear(olc::BLANK);
+
 		
 		
 
-		// Dessiner une ligne noire verticale au milieu de l'écran
-		
+		// Dessiner une ligne verticale au milieu de l'écran
 		
 		SetDrawTarget(nullptr);
 		FillRectDecal({ 800 / 2 - 16 , 0 }, { 32, 450 }, olc::DARK_RED);
@@ -380,7 +396,7 @@ public:
 int main()
 {
 	Example demo;
-	if (demo.Construct(800, 450, 1, 1, true, true))
+	if (demo.Construct(800, 450, 2, 2, false, true))
 		demo.Start();
 
 	return 0;
