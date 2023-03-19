@@ -17,6 +17,19 @@ class Map{
         int nb_cellules_prises;
         Player player1;
         Player player2;
+        int splitScreenLayerIndex, lineLayerIndex;
+
+	    olc::Sprite* spriteTiles = nullptr;
+	    olc::Decal* decTiles = nullptr;
+
+        olc::Sprite* spritePlayer1 = nullptr;
+	    olc::Decal* decPlayer1 = nullptr;
+
+        olc::Sprite* spritePlayer2 = nullptr;
+	    olc::Decal* decPlayer2 = nullptr;
+
+        olc::Sprite* spriteFond = nullptr;
+	    olc::Decal* decFond = nullptr;
     
     public:
 
@@ -25,6 +38,11 @@ class Map{
     
         //constructeur avec parametres
         Map(wstring slevel_param, int nLevelWidth_param, int nLevelHeight_param);
+
+        void initImages(olc::PixelGameEngine* pge);
+
+        void drawLevel(olc::PixelGameEngine* pge);
+
 
 };
 
