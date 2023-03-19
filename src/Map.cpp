@@ -1,12 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include "./Map.h"
-
-//#include "./Player.h"
+#include "./Player.h"
 
 using namespace std;
-
-
 
 //constructeur par defaut
 Map::Map(){
@@ -28,8 +25,11 @@ Map::Map(){
 	sLevel += L"#...............#.o.#..........................................#";
 	sLevel += L"#...............#...#..........................................#";
 	sLevel += L"#........................................o.....................#";
-	sLevel += L"#..o.................o.........................................#";
-	sLevel += L"#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$#";
+	sLevel += L"##.o.................o.........................................#";
+	sLevel += L"################################################################";
+
+	player1 = Player(1.0, 1.0);
+	player2 = Player(2.0, 2.0);
 }
 
 //constructeur avec parametres
@@ -39,18 +39,3 @@ Map::Map(wstring sLevel_param, int nLevelWidth_param, int nLevelHeight_param){
     nLevelHeight = nLevelHeight_param;
 }
 
-void Map::setPlayerVelX(float fPlayerVelX_param){
-	player1.fPlayerVelX = fPlayerVelX_param;
-}
-
-void Map::setPlayerVelY(float fPlayerVelY_param){
-	player1.fPlayerVelY = fPlayerVelY_param;
-}
-
-int Map::getNLevelWidth(){
-    return nLevelWidth;
-}
-
-int Map::getNLevelHeight(){
-    return nLevelHeight;
-}
