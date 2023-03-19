@@ -1,5 +1,4 @@
 #include "./Player.h"
-#include "./IRender.h"
 
 Player::Player(){
     	fCameraPosX = 0.0f;

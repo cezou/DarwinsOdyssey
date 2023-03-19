@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include "../inc/olcPixelGameEngine-master/olcPixelGameEngine.h"
-#include "./IRender.h"
+
 
 using namespace std;
 
