@@ -55,16 +55,16 @@ public:
 		mapLevel1.player2.fPlayerVelX = 0.0f;
 		mapLevel1.player2.fPlayerVelY = 0.0f;
 
-		spriteTiles = new olc::Sprite("./data/wall2.png");
+		spriteTiles = new olc::Sprite("./data/parenchymadefault.png");
 		decTiles = new olc:: Decal(spriteTiles);
 
-        spritePlayer1 = new olc::Sprite("./data/Cell-J1.png");
+        spritePlayer1 = new olc::Sprite("./data/alt/Cell-J1.png");
 		decPlayer1 = new olc::Decal(spritePlayer1);
 
-        spritePlayer2 = new olc::Sprite("./data/Cell-J2.png");
+        spritePlayer2 = new olc::Sprite("./data/alt/Cell-J2.png");
 		decPlayer2 = new olc::Decal(spritePlayer2);
 
-        spriteFond = new olc::Sprite("./data/background.png");
+        spriteFond = new olc::Sprite("./data/water.png");
 		decFond = new olc::Decal(spriteFond);
 
 		// Créer un calque pour l'écran scindé
@@ -346,26 +346,42 @@ public:
 		olc::vf2d PosS1J1 = { (mapLevel1.player1.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player1.nTileWidth ,
 		(mapLevel1.player1.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player1.nTileHeight };
 		DrawDecal(PosS1J1, decPlayer1);
-		// Player 2
-		// On l'affiche seulement si il est à 7 blocs en X du Joueur 1.
 
-		cout << "OFFSET J1 = " << mapLevel1.player1.fOffsetX <<  "    OFFSET J2 = " << mapLevel1.player2.fOffsetX << endl;
-		if((mapLevel1.player2.fOffsetX - mapLevel1.player1.fOffsetX > -6.5 && 
-			mapLevel1.player2.fOffsetX - mapLevel1.player1.fOffsetX < 6.5) ||
-			(mapLevel1.player2.fPlayerPosX <= 6.5 && mapLevel1.player1.fPlayerPosX <= 6.5) &&
-			(mapLevel1.player2.fPlayerPosX >= mapLevel1.nLevelWidth - 6 && mapLevel1.player1.fPlayerPosX >= mapLevel1.nLevelWidth - 6))
+		// Player 2
+		// On l'affiche seulement si:
+		// La différence entre les deux Offsets est < 6.5
+		// et que les deux joueurs ne sont pas aux bordures max en X de la map
+		// ou si
+		// La différence entre les deux Offsets est < 6.5
+		// et qu'ils sont aux bordures max en X de la map
+		// et que la différence de leurs positions est < 6.5
+
+		//cout << "OFFSET J1 = " << mapLevel1.player1.fOffsetX <<  "    OFFSET J2 = " << mapLevel1.player2.fOffsetX << endl;
+		if ((mapLevel1.player2.fOffsetX - mapLevel1.player1.fOffsetX > -6.5 && mapLevel1.player2.fOffsetX - mapLevel1.player1.fOffsetX < 6.5)	
+			&& 
+				(mapLevel1.player1.fOffsetX < (mapLevel1.nLevelWidth - 12) && mapLevel1.player2.fOffsetX < (mapLevel1.nLevelWidth - 12) ||
+				( (mapLevel1.player2.fPlayerPosX - mapLevel1.player1.fPlayerPosX) < 6.5 )))
 		{ 
 			olc::vf2d PosS1J2 = { (mapLevel1.player2.fPlayerPosX - mapLevel1.player1.fOffsetX) * mapLevel1.player2.nTileWidth ,
 			(mapLevel1.player2.fPlayerPosY - mapLevel1.player1.fOffsetY) * mapLevel1.player2.nTileHeight };
 			DrawDecal(PosS1J2, decPlayer2);
 		}
+
+
 		// Players Screen 2
 		//
 		// Player 1
-		if ((mapLevel1.player1.fOffsetX - mapLevel1.player2.fOffsetX > -6.5 &&
-			mapLevel1.player1.fOffsetX - mapLevel1.player2.fOffsetX < 6.5) ||
-			(mapLevel1.player2.fPlayerPosX <= 6.5 && mapLevel1.player1.fPlayerPosX <= 6.5) &&
-			(mapLevel1.player2.fPlayerPosX >= mapLevel1.nLevelWidth - 6 && mapLevel1.player1.fPlayerPosX >= mapLevel1.nLevelWidth - 6))
+		// On l'affiche seulement si:
+		// La différence entre les deux Offsets est < 6.5
+		// et que les deux joueurs ne sont pas aux bordures min en X de la map
+		// ou si
+		// La différence entre les deux Offsets est < 6.5
+		// et qu'ils sont aux bordures min en X de la map
+		// et que la différence de leurs positions est < 6.5
+		if ((mapLevel1.player2.fOffsetX - mapLevel1.player1.fOffsetX > -6.5 && mapLevel1.player2.fOffsetX - mapLevel1.player1.fOffsetX < 6.5)
+			&&
+			(mapLevel1.player1.fOffsetX > 0 && mapLevel1.player2.fOffsetX > 0 ||
+				((mapLevel1.player2.fPlayerPosX - mapLevel1.player1.fPlayerPosX) < 6.5)))
 		{
 			olc::vf2d PosS2J1 = { (mapLevel1.player1.fPlayerPosX - mapLevel1.player2.fOffsetX) * mapLevel1.player1.nTileWidth + (ScreenWidth() / 2) + 16,
 			(mapLevel1.player1.fPlayerPosY - mapLevel1.player2.fOffsetY) * mapLevel1.player1.nTileHeight };
@@ -383,7 +399,7 @@ public:
 		// Dessiner une ligne verticale au milieu de l'écran
 		
 		SetDrawTarget(nullptr);
-		FillRectDecal({ 800 / 2 - 16 , 0 }, { 32, 450 }, olc::DARK_RED);
+		FillRectDecal({ 800 / 2 - 16 , 0 }, { 32, 450 }, olc::VERY_DARK_BLUE);
 
 		// Revenir au calque par défaut
 		
