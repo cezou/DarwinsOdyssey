@@ -20,9 +20,8 @@ public:
 public:
 	bool OnUserCreate() override
 	{
-		// Initialisation des Sprites / Decals
-		mapLevel1.initImages(this);
 
+		mapLevel1.initImages(this);
 		// Set du NB de Cellules Récupérées à zéro
 		mapLevel1.player1.setNBCell();
 		mapLevel1.player2.setNBCell();

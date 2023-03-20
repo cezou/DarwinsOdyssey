@@ -310,7 +310,7 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 			olc::vf2d PosS2J1 = { (player1.fPlayerPosX - player2.fOffsetX) * player1.nTileWidth + (pge->ScreenWidth() / 2) + 16,
 			(player1.fPlayerPosY - player2.fOffsetY) * player1.nTileHeight };
 			pge->DrawDecal(PosS2J1, decPlayer1);
-			pge->DrawPartialDecal(PosS2J1g, { 32,32 }, decMultiCell, SpritePosMultiCell, { 32,32 });
+			pge->DrawPartialDecal(PosS2J1, { 32,32 }, decMultiCell, SpritePosMultiCell, { 32,32 });
 		}
 		// Player 2
 		olc::vf2d PosS2J2 = { (player2.fPlayerPosX - player2.fOffsetX) * player2.nTileWidth  + (pge->ScreenWidth() / 2) + 16,
