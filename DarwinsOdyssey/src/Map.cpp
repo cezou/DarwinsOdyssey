@@ -9,30 +9,13 @@ using namespace std;
 //constructeur par defaut
 Map::Map(){
 
-    nLevelWidth = 64;
-	nLevelHeight = 16;
 	nb_cellules_b_placees = 4;
 	nb_cellules_g_placees = 4;
-	sLevel += L"#.$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#.......r......................................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#........b.....................................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#...............#####..........................................#";
-	sLevel += L"#...............#...#..........................................#";
-	sLevel += L"#...............#...#..........................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"################################################################";
 
-	player1 = Player(1.0, 1.0);
-	player2 = Player(2.0, 2.0);
-
+	
+	player1 = Player(3.0, 3.0);
+	player2 = Player(3.0, 3.0);
+	
 
 }
 
@@ -44,6 +27,8 @@ Map::Map(wstring sLevel_param, int nLevelWidth_param, int nLevelHeight_param){
 }
 
 void Map::initImages(olc::PixelGameEngine* pge){
+	spriteMap = new olc::Sprite("./data/MAP.png");
+
 	spriteTiles = new olc::Sprite("./data/parenchymadefault.png");
 	decTiles = new olc:: Decal(spriteTiles);
 
@@ -64,7 +49,191 @@ void Map::initImages(olc::PixelGameEngine* pge){
 
     spriteFond = new olc::Sprite("./data/water.png");
 	decFond = new olc::Decal(spriteFond);
+
+	spriteVirus = new olc::Sprite("./data/virus.png");
+	decVirus = new olc::Decal(spriteVirus);
+
+	
+	
+
 }
+
+
+void Map::initMapFromImage(olc::PixelGameEngine* pge) {
+	// Calcule la largeur et la hauteur de la carte en blocs 
+	
+	nLevelWidth = spriteMap->width;
+	nLevelHeight = spriteMap->height;
+	
+	// Génère la chaîne de caractères représentant la carte à partir de l'image MAP.png
+	for (int y = 0; y < nLevelHeight; y++)
+	{
+		std::string row = "";
+		for (int x = 0; x < nLevelWidth; x++)
+		{
+			olc::Pixel pixel = spriteMap->GetPixel(x, y);
+			if (pixel.r == 0 && pixel.g == 0 && pixel.b == 0)
+				row += "#";
+			else if (pixel.r == 255 && pixel.g == 255 && pixel.b == 255)
+				row += ".";
+			else if (pixel.r == 255 && pixel.g == 0 && pixel.b == 0)
+				row += "v";
+			else if (pixel.r == 0 && pixel.g == 0 && pixel.b == 255)
+				row += "b";
+			else if (pixel.r == 0 && pixel.g == 255 && pixel.b == 0)
+				row += "g";
+		}
+		std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+		std::wstring wideRow = converter.from_bytes(row);
+		sLevel += wideRow ;
+	}
+	
+
+	// Affiche la carte dans la console
+	wcout << sLevel << endl;
+}
+
+
+
+void Map::move(float fElapsedTime, Player& P){
+
+	auto GetTile = [&](int x, int y)
+	{
+		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+			return sLevel[y * nLevelWidth + x];
+		else
+			return L' ';
+	};
+	auto SetTile = [&](int x, int y, wchar_t c)
+	{
+		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+			sLevel[y * nLevelWidth + x] = c;
+	};
+
+		float fNewPlayerPosX = P.fPlayerPosX + P.fPlayerVelX * fElapsedTime;
+		float fNewPlayerPosY = P.fPlayerPosY + P.fPlayerVelY * fElapsedTime;
+
+		// Check for Collision
+		if (P.fPlayerVelX <= 0) // Moving Left
+		{
+			if (GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.2f) == L'#' || GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.7f) == L'#')
+			{
+				fNewPlayerPosX = (int)fNewPlayerPosX + 1;
+				P.fPlayerVelX = 0;
+			}
+
+			if(GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.2f) == L'v' || GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.7f) == L'v'){
+
+				bool place = false;
+				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+
+				while(place == false){
+
+					int x = rand() % nLevelWidth;
+					int y = rand() % nLevelHeight;
+
+					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
+						fNewPlayerPosX = x;
+						fNewPlayerPosY = y;
+						place = true;
+					}
+				}		
+			}
+		}
+
+		else // Moving Right
+		{
+			if (GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.2f) == L'#' || GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.7f) == L'#')
+			{
+				fNewPlayerPosX = (int)fNewPlayerPosX;
+				P.fPlayerVelX = 0;
+				
+			}
+
+			if(GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.2f) == L'v' || GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.7f) == L'v'){
+
+				bool place = false;
+				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+
+				while(place == false){
+
+					int x = rand() % nLevelWidth;
+					int y = rand() % nLevelHeight;
+
+					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
+						fNewPlayerPosX = x;
+						fNewPlayerPosY = y;
+						place = true;
+					}
+				}		
+			}
+		}
+		
+		if (P.fPlayerVelY <= 0) // Moving Up
+		{
+			if (GetTile(fNewPlayerPosX + 0.2f, fNewPlayerPosY) == L'#' || GetTile(fNewPlayerPosX + 0.7f, fNewPlayerPosY) == L'#')
+			{
+				fNewPlayerPosY = (int)fNewPlayerPosY + 1;
+				P.fPlayerVelY = 0;
+			}
+
+			if(GetTile(fNewPlayerPosX + 0.2f, P.fPlayerPosY) == L'v' || GetTile(fNewPlayerPosX + 0.7f, P.fPlayerPosY) == L'v'){
+
+				bool place = false;
+				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+
+				while(place == false){
+
+					int x = rand() % nLevelWidth;
+					int y = rand() % nLevelHeight;
+
+					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
+						fNewPlayerPosX = x;
+						fNewPlayerPosY = y;
+						place = true;
+					}
+				}		
+			}
+		}
+		else // Moving Down
+		{
+			if (GetTile(fNewPlayerPosX + 0.2f, fNewPlayerPosY + 1.0f) == L'#' || GetTile(fNewPlayerPosX + 0.7f, fNewPlayerPosY + 1.0f) == L'#')
+			{
+				fNewPlayerPosY = (int)fNewPlayerPosY;
+				P.fPlayerVelY = 0;
+				
+			}
+
+			if(GetTile(fNewPlayerPosX + 0.2f, P.fPlayerPosY + 1.0f) == L'v' || GetTile(fNewPlayerPosX + 0.7f, P.fPlayerPosY + 1.0f) == L'v'){
+
+				bool place = false;
+				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+
+				while(place == false){
+
+					int x = rand() % nLevelWidth;
+					int y = rand() % nLevelHeight;
+
+					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
+						fNewPlayerPosX = x;
+						fNewPlayerPosY = y;
+						place = true;
+						
+					}
+				}		
+			}
+		}
+
+		// Apply new position
+		P.fPlayerPosX = fNewPlayerPosX;
+		P.fPlayerPosY = fNewPlayerPosY;
+
+		// Link camera to player position
+		P.fCameraPosX = P.fPlayerPosX;
+		P.fCameraPosY = P.fPlayerPosY;
+
+}
+
 
 void Map::drawLevel(olc::PixelGameEngine* pge){
 
@@ -84,7 +253,7 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 			if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
 				sLevel[y * nLevelWidth + x] = c;
 		};
-
+		/*
 		// Placer les cellules 'b'
 
 		while (nb_cellules_b_placees>0)
@@ -106,7 +275,7 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 				SetTile(x, y, 'g');
 				nb_cellules_g_placees--;
 			}
-		}
+		} */
 
 		// Void RecupCellJ1
 		if (pge->IsFocused()) {
@@ -220,6 +389,10 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 				case L'b':
 					pge->DrawDecal(PosBlocksJ1, decFond);
 					break;
+				case L'v':
+					pge->DrawDecal(PosBlocksJ1, decFond);
+					pge->DrawDecal(PosBlocksJ1, decVirus);
+					break;
 				default:
 					break;
 				}
@@ -250,6 +423,11 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 				case L'b':
 					pge->DrawDecal(PosBlocksJ2, decFond);
 					pge->DrawDecal(PosBlocksJ2, decCellRecupPlayer1);
+					break;
+					break;
+				case L'v':
+					pge->DrawDecal(PosBlocksJ2, decFond);
+					pge->DrawDecal(PosBlocksJ2, decVirus);
 					break;
 				default:
 					break;

@@ -66,6 +66,9 @@ class Player{
         // touches du clavier player2
         void detectKeysPlayer2(olc::PixelGameEngine* pge);
 
+        float distance_collision();
+
+
 };
         
 

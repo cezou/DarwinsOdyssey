@@ -13,7 +13,9 @@ public:
 		sAppName = "Darwin's Odyssey";
 	}
 
-
+	//int nLayerEcranGauche = 0;
+	//int nLayerEcranDroit = 0;
+	//int nLayerLigne = 3;
     Map mapLevel1;
 	
 
@@ -22,6 +24,7 @@ public:
 	{
 
 		mapLevel1.initImages(this);
+		mapLevel1.initMapFromImage(this);
 		// Set du NB de Cellules Récupérées à zéro
 		mapLevel1.player1.setNBCell();
 		mapLevel1.player2.setNBCell();
@@ -48,20 +51,17 @@ public:
 		// Mouvements players
 		mapLevel1.player1.setVel0();
 		mapLevel1.player2.setVel0();
-		
+
 		mapLevel1.player1.detectKeysPlayer1(this);
 		mapLevel1.player2.detectKeysPlayer2(this);
 
-		// Mouvements
-		mapLevel1.player1.move(fElapsedTime);
-		mapLevel1.player2.move(fElapsedTime);
-
 		mapLevel1.player1.collisions();
 		mapLevel1.player2.collisions();
+		mapLevel1.move(fElapsedTime, mapLevel1.player1);
+		mapLevel1.move(fElapsedTime, mapLevel1.player2);
 
 		mapLevel1.drawLevel(this);
 
-		
 		return true;
 	}
 };

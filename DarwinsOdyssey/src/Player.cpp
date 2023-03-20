@@ -3,13 +3,12 @@
 Player::Player(){
     	fCameraPosX = 0.0f;
     	fCameraPosY = 0.0f;
-    	fPlayerPosX = 1.0f;
-		fPlayerPosY = 1.0f;
+    	fPlayerPosX = 3.0f;
+		fPlayerPosY = 3.0f;
 		fPlayerVelX = 0.0f;
 		fPlayerVelY = 0.0f;
         nTileWidth = 32;
 		nTileHeight = 32;
-        
 }
 
 Player::Player(float posX, float posY){
@@ -21,7 +20,6 @@ Player::Player(float posX, float posY){
 		fPlayerVelY = 0.0f;
         nTileWidth = 32;
 		nTileHeight = 32;
-        
 }
 
 void Player::move(float fElapsedTime){
@@ -44,9 +42,9 @@ void Player::collisions(){
 		}
 
 		if(fPlayerVelY >= 0){
-			if(fPlayerPosY >= 15){	
+			if(fPlayerPosY >= 41){	
 				fPlayerVelY = 0;
-				fPlayerPosY = 15;
+				fPlayerPosY = 41;
 			}	
 		}
 	
@@ -58,10 +56,10 @@ void Player::collisions(){
 		}
 
 		if(fPlayerVelX >= 0){
-			if(fPlayerPosX >= 63){	
+			if(fPlayerPosX >= 58){	
 
 				fPlayerVelX = 0;
-				fPlayerPosX = 63;
+				fPlayerPosX = 58;
 			}	
 		}
 }
@@ -69,7 +67,6 @@ void Player::collisions(){
 void Player::setVel0(){
         fPlayerVelY = 0.0f;
         fPlayerVelX = 0.0f;
-        
 }
 
 void Player::setNBCell() {
@@ -111,26 +108,31 @@ void Player::detectKeysPlayer2(olc::PixelGameEngine* pge){
 
         // Aller en haut
         if (pge->GetKey(olc::Key::UP).bHeld) {
-            fPlayerVelY = -10.0f;
+            fPlayerVelY = -4.0f;
         }
 
         // Aller en bas
         if (pge->GetKey(olc::Key::DOWN).bHeld) {
-            fPlayerVelY = 10.0f;
+            fPlayerVelY = 4.0f;
         }
 
         // Aller à gauche
         if (pge->GetKey(olc::Key::LEFT).bHeld) {
-            fPlayerVelX = -10.0f;
+            fPlayerVelX = -4.0f;
         }
 
         // Aller à droite
         if (pge->GetKey(olc::Key::RIGHT).bHeld) {
-            fPlayerVelX = 10.0f;
+            fPlayerVelX = 4.0f;
         }
 
 
         }
 }
 
+float Player::distance_collision(){
+    //float centreX = fPlayerPosX + nTileWidth / 2;
+    //float centreY = fPlayerPosY + nTileHeight / 2;
+    return nTileWidth / 2;
+}
 
