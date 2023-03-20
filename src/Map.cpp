@@ -1,4 +1,5 @@
 #include <iostream>
+#include<cstdlib>
 #include <fstream>
 #include "./Map.h"
 #include "./Player.h"
@@ -10,22 +11,23 @@ Map::Map(){
 
     nLevelWidth = 64;
 	nLevelHeight = 16;
-	nb_cellules_prises = 0;
+	nb_cellules_b_placees = 4;
+	nb_cellules_g_placees = 4;
 	sLevel += L"#.$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$#";
-	sLevel += L"#..........o...............................................o...#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#........................................o.....................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#..........................o...................................#";
 	sLevel += L"#..............................................................#";
 	sLevel += L"#..............................................................#";
-	sLevel += L"#....................................o.........................#";
-	sLevel += L"#..................................................o...........#";
+	sLevel += L"#..............................................................#";
+	sLevel += L"#..............................................................#";
+	sLevel += L"#..............................................................#";
+	sLevel += L"#..............................................................#";
+	sLevel += L"#..............................................................#";
+	sLevel += L"#..............................................................#";
+	sLevel += L"#..............................................................#";
 	sLevel += L"#...............#####..........................................#";
-	sLevel += L"#...............#.o.#..........................................#";
 	sLevel += L"#...............#...#..........................................#";
-	sLevel += L"#........................................o.....................#";
-	sLevel += L"##.o.................o.........................................#";
+	sLevel += L"#...............#...#..........................................#";
+	sLevel += L"#..............................................................#";
+	sLevel += L"#..............................................................#";
 	sLevel += L"################################################################";
 
 	player1 = Player(1.0, 1.0);
@@ -42,20 +44,22 @@ Map::Map(wstring sLevel_param, int nLevelWidth_param, int nLevelHeight_param){
 }
 
 void Map::initImages(olc::PixelGameEngine* pge){
-	spriteTiles = new olc::Sprite("./data/wall2.png");
+	spriteTiles = new olc::Sprite("./data/parenchymadefault.png");
 	decTiles = new olc:: Decal(spriteTiles);
 
-    spritePlayer1 = new olc::Sprite("./data/Cell-J1.png");
+    spritePlayer1 = new olc::Sprite("./data/alt/Cell-J1.png");
 	decPlayer1 = new olc::Decal(spritePlayer1);
 
-    spritePlayer2 = new olc::Sprite("./data/Cell-J2.png");
+    spritePlayer2 = new olc::Sprite("./data/alt/Cell-J2.png");
 	decPlayer2 = new olc::Decal(spritePlayer2);
 
-    spriteFond = new olc::Sprite("./data/background.png");
+    spriteFond = new olc::Sprite("./data/water.png");
 	decFond = new olc::Decal(spriteFond);
 }
 
 void Map::drawLevel(olc::PixelGameEngine* pge){
+
+	srand((unsigned) time(NULL));
 	// Draw Level
 
 		auto GetTile = [&](int x, int y)
@@ -72,6 +76,29 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 				sLevel[y * nLevelWidth + x] = c;
 		};
 
+		// Placer les cellules 'b'
+
+		while (nb_cellules_b_placees>0)
+		{
+			int x = rand() % nLevelWidth;
+			int y = rand() % nLevelHeight;
+			if( (GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='v') && (GetTile(x, y)!='$')){
+				SetTile(x, y, 'b');
+				nb_cellules_b_placees--;
+			}
+		}
+		
+		// Placer les cellules 'g'
+		while (nb_cellules_g_placees>0)
+		{
+			int x = rand() % nLevelWidth;
+			int y = rand() % nLevelHeight;
+			if( (GetTile(x, y)!='#') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v') && (GetTile(x, y)!='$')){
+				SetTile(x, y, 'g');
+				nb_cellules_g_placees--;
+			}
+		}				
+		
 		player1.nVisibleTilesX = pge->ScreenWidth() / player1.nTileWidth; 
 		player1.nVisibleTilesY = pge->ScreenHeight() / player1.nTileHeight;
 
@@ -151,6 +178,12 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 				case L'.':
 					pge->DrawDecal(PosBlocksJ1, decFond);
 					break;
+				case L'g':
+					pge->DrawDecal(PosBlocksJ1, decPlayer2);
+					break;
+				case L'b':
+					pge->DrawDecal(PosBlocksJ1, decFond);
+					break;
 				default:
 					break;
 				}
@@ -174,6 +207,12 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 					break;
 				case L'.':
 					pge->DrawDecal(PosBlocksJ2, decFond);
+					break;
+				case L'g':
+					pge->DrawDecal(PosBlocksJ2, decFond);
+					break;
+				case L'b':
+					pge->DrawDecal(PosBlocksJ2, decPlayer1);
 					break;
 				default:
 					break;

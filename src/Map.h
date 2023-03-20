@@ -14,9 +14,11 @@ class Map{
         wstring sLevel;
         int nLevelWidth;
 	    int nLevelHeight;
-        int nb_cellules_prises;
+        int nb_cellules_b_placees;
+        int nb_cellules_g_placees;
         Player player1;
         Player player2;
+
         int splitScreenLayerIndex, lineLayerIndex;
 
 	    olc::Sprite* spriteTiles = nullptr;
