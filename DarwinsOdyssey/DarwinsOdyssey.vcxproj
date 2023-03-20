@@ -20,11 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Map.cpp" />
-    <ClCompile Include="src\test.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\test1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\olcPixelGameEngine-master\olcPixelGameEngine.h" />
     <ClInclude Include="src\Map.h" />
+    <ClInclude Include="src\Player.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
