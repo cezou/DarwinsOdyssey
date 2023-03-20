@@ -39,6 +39,9 @@ class Player{
         float fTileOffsetX;
         float fTileOffsetY;
 
+        //nombre de cellules récupérées.
+        unsigned int NbCelluleRecup;
+
         //constructeur par defaut
         Player();
 
@@ -54,11 +57,17 @@ class Player{
         // set vitesse à 0
         void setVel0 ();
 
+        // init NBCell à 0
+        void setNBCell();
+
         // touches du clavier player1
         void detectKeysPlayer1(olc::PixelGameEngine* pge);
 
         // touches du clavier player2
         void detectKeysPlayer2(olc::PixelGameEngine* pge);
+
+        float distance_collision();
+
 
 };
         

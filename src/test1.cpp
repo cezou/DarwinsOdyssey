@@ -24,6 +24,10 @@ public:
 	{
 
 		mapLevel1.initImages(this);
+		// Set du NB de Cellules Récupérées à zéro
+		mapLevel1.player1.setNBCell();
+		mapLevel1.player2.setNBCell();
+
 		// Créer un calque pour l'écran scindé
 		mapLevel1.splitScreenLayerIndex = CreateLayer();
 		SetLayerOffset(mapLevel1.splitScreenLayerIndex, { 0.0f, 0.0f });
@@ -50,12 +54,10 @@ public:
 		mapLevel1.player1.detectKeysPlayer1(this);
 		mapLevel1.player2.detectKeysPlayer2(this);
 
-		// Mouvements
-		mapLevel1.player1.move(fElapsedTime);
-		mapLevel1.player2.move(fElapsedTime);
-
 		mapLevel1.player1.collisions();
 		mapLevel1.player2.collisions();
+		mapLevel1.move(fElapsedTime, mapLevel1.player1);
+		mapLevel1.move(fElapsedTime, mapLevel1.player2);
 
 		mapLevel1.drawLevel(this);
 

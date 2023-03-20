@@ -13,13 +13,13 @@ Map::Map(){
 	nLevelHeight = 16;
 	nb_cellules_b_placees = 4;
 	nb_cellules_g_placees = 4;
-	sLevel += L"#.$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#..............................................................#";
-	sLevel += L"#..............................................................#";
+	sLevel += L"#.##############################################################";
+	sLevel += L"#....#.......#.................................................#";
+	sLevel += L"#....#.#####.#.................................................#";
+	sLevel += L"#....#.#####.#.................................................#";
+	sLevel += L"#...v..........................................................#";
+	sLevel += L"#.......####.#.................................................#";
+	sLevel += L"#..........#.#.................................................#";
 	sLevel += L"#..............................................................#";
 	sLevel += L"#..............................................................#";
 	sLevel += L"#..............................................................#";
@@ -53,9 +53,159 @@ void Map::initImages(olc::PixelGameEngine* pge){
     spritePlayer2 = new olc::Sprite("./data/alt/Cell-J2.png");
 	decPlayer2 = new olc::Decal(spritePlayer2);
 
+	spriteMultiCell = new olc::Sprite("./data/Multi-Cell.png");
+	decMultiCell = new olc::Decal(spriteMultiCell);
+
+	spriteCellRecupPlayer1 = new olc::Sprite("./data/alt/Cell-J1-RECUP.png");
+	decCellRecupPlayer1 = new olc::Decal(spriteCellRecupPlayer1);
+
+	spriteCellRecupPlayer2 = new olc::Sprite("./data/alt/Cell-J2-RECUP.png");
+	decCellRecupPlayer2 = new olc::Decal(spriteCellRecupPlayer2);
+
     spriteFond = new olc::Sprite("./data/water.png");
 	decFond = new olc::Decal(spriteFond);
 }
+
+
+void Map::move(float fElapsedTime, Player& P){
+
+	auto GetTile = [&](int x, int y)
+	{
+		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+			return sLevel[y * nLevelWidth + x];
+		else
+			return L' ';
+	};
+	auto SetTile = [&](int x, int y, wchar_t c)
+	{
+		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+			sLevel[y * nLevelWidth + x] = c;
+	};
+
+		float fNewPlayerPosX = P.fPlayerPosX + P.fPlayerVelX * fElapsedTime;
+		float fNewPlayerPosY = P.fPlayerPosY + P.fPlayerVelY * fElapsedTime;
+
+		// Check for Collision
+		if (P.fPlayerVelX <= 0) // Moving Left
+		{
+			if (GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.2f) == L'#' || GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.7f) == L'#')
+			{
+				fNewPlayerPosX = (int)fNewPlayerPosX + 1;
+				P.fPlayerVelX = 0;
+			}
+
+			if(GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.2f) == L'v' || GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.7f) == L'v'){
+
+				bool place = false;
+				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+
+				while(place == false){
+
+					int x = rand() % nLevelWidth;
+					int y = rand() % nLevelHeight;
+
+					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
+						fNewPlayerPosX = x;
+						fNewPlayerPosY = y;
+						place = true;
+					}
+				}		
+			}
+		}
+
+		else // Moving Right
+		{
+			if (GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.2f) == L'#' || GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.7f) == L'#')
+			{
+				fNewPlayerPosX = (int)fNewPlayerPosX;
+				P.fPlayerVelX = 0;
+				
+			}
+
+			if(GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.2f) == L'v' || GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.7f) == L'v'){
+
+				bool place = false;
+				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+
+				while(place == false){
+
+					int x = rand() % nLevelWidth;
+					int y = rand() % nLevelHeight;
+
+					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
+						fNewPlayerPosX = x;
+						fNewPlayerPosY = y;
+						place = true;
+					}
+				}		
+			}
+		}
+		
+		if (P.fPlayerVelY <= 0) // Moving Up
+		{
+			if (GetTile(fNewPlayerPosX + 0.2f, fNewPlayerPosY) == L'#' || GetTile(fNewPlayerPosX + 0.7f, fNewPlayerPosY) == L'#')
+			{
+				fNewPlayerPosY = (int)fNewPlayerPosY + 1;
+				P.fPlayerVelY = 0;
+			}
+
+			if(GetTile(fNewPlayerPosX + 0.2f, P.fPlayerPosY) == L'v' || GetTile(fNewPlayerPosX + 0.7f, P.fPlayerPosY) == L'v'){
+
+				bool place = false;
+				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+
+				while(place == false){
+
+					int x = rand() % nLevelWidth;
+					int y = rand() % nLevelHeight;
+
+					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
+						fNewPlayerPosX = x;
+						fNewPlayerPosY = y;
+						place = true;
+					}
+				}		
+			}
+		}
+		else // Moving Down
+		{
+			if (GetTile(fNewPlayerPosX + 0.2f, fNewPlayerPosY + 1.0f) == L'#' || GetTile(fNewPlayerPosX + 0.7f, fNewPlayerPosY + 1.0f) == L'#')
+			{
+				fNewPlayerPosY = (int)fNewPlayerPosY;
+				P.fPlayerVelY = 0;
+				
+			}
+
+			if(GetTile(fNewPlayerPosX + 0.2f, P.fPlayerPosY + 1.0f) == L'v' || GetTile(fNewPlayerPosX + 0.7f, P.fPlayerPosY + 1.0f) == L'v'){
+
+				bool place = false;
+				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+
+				while(place == false){
+
+					int x = rand() % nLevelWidth;
+					int y = rand() % nLevelHeight;
+
+					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
+						fNewPlayerPosX = x;
+						fNewPlayerPosY = y;
+						place = true;
+						
+					}
+				}		
+			}
+		}
+
+		// Apply new position
+		P.fPlayerPosX = fNewPlayerPosX;
+		P.fPlayerPosY = fNewPlayerPosY;
+
+		// Link camera to player position
+		P.fCameraPosX = P.fPlayerPosX;
+		P.fCameraPosY = P.fPlayerPosY;
+
+}
+
 
 void Map::drawLevel(olc::PixelGameEngine* pge){
 
@@ -97,8 +247,34 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 				SetTile(x, y, 'g');
 				nb_cellules_g_placees--;
 			}
-		}				
-		
+		}
+
+		// Void RecupCellJ1
+		if (pge->IsFocused()) {
+
+			// Si Touche E (Touche "utiliser") pressée (1x où ↓)  + Si il y a une cellule à récupérer Milieu de PlayerPos (+0.5 pour avoir son centre) 
+			if (pge->GetKey(olc::Key::E).bPressed && GetTile(player1.fPlayerPosX+0.5f, player1.fPlayerPosY+0.5f) == L'b') {
+
+				player1.NbCelluleRecup++;
+				cout << "YES" << endl;
+				SetTile(player1.fPlayerPosX + 0.5f, player1.fPlayerPosY + 0.5f, L'.');
+			}
+		}
+
+		// Void RecupCellJ1
+		if (pge->IsFocused()) {
+
+			// Si Touche E (Touche "utiliser") pressée (1x où ↓)  + Si il y a une cellule à récupérer Milieu de PlayerPos (+0.5 pour avoir son centre) 
+			if (pge->GetKey(olc::Key::SHIFT).bPressed && GetTile(player2.fPlayerPosX + 0.5f, player2.fPlayerPosY + 0.5f) == L'g') {
+
+				player2.NbCelluleRecup++;
+				cout << "YES" << endl;
+				SetTile(player2.fPlayerPosX + 0.5f, player2.fPlayerPosY + 0.5f, L'.');
+				cout << player2.NbCelluleRecup << endl;
+				cout << static_cast<float>(player2.NbCelluleRecup) << endl;
+			}
+		}
+		 
 		player1.nVisibleTilesX = pge->ScreenWidth() / player1.nTileWidth; 
 		player1.nVisibleTilesY = pge->ScreenHeight() / player1.nTileHeight;
 
@@ -179,10 +355,14 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 					pge->DrawDecal(PosBlocksJ1, decFond);
 					break;
 				case L'g':
-					pge->DrawDecal(PosBlocksJ1, decPlayer2);
+					pge->DrawDecal(PosBlocksJ1, decFond);
+					pge->DrawDecal(PosBlocksJ1, decCellRecupPlayer2);
 					break;
 				case L'b':
 					pge->DrawDecal(PosBlocksJ1, decFond);
+					break;
+				case L'v':
+					pge->DrawDecal(PosBlocksJ1, decTiles);
 					break;
 				default:
 					break;
@@ -212,20 +392,25 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 					pge->DrawDecal(PosBlocksJ2, decFond);
 					break;
 				case L'b':
-					pge->DrawDecal(PosBlocksJ2, decPlayer1);
+					pge->DrawDecal(PosBlocksJ2, decFond);
+					pge->DrawDecal(PosBlocksJ2, decCellRecupPlayer1);
+					break;
+					break;
+				case L'v':
+					pge->DrawDecal(PosBlocksJ2, decTiles);
 					break;
 				default:
 					break;
 				}
 			}
 		}
+
+		// Calque supérieur NBCellulesRécupérées.
+		olc::vf2d SpritePosMultiCell = { static_cast<float>(player2.NbCelluleRecup) * 32, static_cast<float>(player1.NbCelluleRecup) * 32 };
+		
+
 		// Players Screen 1
 		//
-		// Player 1
-		olc::vf2d PosS1J1 = { (player1.fPlayerPosX - player1.fOffsetX) * player1.nTileWidth ,
-		(player1.fPlayerPosY - player1.fOffsetY) * player1.nTileHeight };
-		pge->DrawDecal(PosS1J1, decPlayer1);
-
 		// Player 2
 		// On l'affiche seulement si:
 		// La différence entre les deux Offsets est < 6.5
@@ -234,18 +419,26 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 		// La différence entre les deux Offsets est < 6.5
 		// et qu'ils sont aux bordures max en X de la map
 		// et que la différence de leurs positions est < 6.5
-
+		
 		//cout << "OFFSET J1 = " << player1.fOffsetX <<  "    OFFSET J2 = " << player2.fOffsetX << endl;
 		if ((player2.fOffsetX - player1.fOffsetX > -6.5 && player2.fOffsetX - player1.fOffsetX < 6.5)	
 			&& 
 				(player1.fOffsetX < (nLevelWidth - 12) && player2.fOffsetX < (nLevelWidth - 12) ||
-				( (player2.fPlayerPosX - player1.fPlayerPosX) < 6.5 )))
+				((player2.fPlayerPosX - player1.fPlayerPosX) < 6.5 )))
 		{ 
 			olc::vf2d PosS1J2 = { (player2.fPlayerPosX - player1.fOffsetX) * player2.nTileWidth ,
 			(player2.fPlayerPosY - player1.fOffsetY) * player2.nTileHeight };
+			
 			pge->DrawDecal(PosS1J2, decPlayer2);
+			pge->DrawPartialDecal(PosS1J2, { 32,32 } , decMultiCell, SpritePosMultiCell, { 32,32 });
+			
 		}
 
+		// Player 1
+		olc::vf2d PosS1J1 = { (player1.fPlayerPosX - player1.fOffsetX) * player1.nTileWidth ,
+		(player1.fPlayerPosY - player1.fOffsetY) * player1.nTileHeight };
+		pge->DrawDecal(PosS1J1, decPlayer1);
+		pge->DrawPartialDecal(PosS1J1, { 32,32 }, decMultiCell, SpritePosMultiCell, { 32,32 });
 
 		// Players Screen 2
 		//
@@ -265,13 +458,15 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 			olc::vf2d PosS2J1 = { (player1.fPlayerPosX - player2.fOffsetX) * player1.nTileWidth + (pge->ScreenWidth() / 2) + 16,
 			(player1.fPlayerPosY - player2.fOffsetY) * player1.nTileHeight };
 			pge->DrawDecal(PosS2J1, decPlayer1);
+			pge->DrawPartialDecal(PosS2J1, { 32,32 }, decMultiCell, SpritePosMultiCell, { 32,32 });
 		}
 		// Player 2
 		olc::vf2d PosS2J2 = { (player2.fPlayerPosX - player2.fOffsetX) * player2.nTileWidth  + (pge->ScreenWidth() / 2) + 16,
 		(player2.fPlayerPosY - player2.fOffsetY) * player2.nTileHeight };
 		pge->DrawDecal(PosS2J2, decPlayer2);
+		pge->DrawPartialDecal(PosS2J2, { 32,32 }, decMultiCell, SpritePosMultiCell, { 32,32 });
 		pge->Clear(olc::BLANK);
-
+		
 		
 		
 

@@ -32,6 +32,15 @@ class Map{
 
         olc::Sprite* spriteFond = nullptr;
 	    olc::Decal* decFond = nullptr;
+
+        olc::Sprite* spriteMultiCell = nullptr;
+        olc::Decal* decMultiCell = nullptr;
+
+        olc::Sprite* spriteCellRecupPlayer1 = nullptr;
+        olc::Decal* decCellRecupPlayer1 = nullptr;
+
+        olc::Sprite* spriteCellRecupPlayer2 = nullptr;
+        olc::Decal* decCellRecupPlayer2 = nullptr;
     
     public:
 
@@ -42,7 +51,9 @@ class Map{
         Map(wstring slevel_param, int nLevelWidth_param, int nLevelHeight_param);
 
         void initImages(olc::PixelGameEngine* pge);
-
+        
+        void move(float fElapsedTime, Player& P);
+        
         void drawLevel(olc::PixelGameEngine* pge);
 
 
