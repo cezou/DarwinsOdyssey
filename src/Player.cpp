@@ -1,10 +1,11 @@
 #include "./Player.h"
+const float velPlayer = 8.0f;
 
 Player::Player(){
     	fCameraPosX = 0.0f;
     	fCameraPosY = 0.0f;
-    	fPlayerPosX = 1.0f;
-		fPlayerPosY = 1.0f;
+    	fPlayerPosX = 3.0f;
+		fPlayerPosY = 3.0f;
 		fPlayerVelX = 0.0f;
 		fPlayerVelY = 0.0f;
         nTileWidth = 32;
@@ -42,9 +43,9 @@ void Player::collisions(){
 		}
 
 		if(fPlayerVelY >= 0){
-			if(fPlayerPosY >= 15){	
+			if(fPlayerPosY >= 41){	
 				fPlayerVelY = 0;
-				fPlayerPosY = 15;
+				fPlayerPosY = 41;
 			}	
 		}
 	
@@ -56,10 +57,10 @@ void Player::collisions(){
 		}
 
 		if(fPlayerVelX >= 0){
-			if(fPlayerPosX >= 63){	
+			if(fPlayerPosX >= 58){	
 
 				fPlayerVelX = 0;
-				fPlayerPosX = 63;
+				fPlayerPosX = 58;
 			}	
 		}
 }
@@ -80,22 +81,22 @@ void Player::detectKeysPlayer1(olc::PixelGameEngine* pge){
 
         // aller en haut pour clavier qwerty et azerty
         if (pge->GetKey(olc::Key::W).bHeld || pge->GetKey(olc::Key::Z).bHeld) {
-            fPlayerVelY = -4.0f;
+            fPlayerVelY = -velPlayer;
         }
 
         // aller en bas
         if (pge->GetKey(olc::Key::S).bHeld) {
-            fPlayerVelY = 4.0f;
+            fPlayerVelY = velPlayer;
         }
 
         // aller à gauche pour clavier qwerty et azerty
         if (pge->GetKey(olc::Key::A).bHeld || pge->GetKey(olc::Key::Q).bHeld) {
-            fPlayerVelX = -4.0f;
+            fPlayerVelX = -velPlayer;
         }
 
         // aller à droite
         if (pge->GetKey(olc::Key::D).bHeld) {
-            fPlayerVelX = 4.0f;
+            fPlayerVelX = velPlayer;
         }
 
         }	
@@ -108,22 +109,22 @@ void Player::detectKeysPlayer2(olc::PixelGameEngine* pge){
 
         // Aller en haut
         if (pge->GetKey(olc::Key::UP).bHeld) {
-            fPlayerVelY = -4.0f;
+            fPlayerVelY = -velPlayer;
         }
 
         // Aller en bas
         if (pge->GetKey(olc::Key::DOWN).bHeld) {
-            fPlayerVelY = 4.0f;
+            fPlayerVelY = velPlayer;
         }
 
         // Aller à gauche
         if (pge->GetKey(olc::Key::LEFT).bHeld) {
-            fPlayerVelX = -4.0f;
+            fPlayerVelX = -velPlayer;
         }
 
         // Aller à droite
         if (pge->GetKey(olc::Key::RIGHT).bHeld) {
-            fPlayerVelX = 4.0f;
+            fPlayerVelX = velPlayer;
         }
 
 

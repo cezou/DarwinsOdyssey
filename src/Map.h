@@ -11,6 +11,7 @@ using namespace std;
 class Map{
 
     public:
+
         wstring sLevel;
         int nLevelWidth;
 	    int nLevelHeight;
@@ -41,6 +42,12 @@ class Map{
 
         olc::Sprite* spriteCellRecupPlayer2 = nullptr;
         olc::Decal* decCellRecupPlayer2 = nullptr;
+
+
+        olc::Sprite* spriteVirus = nullptr;
+        olc::Decal* decVirus = nullptr;
+
+        olc::Sprite* spriteMap = nullptr;
     
     public:
 
@@ -56,7 +63,7 @@ class Map{
         
         void drawLevel(olc::PixelGameEngine* pge);
 
-
+        void initMapFromImage(olc::PixelGameEngine* pge);
 };
 
     
