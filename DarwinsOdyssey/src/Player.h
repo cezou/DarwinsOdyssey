@@ -4,69 +4,105 @@
 #include <iostream>
 #include <string>
 #include "../inc/olcPixelGameEngine-master/olcPixelGameEngine.h"
-
-
 using namespace std;
+
+/*!
+
+\brief Classe représentant un joueur dans le jeu Darwin's Odyssey.
+\details Cette classe gère les mouvements et les collisions du joueur, ainsi que sa position sur l'écran et la caméra.
+
+*/
 
 class Player{
 
 
     public:
 
-        //position de la camera
-        float fCameraPosX;
-        float fCameraPosY;
+        
+        float fCameraPosX; /**< Position de la caméra en X */
+        float fCameraPosY; /**< Position de la caméra en Y */
 
-        //pasition du joueur
-        float fPlayerPosX;
-	    float fPlayerPosY;
+        
+        float fPlayerPosX; /**< Position du joueur en X */
+        float fPlayerPosY; /**< Position du joueur en Y */
 
-        //vitesse du joueur
-	    float fPlayerVelX;
-	    float fPlayerVelY;
+        
+        float fNewPlayerPosX; /**< Nouvelle Position du joueur en X  */
+        float fNewPlayerPosY; /**< Nouvelle Position du joueur en Y */
 
-        //tiles de l'écran du joueur
-        int nTileWidth;
-        int nTileHeight;
+        
+        float fPlayerVelX; /**< Vitesse du joueur en X */
+        float fPlayerVelY; /**< Vitesse du joueur en Y */
 
-        //tiles visibles de l'écran du joueur
-        int nVisibleTilesX;
-        int nVisibleTilesY;
+        
+        int nTileWidth; /**< Largeur en tiles de l'écran du joueur */
+        int nTileHeight; /**< Hauteur en tiles de l'écran du joueur */
 
-        //décalage de la camera
-        float fOffsetX;
-        float fOffsetY;
-        float fTileOffsetX;
-        float fTileOffsetY;
+        
+        int nVisibleTilesX; /**< Nombre de tiles horizontalement visibles dans l'écran du joueur */
+        int nVisibleTilesY; /**< Nombre de tiles verticalement visibles dans l'écran du joueur */
 
-        //nombre de cellules récupérées.
-        unsigned int NbCelluleRecup;
+        
+        float fOffsetX; /**< Décalage de la caméra en X */
+        float fOffsetY; /**< Décalage de la caméra en Y */
+        float fTileOffsetX; /**< Décalage des tiles en X */
+        float fTileOffsetY; /**< Décalage des tiles en Y */
 
-        //constructeur par defaut
+        
+        unsigned int NbCelluleRecup; /**< Nombre de cellules récupérées par le joueur */
+
+        /**
+         * @brief Constructeur par défaut de la classe Player
+         *
+         */
         Player();
 
-        // constructeur avec position comme parametre
+        /**
+         * @brief Constructeur avec position comme paramètre
+         *
+         * @param posX Position en X du joueur
+         * @param posY Position en Y du joueur
+         */
         Player(float posX, float posY);
 
-        // mouvements du joueur
-        void move (float fElapsedTime);
+        /**
+         * @brief Fonction permettant de mettre à jour la position du joueur en fonction de sa vitesse et du temps écoulé
+         *
+         * @param fElapsedTime Temps écoulé depuis la dernière mise à jour (entre une image et la suivante)
+         */
+        void move(float fElapsedTime);
 
-        // collisions du joueur
-        void collisions ();
+        /**
+         * @brief Fonction gérant les collisions du joueur avec les limites de la carte.
+         *
+         */
+        void limites_map_collisions();
 
-        // set vitesse à 0
-        void setVel0 ();
+        /**
+         * @brief Fonction permettant de mettre la vitesse du joueur à 0
+         *
+         */
+        void setVel0();
 
-        // init NBCell à 0
+        /**
+         * @brief Fonction permettant d'initialiser le nombre de cellules récupérées à 0
+         *
+         */
         void setNBCell();
 
-        // touches du clavier player1
+        /**
+         * @brief Fonction permettant de détecter les touches du clavier pour le joueur 1
+         *
+         * @param pge Pointeur vers la classe PixelGameEngine
+         */
         void detectKeysPlayer1(olc::PixelGameEngine* pge);
 
-        // touches du clavier player2
+        /**
+        * @brief Détermine les touches du clavier pour le joueur 2.
+        *
+        * @param pge Pointeur vers l'instance de PixelGameEngine utilisée.
+        */
         void detectKeysPlayer2(olc::PixelGameEngine* pge);
-
-        float distance_collision();
 
 
 };

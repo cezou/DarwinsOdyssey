@@ -1,4 +1,5 @@
 #include "./Player.h"
+const float velPlayer = 8.0f;
 
 Player::Player(){
     	fCameraPosX = 0.0f;
@@ -32,7 +33,9 @@ void Player::move(float fElapsedTime){
 
 }
 
-void Player::collisions(){
+
+// Pour ne pas sortir de la carte.
+void Player::limites_map_collisions(){
 
 		if(fPlayerVelY <= 0){
 			if(fPlayerPosY <= 0){	
@@ -80,22 +83,22 @@ void Player::detectKeysPlayer1(olc::PixelGameEngine* pge){
 
         // aller en haut pour clavier qwerty et azerty
         if (pge->GetKey(olc::Key::W).bHeld || pge->GetKey(olc::Key::Z).bHeld) {
-            fPlayerVelY = -10.0f;
+            fPlayerVelY = -velPlayer;
         }
 
         // aller en bas
         if (pge->GetKey(olc::Key::S).bHeld) {
-            fPlayerVelY = 10.0f;
+            fPlayerVelY = velPlayer;
         }
 
         // aller à gauche pour clavier qwerty et azerty
         if (pge->GetKey(olc::Key::A).bHeld || pge->GetKey(olc::Key::Q).bHeld) {
-            fPlayerVelX = -10.0f;
+            fPlayerVelX = -velPlayer;
         }
 
         // aller à droite
         if (pge->GetKey(olc::Key::D).bHeld) {
-            fPlayerVelX = 10.0f;
+            fPlayerVelX = velPlayer;
         }
 
         }	
@@ -108,31 +111,27 @@ void Player::detectKeysPlayer2(olc::PixelGameEngine* pge){
 
         // Aller en haut
         if (pge->GetKey(olc::Key::UP).bHeld) {
-            fPlayerVelY = -4.0f;
+            fPlayerVelY = -velPlayer;
         }
 
         // Aller en bas
         if (pge->GetKey(olc::Key::DOWN).bHeld) {
-            fPlayerVelY = 4.0f;
+            fPlayerVelY = velPlayer;
         }
 
         // Aller à gauche
         if (pge->GetKey(olc::Key::LEFT).bHeld) {
-            fPlayerVelX = -4.0f;
+            fPlayerVelX = -velPlayer;
         }
 
         // Aller à droite
         if (pge->GetKey(olc::Key::RIGHT).bHeld) {
-            fPlayerVelX = 4.0f;
+            fPlayerVelX = velPlayer;
         }
 
 
         }
 }
 
-float Player::distance_collision(){
-    //float centreX = fPlayerPosX + nTileWidth / 2;
-    //float centreY = fPlayerPosY + nTileHeight / 2;
-    return nTileWidth / 2;
-}
+
 
