@@ -33,7 +33,7 @@ void Player::move(float fElapsedTime){
 
 }
 
-void Player::collisions(){
+void Player::limites_map_collisions(){
 
 		if(fPlayerVelY <= 0){
 			if(fPlayerPosY <= 0){	
@@ -129,11 +129,5 @@ void Player::detectKeysPlayer2(olc::PixelGameEngine* pge){
 
 
         }
-}
-
-float Player::distance_collision(){
-    //float centreX = fPlayerPosX + nTileWidth / 2;
-    //float centreY = fPlayerPosY + nTileHeight / 2;
-    return nTileWidth / 2;
 }
 

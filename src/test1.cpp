@@ -55,10 +55,12 @@ public:
 		mapLevel1.player1.detectKeysPlayer1(this);
 		mapLevel1.player2.detectKeysPlayer2(this);
 
-		mapLevel1.player1.collisions();
-		mapLevel1.player2.collisions();
+		mapLevel1.player1.limites_map_collisions();
+		mapLevel1.player2.limites_map_collisions();
 		mapLevel1.move(fElapsedTime, mapLevel1.player1);
 		mapLevel1.move(fElapsedTime, mapLevel1.player2);
+		mapLevel1.collisions(fElapsedTime, mapLevel1.player1);
+		mapLevel1.collisions(fElapsedTime, mapLevel1.player2);
 
 		mapLevel1.drawLevel(this);
 

@@ -17,9 +17,13 @@ class Player{
         float fCameraPosX;
         float fCameraPosY;
 
-        //pasition du joueur
+        //position du joueur
         float fPlayerPosX;
 	    float fPlayerPosY;
+
+        // nouvelle position joueur
+        float fNewPlayerPosX;
+        float fNewPlayerPosY;
 
         //vitesse du joueur
 	    float fPlayerVelX;
@@ -52,7 +56,7 @@ class Player{
         void move (float fElapsedTime);
 
         // collisions du joueur
-        void collisions ();
+        void limites_map_collisions ();
 
         // set vitesse à 0
         void setVel0 ();
@@ -66,7 +70,6 @@ class Player{
         // touches du clavier player2
         void detectKeysPlayer2(olc::PixelGameEngine* pge);
 
-        float distance_collision();
 
 
 };
