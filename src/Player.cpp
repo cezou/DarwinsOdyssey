@@ -33,6 +33,8 @@ void Player::move(float fElapsedTime){
 
 }
 
+
+// Pour ne pas sortir de la carte.
 void Player::limites_map_collisions(){
 
 		if(fPlayerVelY <= 0){
@@ -130,4 +132,3 @@ void Player::detectKeysPlayer2(olc::PixelGameEngine* pge){
 
         }
 }
-

@@ -5,10 +5,21 @@
 #include <iostream>
 #include <string>
 
-class Example : public olc::PixelGameEngine
+/*!
+ *  \brief		PROJET FINAL LIFAPCD: Darwin's Odyssey.
+ *  \details	Ce fichier est le fichier principal du jeu, où se trouve le main.
+				Ce projet est un jeu sous la forme d’un 2D Platformer en coop (2 joueurs sur un même ordinateur). 
+				Il faut résoudre des énigmes pour retracer l’évolution de l’homme. (en suivant la Théorie de Darwin)
+ *	\author		P2105932 Jofre COLL
+ *	\author		P2109844 Césaire VIEGAS
+ *  \date		Février-Mai 2023
+ */
+
+
+class DarwinsOdyssey : public olc::PixelGameEngine
 {
 public:
-	Example()
+	DarwinsOdyssey()
 	{
 		sAppName = "Darwin's Odyssey";
 	}
@@ -71,9 +82,9 @@ public:
 
 int main()
 {
-	Example demo;
-	if (demo.Construct(800, 450, 2, 2, false, true))
-		demo.Start();
+	DarwinsOdyssey DO;
+	if (DO.Construct(800, 450, 2, 2, false, true))
+		DO.Start();
 
 	return 0;
 }
