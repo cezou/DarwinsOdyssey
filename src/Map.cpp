@@ -47,6 +47,8 @@ void Map::initImages(olc::PixelGameEngine* pge){
 	spriteVirus = new olc::Sprite("./data/virus.png");
 	decVirus = new olc::Decal(spriteVirus);
 
+	spriteBackGroundLevel2 = new olc::Sprite("./data/underwaterbg.png");
+
 	
 	
 
@@ -241,7 +243,7 @@ void Map::collisions(float fElapsedTime, Player& P){
 	P.fCameraPosY = P.fPlayerPosY;
 }
 
-// dessiner le niveau
+// dessiner le niveau 1
 void Map::drawLevel(olc::PixelGameEngine* pge){
 
 	srand((unsigned) time(NULL));
@@ -487,4 +489,23 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 		// Revenir au calque par défaut
 		
 		pge->Clear(olc::BLANK);
+}
+
+int Map::checkLevel(Player& P1, Player& P2){
+	int niveau;
+
+	if((P1.NbCelluleRecup<4) || (P2.NbCelluleRecup<4)){
+		niveau = 1;
+	}
+
+	else if ((P1.NbCelluleRecup==4) || (P2.NbCelluleRecup==4)){
+		niveau = 2;
+	}
+
+	return niveau;
+}
+
+void Map::drawLevel2(olc::PixelGameEngine* pge){
+	olc::vd2d posInitImage = {0,0};
+	pge->DrawSprite(posInitImage, spriteBackGroundLevel2);
 }

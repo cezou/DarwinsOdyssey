@@ -49,6 +49,8 @@ class Player{
         
         unsigned int NbCelluleRecup; /**< Nombre de cellules récupérées par le joueur */
 
+        unsigned int NbCelluleRecupRes;
+
         /**
          * @brief Constructeur par défaut de la classe Player
          *

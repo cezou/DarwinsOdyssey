@@ -22,6 +22,9 @@ class Map{
         int nLevelWidth;
 	    int nLevelHeight;
 
+        // Niveau de la map
+        int niveauMap;
+
         // nombre de cellules à récuperer (blue et green)
         int nb_cellules_b_placees;
         int nb_cellules_g_placees;
@@ -62,6 +65,8 @@ class Map{
         olc::Decal* decVirus = nullptr;
 
         olc::Sprite* spriteMap = nullptr;
+        
+        olc::Sprite* spriteBackGroundLevel2 = nullptr;
     
     public:
 
@@ -89,6 +94,15 @@ class Map{
         // @param[in] pge pointeur vers la bibliothèque OlcPixelGameEngine 
         // pour pouvoir l'utiliser dans la fonction
         void drawLevel(olc::PixelGameEngine* pge);
+
+        // \brief dessiner le niveau
+        // @param[in] pge pointeur vers la bibliothèque OlcPixelGameEngine 
+        // pour pouvoir l'utiliser dans la fonction
+        void drawLevel2(olc::PixelGameEngine* pge);
+
+        // \brief savoir dans quel niveau on est
+        // pour pouvoir l'utiliser dans la fonction
+        int checkLevel(Player& P1, Player& P2);
 
 
 };
