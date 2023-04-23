@@ -29,7 +29,7 @@ void Ennemi_Fish::move(float fElapsedTime){
 
 }
 
-void Ennemi_Fish::setVel0(){
-        fEnnemiVelX = 0.0f;
-        fEnnemiVelY = 0.0f;
+void Ennemi_Fish::setVel(float velParam){
+        fEnnemiVelX = velParam;
+        fEnnemiVelY = velParam;
 }

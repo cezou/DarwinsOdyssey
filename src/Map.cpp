@@ -14,6 +14,7 @@ Map::Map(){
 	nb_cellules_b_placees = 4;
 	nb_cellules_g_placees = 4;
 	stop_a_droite = false;
+	stop_a_gauche = false;
 
 	
 	player1 = Player(3.0, 3.0);
@@ -505,26 +506,7 @@ int Map::checkLevel(Player& P1, Player& P2){
 	return niveau;
 }
 
-void Map::drawLevel2(olc::PixelGameEngine* pge){
-
-	olc::vf2d SpritePosMultiCell1 = { 0, 0 };
-	olc::vd2d posInitImage = {0,0};
-
-	// Draw le fond
-	pge->DrawSprite(posInitImage, spriteBackGroundLevel2);
-
-	// Draw joueur 1
-	olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
-	pge->DrawDecal(posJ1, decPlayer1);
-	pge->DrawPartialDecal(posJ1, { 32,32 }, decPlayer1, SpritePosMultiCell1, { 32,32 });
-
-	// Draw joueur 2
-	olc::vd2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
-	pge->DrawDecal(posJ2, decPlayer1);
-	pge->DrawPartialDecal(posJ2, { 32,32 }, decPlayer1, SpritePosMultiCell1, { 32,32 });
-
-	// Init ennemis
-
+void Map::initEnnemis(){
 	if(!stop_a_droite){
 		for(int i = 0; i<numeroFish/2; i++){
 			tabFish[i].fEnnemiPosY = rand()% 450;
@@ -544,8 +526,28 @@ void Map::drawLevel2(olc::PixelGameEngine* pge){
 			}
 		}
 	}
+}
+
+void Map::drawLevel2(olc::PixelGameEngine* pge){
+
+	olc::vf2d SpritePosMultiCell1 = { 0, 0 };
+	olc::vd2d posInitImage = {0,0};
+
+	// Draw le fond
+	pge->DrawSprite(posInitImage, spriteBackGroundLevel2);
+
+	// Draw joueur 1
+	olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
+	pge->DrawDecal(posJ1, decPlayer1);
+	pge->DrawPartialDecal(posJ1, { 32,32 }, decPlayer1, SpritePosMultiCell1, { 32,32 });
+
+	// Draw joueur 2
+	olc::vd2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
+	pge->DrawDecal(posJ2, decPlayer1);
+	pge->DrawPartialDecal(posJ2, { 32,32 }, decPlayer1, SpritePosMultiCell1, { 32,32 });
 
 
+	
 	// Draw ennemis
 	for(int i = 0; i < numeroFish; i++){
 		olc::vd2d posEnnemi = {tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY};

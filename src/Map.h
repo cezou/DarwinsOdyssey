@@ -115,6 +115,8 @@ class Map{
         // pour pouvoir l'utiliser dans la fonction
         int checkLevel(Player& P1, Player& P2);
 
+        void initEnnemis();
+
 
 };
 

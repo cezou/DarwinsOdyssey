@@ -50,10 +50,10 @@ class Ennemi_Fish{
         void move(float fElapsedTime);
 
         /**
-         * @brief Fonction permettant de mettre la vitesse du joueur à 0
+         * @brief Fonction permettant de mettre la vitesse du joueur à velParam
          *
          */
-        void setVel0();
+        void setVel(float velParam);
 
     private:
 

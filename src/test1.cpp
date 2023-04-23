@@ -55,6 +55,16 @@ public:
 		SetLayerOffset(mapLevel1.lineLayerIndex, { 0.0f, 0.0f });
 		SetLayerScale(mapLevel1.lineLayerIndex, { 1.0f, 1.0f });
 		EnableLayer(mapLevel1.lineLayerIndex, true);
+
+		for(int i = 0; i < numeroFish / 2; i++){
+			mapLevel1.tabFish[i].fEnnemiVelX = -200 + (rand() % (0 +450 + 1));
+			mapLevel1.tabFish[i].fEnnemiVelY = 0;
+		}
+
+		for(int i = numeroFish / 2; i < numeroFish; i++){
+			mapLevel1.tabFish[i].fEnnemiVelX = rand ()%200;
+			mapLevel1.tabFish[i].fEnnemiVelY = 0;
+		}
 		
 		
 		return true;
@@ -104,7 +114,13 @@ public:
 			mapLevel1.collisions2(fElapsedTime, mapLevel1.player1);
 			mapLevel1.collisions2(fElapsedTime, mapLevel1.player2);
 
+			mapLevel1.initEnnemis();
+			for(int i = 0; i<numeroFish; i++){
+				mapLevel1.tabFish[i].move(fElapsedTime);
+			}
+			
 			mapLevel1.drawLevel2(this);
+			
 		}
 		return true;
 	}
