@@ -4,6 +4,10 @@
 #include "./Map.h"
 #include <iostream>
 #include <string>
+#include <ctime>
+
+const float velPlayerLevel1 = 8.0f;
+const float velPlayerLevel2 = 500.0f;
 
 /*!
  *  \brief		PROJET FINAL LIFAPCD: Darwin's Odyssey.
@@ -59,13 +63,16 @@ public:
 	bool OnUserUpdate(float fElapsedTime) override
 	{
 		
+
+		// LEVEL 1
+		
 		if(mapLevel1.checkLevel(mapLevel1.player1, mapLevel1.player2) == 1){
 			// Mouvements players
 			mapLevel1.player1.setVel0();
 			mapLevel1.player2.setVel0();
 
-			mapLevel1.player1.detectKeysPlayer1(this);
-			mapLevel1.player2.detectKeysPlayer2(this);
+			mapLevel1.player1.detectKeysPlayer1(this, velPlayerLevel1);
+			mapLevel1.player2.detectKeysPlayer2(this, velPlayerLevel1);
 
 			mapLevel1.player1.limites_map_collisions();
 			mapLevel1.player2.limites_map_collisions();
@@ -77,33 +84,28 @@ public:
 			mapLevel1.drawLevel(this);
 		}
 
-		if(mapLevel1.checkLevel(mapLevel1.player1, mapLevel1.player2) == 2){
-			cout<<"Level 2"<<endl;
+		// LEVEL 2
 
-			//mapLevel1.player1.NbCelluleRecup = 0;
-			//mapLevel1.player2.NbCelluleRecup = 0;
-			//mapLevel1.player1.NbCelluleRecupRes = 1;
-			//mapLevel1.player2.NbCelluleRecupRes = 1;
+		if(mapLevel1.checkLevel(mapLevel1.player1, mapLevel1.player2) == 2){
+
 			mapLevel1.spritePlayer1 = new olc::Sprite("./data/alt/fish.png");
 			mapLevel1.decPlayer1 = new olc::Decal(mapLevel1.spritePlayer1);
 		
 			mapLevel1.player1.setVel0();
 			mapLevel1.player2.setVel0();
 
-			mapLevel1.player1.detectKeysPlayer1(this);
-			mapLevel1.player2.detectKeysPlayer2(this);
+			mapLevel1.player1.detectKeysPlayer1(this, velPlayerLevel2);
+			mapLevel1.player2.detectKeysPlayer2(this, velPlayerLevel2);
 
-			mapLevel1.player1.limites_map_collisions();
-			mapLevel1.player2.limites_map_collisions();
+			//mapLevel1.player1.limites_map_collisions();
+			//mapLevel1.player2.limites_map_collisions();
 			mapLevel1.move(fElapsedTime, mapLevel1.player1);
 			mapLevel1.move(fElapsedTime, mapLevel1.player2);
-			mapLevel1.collisions(fElapsedTime, mapLevel1.player1);
-			mapLevel1.collisions(fElapsedTime, mapLevel1.player2);
+			mapLevel1.collisions2(fElapsedTime, mapLevel1.player1);
+			mapLevel1.collisions2(fElapsedTime, mapLevel1.player2);
 
 			mapLevel1.drawLevel2(this);
 		}
-
-
 		return true;
 	}
 };
@@ -111,6 +113,8 @@ public:
 
 int main()
 {
+	srand(time(NULL));
+
 	DarwinsOdyssey DO;
 	if (DO.Construct(800, 450, 2, 2, false, true))
 		DO.Start();

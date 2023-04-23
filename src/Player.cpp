@@ -1,5 +1,4 @@
 #include "./Player.h"
-const float velPlayer = 8.0f;
 
 Player::Player(){
     	fCameraPosX = 0.0f;
@@ -76,7 +75,7 @@ void Player::setNBCell() {
     NbCelluleRecup = 0;
 }
 
-void Player::detectKeysPlayer1(olc::PixelGameEngine* pge){
+void Player::detectKeysPlayer1(olc::PixelGameEngine* pge, float velPlayer){
 
         // Mouvements player 1
          if (pge->IsFocused()) {
@@ -104,7 +103,7 @@ void Player::detectKeysPlayer1(olc::PixelGameEngine* pge){
         }	
 }
 
-void Player::detectKeysPlayer2(olc::PixelGameEngine* pge){
+void Player::detectKeysPlayer2(olc::PixelGameEngine* pge, float velPlayer){
 
     	// Mouvements player 2
         if (pge->IsFocused()) {

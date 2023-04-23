@@ -1,8 +1,10 @@
 #include <iostream>
-#include<cstdlib>
+#include <cstdlib>
 #include <fstream>
+#include <ctime>
 #include "./Map.h"
 #include "./Player.h"
+#include "./Ennemi_Fish.h"
 
 using namespace std;
 
@@ -11,6 +13,7 @@ Map::Map(){
 
 	nb_cellules_b_placees = 4;
 	nb_cellules_g_placees = 4;
+	stop_a_droite = false;
 
 	
 	player1 = Player(3.0, 3.0);
@@ -88,20 +91,6 @@ void Map::initMapFromImage(olc::PixelGameEngine* pge) {
 
 // mouvements joueurs et collisions
 void Map::move(float fElapsedTime, Player& P){
-
-	auto GetTile = [&](int x, int y)
-	{
-		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-			return sLevel[y * nLevelWidth + x];
-		else
-			return L' ';
-	};
-	auto SetTile = [&](int x, int y, wchar_t c)
-	{
-		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-			sLevel[y * nLevelWidth + x] = c;
-	};
-
 
 	P.fNewPlayerPosX = P.fPlayerPosX + P.fPlayerVelX * fElapsedTime;
 	P.fNewPlayerPosY = P.fPlayerPosY + P.fPlayerVelY * fElapsedTime;
@@ -233,6 +222,17 @@ void Map::collisions(float fElapsedTime, Player& P){
 				}		
 			}
 		}
+
+	// Apply new position
+	P.fPlayerPosX = P.fNewPlayerPosX;
+	P.fPlayerPosY = P.fNewPlayerPosY;
+
+	// Link camera to player position
+	P.fCameraPosX = P.fPlayerPosX;
+	P.fCameraPosY = P.fPlayerPosY;
+}
+
+void Map::collisions2(float fElapsedTime, Player& P){
 
 	// Apply new position
 	P.fPlayerPosX = P.fNewPlayerPosX;
@@ -494,11 +494,11 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 int Map::checkLevel(Player& P1, Player& P2){
 	int niveau;
 
-	if((P1.NbCelluleRecup<4) || (P2.NbCelluleRecup<4)){
+	if((P1.NbCelluleRecup<1) || (P2.NbCelluleRecup<1)){
 		niveau = 1;
 	}
 
-	else if ((P1.NbCelluleRecup==4) || (P2.NbCelluleRecup==4)){
+	else if ((P1.NbCelluleRecup==1) || (P2.NbCelluleRecup==1)){
 		niveau = 2;
 	}
 
@@ -506,6 +506,52 @@ int Map::checkLevel(Player& P1, Player& P2){
 }
 
 void Map::drawLevel2(olc::PixelGameEngine* pge){
+
+	olc::vf2d SpritePosMultiCell1 = { 0, 0 };
 	olc::vd2d posInitImage = {0,0};
+
+	// Draw le fond
 	pge->DrawSprite(posInitImage, spriteBackGroundLevel2);
+
+	// Draw joueur 1
+	olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
+	pge->DrawDecal(posJ1, decPlayer1);
+	pge->DrawPartialDecal(posJ1, { 32,32 }, decPlayer1, SpritePosMultiCell1, { 32,32 });
+
+	// Draw joueur 2
+	olc::vd2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
+	pge->DrawDecal(posJ2, decPlayer1);
+	pge->DrawPartialDecal(posJ2, { 32,32 }, decPlayer1, SpritePosMultiCell1, { 32,32 });
+
+	// Init ennemis
+
+	if(!stop_a_droite){
+		for(int i = 0; i<numeroFish/2; i++){
+			tabFish[i].fEnnemiPosY = rand()% 450;
+			tabFish[i].fEnnemiPosX = 750;
+			if(i == (numeroFish/2) - 1){
+				stop_a_droite = true;
+			}
+		}
+	}
+
+	if(!stop_a_gauche){
+		for(int i = numeroFish/2; i<numeroFish; i++){
+			tabFish[i].fEnnemiPosY = rand()% 450;
+			tabFish[i].fEnnemiPosX = 100;
+			if(i == numeroFish - 1){
+				stop_a_gauche = true;
+			}
+		}
+	}
+
+
+	// Draw ennemis
+	for(int i = 0; i < numeroFish; i++){
+		olc::vd2d posEnnemi = {tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY};
+		pge->DrawDecal(posEnnemi, decPlayer1);
+		pge->DrawPartialDecal(posEnnemi, { 32,32 }, decPlayer1, SpritePosMultiCell1, { 32,32 });
+	}
+
+
 }

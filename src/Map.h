@@ -2,10 +2,13 @@
 #define MAP_H
 
 #include "./Player.h"
+#include "./Ennemi_Fish.h"
 #include <string>
 #include <iostream>
 
 using namespace std;
+
+const int numeroFish = 10;
 
 /*
     \class Map Map.h "src/Map.h"
@@ -38,6 +41,12 @@ class Map{
         
         // calque pour dessiner la ligne qui sépare les deux écrans
         int lineLayerIndex;
+
+        bool stop_a_droite;
+        bool stop_a_gauche;
+        int compt;
+
+        Ennemi_Fish tabFish[numeroFish];
 
         // déclaration des images (Sprite utilise le CPU et Decal utilise GPU lors de l'affiche)
 	    olc::Sprite* spriteTiles = nullptr;
@@ -89,6 +98,8 @@ class Map{
         void move(float fElapsedTime, Player& P);
 
         void collisions (float fElapsedTime, Player& P);
+        
+        void collisions2(float fElapsedTime, Player& P);
         
         // \brief dessiner le niveau
         // @param[in] pge pointeur vers la bibliothèque OlcPixelGameEngine 

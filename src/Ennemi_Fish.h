@@ -27,6 +27,7 @@ class Ennemi_Fish{
         int nTileWidth; /**< Largeur en tiles de l'écran du joueur */
         int nTileHeight; /**< Hauteur en tiles de l'écran du joueur */
 
+
         /**
          * @brief Constructeur par défaut de la classe Player
          *
@@ -47,12 +48,6 @@ class Ennemi_Fish{
          * @param fElapsedTime Temps écoulé depuis la dernière mise à jour (entre une image et la suivante)
          */
         void move(float fElapsedTime);
-
-        /**
-         * @brief Fonction gérant les collisions du joueur avec les limites de la carte.
-         *
-         */
-        void limites_map_collisions();
 
         /**
          * @brief Fonction permettant de mettre la vitesse du joueur à 0

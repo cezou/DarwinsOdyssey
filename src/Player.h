@@ -95,14 +95,14 @@ class Player{
          *
          * @param pge Pointeur vers la classe PixelGameEngine
          */
-        void detectKeysPlayer1(olc::PixelGameEngine* pge);
+        void detectKeysPlayer1(olc::PixelGameEngine* pge, float velPlayer);
 
         /**
         * @brief Détermine les touches du clavier pour le joueur 2.
         *
         * @param pge Pointeur vers l'instance de PixelGameEngine utilisée.
         */
-        void detectKeysPlayer2(olc::PixelGameEngine* pge);
+        void detectKeysPlayer2(olc::PixelGameEngine* pge, float velPlayer);
 
 
 };
