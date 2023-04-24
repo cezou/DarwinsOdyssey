@@ -117,6 +117,10 @@ class Map{
 
         void initEnnemis();
 
+        void setVelEnnemi();
+
+        void replaceEnnemi();
+
 
 };
 

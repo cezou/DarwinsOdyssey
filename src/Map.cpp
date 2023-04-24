@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <ctime>
+#include <cmath>
 #include "./Map.h"
 #include "./Player.h"
 #include "./Ennemi_Fish.h"
@@ -507,27 +508,59 @@ int Map::checkLevel(Player& P1, Player& P2){
 }
 
 void Map::initEnnemis(){
-	if(!stop_a_droite){
-		for(int i = 0; i<numeroFish/2; i++){
-			tabFish[i].fEnnemiPosY = rand()% 450;
-			tabFish[i].fEnnemiPosX = 750;
-			if(i == (numeroFish/2) - 1){
-				stop_a_droite = true;
+	
+	for(int i = 0; i<numeroFish/2; i++){
+
+		tabFish[i].fEnnemiPosY = rand() % 411 + 20;
+		tabFish[i].fEnnemiPosX = 750;
+	}
+	
+	for(int i = numeroFish/2; i<numeroFish; i++){
+		tabFish[i].fEnnemiPosY = rand() % 411 + 20;
+		tabFish[i].fEnnemiPosX = 100;
+	}		
+	
+	for(int i = 0; i < numeroFish; i++){
+		if(i != 0){
+			for(int j = 0; j < i; j++){
+				while(abs(tabFish[i].fEnnemiPosY - tabFish[j].fEnnemiPosY) < 20.0f ){
+					tabFish[i].fEnnemiPosY = rand() % 411 + 20;
+				}
 			}
 		}
 	}
 
-	if(!stop_a_gauche){
-		for(int i = numeroFish/2; i<numeroFish; i++){
-			tabFish[i].fEnnemiPosY = rand()% 450;
-			tabFish[i].fEnnemiPosX = 100;
-			if(i == numeroFish - 1){
-				stop_a_gauche = true;
-			}
-		}
+}
+
+void Map::setVelEnnemi(){
+	for(int i = 0; i < numeroFish / 2; i++){
+		tabFish[i].fEnnemiVelX = -200 + (rand() % 191 - 10);
+		tabFish[i].fEnnemiVelY = 0;
+	}
+
+	for(int i = numeroFish / 2; i < numeroFish; i++){
+		tabFish[i].fEnnemiVelX = 10 + (rand() % 191);
+		tabFish[i].fEnnemiVelY = 0;
 	}
 }
 
+void Map::replaceEnnemi(){
+	for(int i = 0; i<numeroFish/2; i++){
+		if(tabFish[i].fEnnemiPosX + 30 < 0.0f){
+			tabFish[i].fEnnemiPosX = 800.0f;
+			tabFish[i].fEnnemiPosY = rand()% 450;
+			tabFish[i].fEnnemiVelX = -200 + (rand() % 191 - 10);
+		}
+	}
+
+	for(int i = numeroFish/2; i<numeroFish; i++){
+		if(tabFish[i].fEnnemiPosX > 800){
+			tabFish[i].fEnnemiPosX = 0.0f;
+			tabFish[i].fEnnemiPosY = rand()% 450;
+			tabFish[i].fEnnemiVelX = 10 + (rand() % 191);
+		}
+	}
+}
 void Map::drawLevel2(olc::PixelGameEngine* pge){
 
 	olc::vf2d SpritePosMultiCell1 = { 0, 0 };
@@ -547,7 +580,7 @@ void Map::drawLevel2(olc::PixelGameEngine* pge){
 	pge->DrawPartialDecal(posJ2, { 32,32 }, decPlayer1, SpritePosMultiCell1, { 32,32 });
 
 
-	
+
 	// Draw ennemis
 	for(int i = 0; i < numeroFish; i++){
 		olc::vd2d posEnnemi = {tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY};
