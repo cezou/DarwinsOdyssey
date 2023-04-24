@@ -91,9 +91,6 @@ public:
 		// LEVEL 2
 
 		if(mapLevel1.checkLevel(mapLevel1.player1, mapLevel1.player2) == 2){
-
-			mapLevel1.spritePlayer1 = new olc::Sprite("./data/alt/fish.png");
-			mapLevel1.decPlayer1 = new olc::Decal(mapLevel1.spritePlayer1);
 		
 			mapLevel1.player1.setVel0();
 			mapLevel1.player2.setVel0();

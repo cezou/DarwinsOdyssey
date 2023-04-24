@@ -58,6 +58,18 @@ class Map{
         olc::Sprite* spritePlayer2 = nullptr;
 	    olc::Decal* decPlayer2 = nullptr;
 
+        olc::Sprite* spritePlayerLevel0 = nullptr;
+	    olc::Decal* decPlayerLevel0 = nullptr;
+
+        olc::Sprite* spritePlayerLevel1 = nullptr;
+	    olc::Decal* decPlayerLevel1 = nullptr;
+
+        olc::Sprite* spritePlayerLevel2 = nullptr;
+	    olc::Decal* decPlayerLevel2 = nullptr;
+
+        olc::Sprite* spritePlayerLevel3 = nullptr;
+	    olc::Decal* decPlayerLevel3 = nullptr;
+
         olc::Sprite* spriteFond = nullptr;
 	    olc::Decal* decFond = nullptr;
 

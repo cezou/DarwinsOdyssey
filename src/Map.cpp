@@ -37,6 +37,15 @@ void Map::initImages(olc::PixelGameEngine* pge){
     spritePlayer2 = new olc::Sprite("./data/alt/Cell-J2.png");
 	decPlayer2 = new olc::Decal(spritePlayer2);
 
+    spritePlayerLevel0 = new olc::Sprite("./data/alt/fish.png");
+	decPlayerLevel0 = new olc::Decal(spritePlayerLevel0);
+
+    spritePlayerLevel2 = new olc::Sprite("./data/alt/shark.png");
+	decPlayerLevel2 = new olc::Decal(spritePlayerLevel2);
+
+    spritePlayerLevel3 = new olc::Sprite("./data/alt/whale.png");
+	decPlayerLevel3 = new olc::Decal(spritePlayerLevel3);
+
 	spriteMultiCell = new olc::Sprite("./data/Multi-Cell.png");
 	decMultiCell = new olc::Decal(spriteMultiCell);
 
@@ -53,9 +62,6 @@ void Map::initImages(olc::PixelGameEngine* pge){
 	decVirus = new olc::Decal(spriteVirus);
 
 	spriteBackGroundLevel2 = new olc::Sprite("./data/underwaterbg.png");
-
-	
-	
 
 }
 
@@ -503,20 +509,22 @@ void Map::initEnnemis(){
 	
 	for(int i = 0; i<numeroFish/2; i++){
 
-		tabFish[i].fEnnemiPosY = rand() % 411 + 20;
-		tabFish[i].fEnnemiPosX = 750;
+		tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+		tabFish[i].fEnnemiPosX = 800;
+		tabFish[i].ennemiLevel = rand() % 4;
 	}
 	
 	for(int i = numeroFish/2; i<numeroFish; i++){
-		tabFish[i].fEnnemiPosY = rand() % 411 + 20;
-		tabFish[i].fEnnemiPosX = 100;
+		tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+		tabFish[i].fEnnemiPosX = 0.0f;
+		tabFish[i].ennemiLevel = rand() % 4;
 	}		
 	
 	for(int i = 0; i < numeroFish; i++){
 		if(i != 0){
 			for(int j = 0; j < i; j++){
 				while(abs(tabFish[i].fEnnemiPosY - tabFish[j].fEnnemiPosY) < 20.0f ){
-					tabFish[i].fEnnemiPosY = rand() % 411 + 20;
+					tabFish[i].fEnnemiPosY = rand() % 371 + 30;
 				}
 			}
 		}
@@ -540,16 +548,18 @@ void Map::replaceEnnemi(){
 	for(int i = 0; i<numeroFish/2; i++){
 		if(tabFish[i].fEnnemiPosX + 30 < 0.0f){
 			tabFish[i].fEnnemiPosX = 800.0f;
-			tabFish[i].fEnnemiPosY = rand()% 450;
+			tabFish[i].fEnnemiPosY = rand() % 371 + 30;
 			tabFish[i].fEnnemiVelX = -200 + (rand() % 191 - 10);
+			tabFish[i].ennemiLevel = rand() % 4;
 		}
 	}
 
 	for(int i = numeroFish/2; i<numeroFish; i++){
 		if(tabFish[i].fEnnemiPosX > 800){
 			tabFish[i].fEnnemiPosX = 0.0f;
-			tabFish[i].fEnnemiPosY = rand()% 450;
+			tabFish[i].fEnnemiPosY = rand() % 371 + 30;
 			tabFish[i].fEnnemiVelX = 10 + (rand() % 191);
+			tabFish[i].ennemiLevel = rand() % 4;
 		}
 	}
 }
@@ -586,21 +596,40 @@ void Map::drawLevel2(olc::PixelGameEngine* pge){
 
 	// Draw joueur 1
 	olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
-	pge->DrawDecal(posJ1, decPlayer1);
-	pge->DrawPartialDecal(posJ1, { 32,32 }, decPlayer1, SpritePosMultiCell1, { 32,32 });
+	pge->DrawDecal(posJ1, decPlayerLevel0);
+	pge->DrawPartialDecal(posJ1, { 32,32 }, decPlayerLevel0, {0,0}, { 32,32 });
 
-	// Draw joueur 2
-	olc::vd2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
-	pge->DrawDecal(posJ2, decPlayer1);
-	pge->DrawPartialDecal(posJ2, { 32,32 }, decPlayer1, SpritePosMultiCell1, { 32,32 });
-
+	// Player 2
+	olc::vf2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
+	pge->DrawDecal(posJ2, decPlayerLevel0);
+	pge->DrawPartialDecal(posJ2, { 32,32 }, decPlayerLevel0, {0,0}, { 32,32 });
 
 
 	// Draw ennemis
 	for(int i = 0; i < numeroFish; i++){
-		olc::vd2d posEnnemi = {tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY};
-		pge->DrawDecal(posEnnemi, decPlayer1);
-		pge->DrawPartialDecal(posEnnemi, { 32,32 }, decPlayer1, SpritePosMultiCell1, { 32,32 });
+
+		olc::vf2d posEnnemi = {tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY};
+		if(tabFish[i].ennemiLevel == 0){
+			pge->DrawDecal(posEnnemi, decPlayerLevel0);
+			pge->DrawPartialDecal(posEnnemi, { 32,32 }, decPlayerLevel0, {0,0}, { 32,32 });
+		}
+
+		if(tabFish[i].ennemiLevel == 1){
+			pge->DrawDecal(posEnnemi, decPlayerLevel0);
+			pge->DrawPartialDecal(posEnnemi, { 32,32 }, decPlayerLevel0, {0,0}, { 32,32 });
+		}
+
+		if(tabFish[i].ennemiLevel == 2){
+			pge->DrawDecal(posEnnemi, decPlayerLevel2);
+			pge->DrawPartialDecal(posEnnemi, { 32,32 }, decPlayerLevel2, {0,0}, { 32,32 });
+		}
+
+		if(tabFish[i].ennemiLevel == 3){
+			pge->DrawDecal(posEnnemi, decPlayerLevel3);
+			pge->DrawPartialDecal(posEnnemi, { 32,32 }, decPlayerLevel3, {0,0}, { 32,32 });
+		}
+
+	
 	}
 
 
