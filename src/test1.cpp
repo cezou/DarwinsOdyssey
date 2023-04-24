@@ -105,8 +105,8 @@ public:
 			//mapLevel1.player2.limites_map_collisions();
 			mapLevel1.move(fElapsedTime, mapLevel1.player1);
 			mapLevel1.move(fElapsedTime, mapLevel1.player2);
-			mapLevel1.collisions2(fElapsedTime, mapLevel1.player1);
-			mapLevel1.collisions2(fElapsedTime, mapLevel1.player2);
+			//mapLevel1.collisions2(fElapsedTime, mapLevel1.player1);
+			//mapLevel1.collisions2(fElapsedTime, mapLevel1.player2);
 
 			
 			for(int i = 0; i<numeroFish; i++){
@@ -114,6 +114,10 @@ public:
 			}
 		
 			mapLevel1.replaceEnnemi();
+			
+			mapLevel1.collisionsMap(mapLevel1.player1);
+			mapLevel1.collisionsMap(mapLevel1.player2);
+			
 			mapLevel1.drawLevel2(this);
 			
 		}

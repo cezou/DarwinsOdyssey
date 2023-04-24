@@ -97,6 +97,9 @@ void Map::move(float fElapsedTime, Player& P){
 	P.fNewPlayerPosX = P.fPlayerPosX + P.fPlayerVelX * fElapsedTime;
 	P.fNewPlayerPosY = P.fPlayerPosY + P.fPlayerVelY * fElapsedTime;
 
+	P.fPlayerPosX = P.fNewPlayerPosX;
+	P.fPlayerPosY = P.fNewPlayerPosY;
+
 }
 
 void Map::collisions(float fElapsedTime, Player& P){
@@ -224,17 +227,6 @@ void Map::collisions(float fElapsedTime, Player& P){
 				}		
 			}
 		}
-
-	// Apply new position
-	P.fPlayerPosX = P.fNewPlayerPosX;
-	P.fPlayerPosY = P.fNewPlayerPosY;
-
-	// Link camera to player position
-	P.fCameraPosX = P.fPlayerPosX;
-	P.fCameraPosY = P.fPlayerPosY;
-}
-
-void Map::collisions2(float fElapsedTime, Player& P){
 
 	// Apply new position
 	P.fPlayerPosX = P.fNewPlayerPosX;
@@ -560,6 +552,29 @@ void Map::replaceEnnemi(){
 			tabFish[i].fEnnemiVelX = 10 + (rand() % 191);
 		}
 	}
+}
+
+void Map::collisionsMap(Player &P){
+
+	// a gauche
+	if(P.fPlayerPosX < 0.0f){
+		P.fPlayerPosX = 0.0f;
+	} 
+
+	// en haut
+	if(P.fPlayerPosY < 0.0f){
+		P.fPlayerPosY = 0.0f;
+	} 
+
+	// a droite
+	if(P.fPlayerPosX + 30 > 800.0f){
+		P.fPlayerPosX = 800.0f - 30;
+	} 
+
+	// en bas
+	if(P.fPlayerPosY + 30 > 450.0f){
+		P.fPlayerPosY = 450.0f - 30;
+	} 
 }
 void Map::drawLevel2(olc::PixelGameEngine* pge){
 

@@ -99,8 +99,6 @@ class Map{
 
         void collisions (float fElapsedTime, Player& P);
         
-        void collisions2(float fElapsedTime, Player& P);
-        
         // \brief dessiner le niveau
         // @param[in] pge pointeur vers la bibliothèque OlcPixelGameEngine 
         // pour pouvoir l'utiliser dans la fonction
@@ -120,6 +118,8 @@ class Map{
         void setVelEnnemi();
 
         void replaceEnnemi();
+
+        void collisionsMap(Player &P);
 
 
 };
