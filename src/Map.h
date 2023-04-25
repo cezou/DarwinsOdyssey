@@ -42,6 +42,8 @@ class Map{
         // calque pour dessiner la ligne qui sépare les deux écrans
         int lineLayerIndex;
 
+        bool rester_niveau1;
+
         bool stop_a_droite;
         bool stop_a_gauche;
         int compt;
@@ -50,6 +52,11 @@ class Map{
         Ennemi_Fish tabFish[numeroFish];
 
         // déclaration des images (Sprite utilise le CPU et Decal utilise GPU lors de l'affiche)
+
+        olc::Sprite* spriteMenu = nullptr;
+	    olc::Decal* decMenu = nullptr;
+
+
 	    olc::Sprite* spriteTiles = nullptr;
 	    olc::Decal* decTiles = nullptr;
 
@@ -111,11 +118,16 @@ class Map{
         void move(float fElapsedTime, Player& P);
 
         void collisions (float fElapsedTime, Player& P);
+
+        // \brief dessiner le niveau
+        // @param[in] pge pointeur vers la bibliothèque OlcPixelGameEngine 
+        // pour pouvoir l'utiliser dans la fonction
+        void drawLevel0(olc::PixelGameEngine* pge);
         
         // \brief dessiner le niveau
         // @param[in] pge pointeur vers la bibliothèque OlcPixelGameEngine 
         // pour pouvoir l'utiliser dans la fonction
-        void drawLevel(olc::PixelGameEngine* pge);
+        void drawLevel1(olc::PixelGameEngine* pge);
 
         // \brief dessiner le niveau
         // @param[in] pge pointeur vers la bibliothèque OlcPixelGameEngine 
@@ -124,7 +136,7 @@ class Map{
 
         // \brief savoir dans quel niveau on est
         // pour pouvoir l'utiliser dans la fonction
-        int checkLevel(Player& P1, Player& P2);
+        int checkLevel(olc::PixelGameEngine* pge, Player& P1, Player& P2);
 
         void initEnnemis();
 

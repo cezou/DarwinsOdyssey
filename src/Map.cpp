@@ -14,6 +14,9 @@ Map::Map(){
 
 	nb_cellules_b_placees = 4;
 	nb_cellules_g_placees = 4;
+
+	rester_niveau1 = false;
+
 	stop_a_droite = false;
 	stop_a_gauche = false;
 	vies = 5;
@@ -28,6 +31,8 @@ Map::Map(){
 // initialisation des images
 void Map::initImages(olc::PixelGameEngine* pge){
 	spriteMap = new olc::Sprite("./data/MAP.png");
+
+	spriteMenu = new olc::Sprite("./data/menu.png");
 
 	spriteTiles = new olc::Sprite("./data/parenchymadefault.png");
 	decTiles = new olc:: Decal(spriteTiles);
@@ -64,6 +69,13 @@ void Map::initImages(olc::PixelGameEngine* pge){
 
 	spriteBackGroundLevel2 = new olc::Sprite("./data/underwaterbg.png");
 
+}
+
+void Map::drawLevel0(olc::PixelGameEngine* pge){
+	olc::vd2d posInitImage = {0,0};
+
+	// Draw le fond
+	pge->DrawSprite(posInitImage, spriteMenu);
 }
 
 // initialisation de la carte depuis une image png
@@ -245,7 +257,7 @@ void Map::collisions(float fElapsedTime, Player& P){
 }
 
 // dessiner le niveau 1
-void Map::drawLevel(olc::PixelGameEngine* pge){
+void Map::drawLevel1(olc::PixelGameEngine* pge){
 
 	srand((unsigned) time(NULL));
 	// Draw Level
@@ -492,14 +504,30 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 		pge->Clear(olc::BLANK);
 }
 
-int Map::checkLevel(Player& P1, Player& P2){
+int Map::checkLevel(olc::PixelGameEngine* pge, Player& P1, Player& P2){
+
 	int niveau;
 
-	if((P1.NbCelluleRecup<1) || (P2.NbCelluleRecup<1)){
-		niveau = 1;
+	if(((P1.NbCelluleRecup==0) || (P2.NbCelluleRecup==0))){
+		//cout<<"pased 1 "<<endl;
 	}
 
-	else if ((P1.NbCelluleRecup==1) || (P2.NbCelluleRecup==1)){
+	if((!rester_niveau1)){
+		//cout<<"pased 2"<<endl;
+	}
+
+	if((!rester_niveau1)){
+		niveau = 0;
+	} 
+
+	if ((pge->GetKey(olc::Key::SPACE).bPressed) || (rester_niveau1)){
+            niveau = 1;  
+			rester_niveau1 = true;
+    }
+	
+
+	if ((P1.NbCelluleRecup==1) || (P2.NbCelluleRecup==1)){
+		rester_niveau1 = false;
 		niveau = 2;
 	}
 

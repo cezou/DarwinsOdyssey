@@ -67,10 +67,16 @@ public:
 	{
 		
 
+		// LEVEL 0
+
+		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 0){
+			mapLevel1.drawLevel0(this);
+		}
+		
 		// LEVEL 1
 		
 		
-		if(mapLevel1.checkLevel(mapLevel1.player1, mapLevel1.player2) == 1){
+		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 1){
 			// Mouvements players
 			mapLevel1.player1.setVel0();
 			mapLevel1.player2.setVel0();
@@ -85,12 +91,12 @@ public:
 			mapLevel1.collisions(fElapsedTime, mapLevel1.player1);
 			mapLevel1.collisions(fElapsedTime, mapLevel1.player2);
 
-			mapLevel1.drawLevel(this);
+			mapLevel1.drawLevel1(this);
 		}
 
 		// LEVEL 2
 
-		if(mapLevel1.checkLevel(mapLevel1.player1, mapLevel1.player2) == 2){
+		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 2){
 		
 			mapLevel1.player1.setVel0();
 			mapLevel1.player2.setVel0();
