@@ -1,8 +1,11 @@
 #include <iostream>
-#include<cstdlib>
+#include <cstdlib>
 #include <fstream>
+#include <ctime>
+#include <cmath>
 #include "./Map.h"
 #include "./Player.h"
+#include "./Ennemi_Fish.h"
 
 using namespace std;
 
@@ -11,6 +14,8 @@ Map::Map(){
 
 	nb_cellules_b_placees = 4;
 	nb_cellules_g_placees = 4;
+	stop_a_droite = false;
+	stop_a_gauche = false;
 
 	
 	player1 = Player(3.0, 3.0);
@@ -32,6 +37,15 @@ void Map::initImages(olc::PixelGameEngine* pge){
     spritePlayer2 = new olc::Sprite("./data/alt/Cell-J2.png");
 	decPlayer2 = new olc::Decal(spritePlayer2);
 
+    spritePlayerLevel0 = new olc::Sprite("./data/alt/fish.png");
+	decPlayerLevel0 = new olc::Decal(spritePlayerLevel0);
+
+    spritePlayerLevel2 = new olc::Sprite("./data/alt/shark.png");
+	decPlayerLevel2 = new olc::Decal(spritePlayerLevel2);
+
+    spritePlayerLevel3 = new olc::Sprite("./data/alt/whale.png");
+	decPlayerLevel3 = new olc::Decal(spritePlayerLevel3);
+
 	spriteMultiCell = new olc::Sprite("./data/Multi-Cell.png");
 	decMultiCell = new olc::Decal(spriteMultiCell);
 
@@ -47,8 +61,7 @@ void Map::initImages(olc::PixelGameEngine* pge){
 	spriteVirus = new olc::Sprite("./data/virus.png");
 	decVirus = new olc::Decal(spriteVirus);
 
-	
-	
+	spriteBackGroundLevel2 = new olc::Sprite("./data/underwaterbg.png");
 
 }
 
@@ -87,22 +100,11 @@ void Map::initMapFromImage(olc::PixelGameEngine* pge) {
 // mouvements joueurs et collisions
 void Map::move(float fElapsedTime, Player& P){
 
-	auto GetTile = [&](int x, int y)
-	{
-		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-			return sLevel[y * nLevelWidth + x];
-		else
-			return L' ';
-	};
-	auto SetTile = [&](int x, int y, wchar_t c)
-	{
-		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-			sLevel[y * nLevelWidth + x] = c;
-	};
-
-
 	P.fNewPlayerPosX = P.fPlayerPosX + P.fPlayerVelX * fElapsedTime;
 	P.fNewPlayerPosY = P.fPlayerPosY + P.fPlayerVelY * fElapsedTime;
+
+	P.fPlayerPosX = P.fNewPlayerPosX;
+	P.fPlayerPosY = P.fNewPlayerPosY;
 
 }
 
@@ -241,7 +243,7 @@ void Map::collisions(float fElapsedTime, Player& P){
 	P.fCameraPosY = P.fPlayerPosY;
 }
 
-// dessiner le niveau
+// dessiner le niveau 1
 void Map::drawLevel(olc::PixelGameEngine* pge){
 
 	srand((unsigned) time(NULL));
@@ -487,4 +489,198 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 		// Revenir au calque par défaut
 		
 		pge->Clear(olc::BLANK);
+}
+
+int Map::checkLevel(Player& P1, Player& P2){
+	int niveau;
+
+	if((P1.NbCelluleRecup<1) || (P2.NbCelluleRecup<1)){
+		niveau = 1;
+	}
+
+	else if ((P1.NbCelluleRecup==1) || (P2.NbCelluleRecup==1)){
+		niveau = 2;
+	}
+
+	return niveau;
+}
+
+void Map::initEnnemis(){
+	
+	for(int i = 0; i<numeroFish/2; i++){
+
+		tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+		tabFish[i].fEnnemiPosX = 800;
+		tabFish[i].ennemiLevel = rand() % 4;
+	}
+	
+	for(int i = numeroFish/2; i<numeroFish; i++){
+		tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+		tabFish[i].fEnnemiPosX = 0.0f;
+		tabFish[i].ennemiLevel = rand() % 4;
+	}		
+	
+	for(int i = 0; i < numeroFish; i++){
+		if(i != 0){
+			for(int j = 0; j < i; j++){
+				while(abs(tabFish[i].fEnnemiPosY - tabFish[j].fEnnemiPosY) < 20.0f ){
+					tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+				}
+			}
+		}
+	}
+
+}
+
+void Map::setVelEnnemi(){
+	for(int i = 0; i < numeroFish / 2; i++){
+		tabFish[i].fEnnemiVelX = -200 + (rand() % 191 - 10);
+		tabFish[i].fEnnemiVelY = 0;
+	}
+
+	for(int i = numeroFish / 2; i < numeroFish; i++){
+		tabFish[i].fEnnemiVelX = 10 + (rand() % 191);
+		tabFish[i].fEnnemiVelY = 0;
+	}
+}
+
+void Map::replaceEnnemi(){
+	for(int i = 0; i<numeroFish/2; i++){
+		if((tabFish[i].fEnnemiPosX + 30 < 0.0f) || (tabFish[i].touche == true)){
+			tabFish[i].fEnnemiPosX = 800.0f;
+			tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+			tabFish[i].fEnnemiVelX = -200 + (rand() % 191 - 10);
+			tabFish[i].ennemiLevel = rand() % 4;
+			tabFish[i].touche = false;
+		}
+	}
+
+	for(int i = numeroFish/2; i<numeroFish; i++){
+		if((tabFish[i].fEnnemiPosX > 800) || (tabFish[i].touche == true)){
+			tabFish[i].fEnnemiPosX = 0.0f;
+			tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+			tabFish[i].fEnnemiVelX = 10 + (rand() % 191);
+			tabFish[i].ennemiLevel = rand() % 4;
+			tabFish[i].touche = false;
+		}
+	}
+}
+
+void Map::collisionsMap(Player &P){
+
+	// a gauche
+	if(P.fPlayerPosX < 0.0f){
+		P.fPlayerPosX = 0.0f;
+	} 
+
+	// en haut
+	if(P.fPlayerPosY < 0.0f){
+		P.fPlayerPosY = 0.0f;
+	} 
+
+	// a droite
+	if(P.fPlayerPosX + 30 > 800.0f){
+		P.fPlayerPosX = 800.0f - 30;
+	} 
+
+	// en bas
+	if(P.fPlayerPosY + 30 > 450.0f){
+		P.fPlayerPosY = 450.0f - 30;
+	} 
+}
+
+void Map::collisionsEnnemiFish(Player &P){
+
+	// collisions
+
+	for(int i = 0; i < numeroFish; i++){
+				
+			if (P.fPlayerVelX <= 0) // Moving Left
+			{
+
+				if(P.distance(P.fPlayerPosX, P.fPlayerPosY, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 32){
+
+						if((((P.level == 1) && (tabFish[i].ennemiLevel == 0)) || ((P.level == 1) && (tabFish[i].ennemiLevel == 1))) && (tabFish[i].touche == false)){
+						P.numeroPoints ++;
+						tabFish[i].touche = true;
+						}
+				}
+
+			}
+			
+		}
+}
+
+void Map::drawLevel2(olc::PixelGameEngine* pge){
+
+	olc::vf2d SpritePosMultiCell1 = { 0, 0 };
+	olc::vd2d posInitImage = {0,0};
+
+	// Draw le fond
+	pge->DrawSprite(posInitImage, spriteBackGroundLevel2);
+
+	// Draw joueur 1
+	olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
+	if (player1.bDirection)
+	{
+		pge->DrawDecal(posJ1, decPlayerLevel0, { -1.0f, 1.0f });
+	}
+	else
+		pge->DrawDecal(posJ1, decPlayerLevel0, { 1.0f, 1.0f });
+	// Player 2
+	olc::vf2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
+
+	if (player2.bDirection)
+	{
+		pge->DrawDecal(posJ2, decPlayerLevel0, { -1.0f, 1.0f });
+	}
+	else
+		pge->DrawDecal(posJ2, decPlayerLevel0, { 1.0f, 1.0f });
+
+
+	// Draw ennemis
+	for(int i = 0; i < numeroFish; i++){
+
+		olc::vf2d posEnnemi = {tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY};
+		if(tabFish[i].ennemiLevel == 0){
+			if (tabFish[i].fEnnemiVelX > 0)
+			{ 
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, {-0.5f, 0.5f});
+			}
+			else
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 0.5f, 0.5f });
+
+		}
+
+		if(tabFish[i].ennemiLevel == 1){
+			if (tabFish[i].fEnnemiVelX > 0)
+			{
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { -1.0f, 1.0f });
+			}
+			else
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 1.0f, 1.0f });
+		}
+
+		if(tabFish[i].ennemiLevel == 2){
+			if (tabFish[i].fEnnemiVelX > 0)
+			{
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { -1.5f, 1.5f });
+			}
+			else
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 1.5f, 1.5f });
+		}
+
+		if(tabFish[i].ennemiLevel == 3){
+			if (tabFish[i].fEnnemiVelX > 0)
+			{
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { -2.0f, 2.0f });
+			}
+			else
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 2.0f, 2.0f });
+		}
+
+	
+	}
+
+
 }

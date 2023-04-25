@@ -1,5 +1,4 @@
 #include "./Player.h"
-const float velPlayer = 8.0f;
 
 Player::Player(){
     	fCameraPosX = 0.0f;
@@ -10,6 +9,10 @@ Player::Player(){
 		fPlayerVelY = 0.0f;
         nTileWidth = 32;
 		nTileHeight = 32;
+        level = 1;
+        numeroPoints = 0;
+        bDirection = 1;
+
 }
 
 Player::Player(float posX, float posY){
@@ -21,6 +24,10 @@ Player::Player(float posX, float posY){
 		fPlayerVelY = 0.0f;
         nTileWidth = 32;
 		nTileHeight = 32;
+        level = 1;
+        numeroPoints = 0;
+        bDirection = 1;
+
 }
 
 void Player::move(float fElapsedTime){
@@ -76,7 +83,7 @@ void Player::setNBCell() {
     NbCelluleRecup = 0;
 }
 
-void Player::detectKeysPlayer1(olc::PixelGameEngine* pge){
+void Player::detectKeysPlayer1(olc::PixelGameEngine* pge, float velPlayer){
 
         // Mouvements player 1
          if (pge->IsFocused()) {
@@ -84,6 +91,7 @@ void Player::detectKeysPlayer1(olc::PixelGameEngine* pge){
         // aller en haut pour clavier qwerty et azerty
         if (pge->GetKey(olc::Key::W).bHeld || pge->GetKey(olc::Key::Z).bHeld) {
             fPlayerVelY = -velPlayer;
+          
         }
 
         // aller en bas
@@ -94,17 +102,21 @@ void Player::detectKeysPlayer1(olc::PixelGameEngine* pge){
         // aller à gauche pour clavier qwerty et azerty
         if (pge->GetKey(olc::Key::A).bHeld || pge->GetKey(olc::Key::Q).bHeld) {
             fPlayerVelX = -velPlayer;
+            bDirection = 0;
+
         }
 
         // aller à droite
         if (pge->GetKey(olc::Key::D).bHeld) {
             fPlayerVelX = velPlayer;
+            bDirection = 1;
+        
         }
 
         }	
 }
 
-void Player::detectKeysPlayer2(olc::PixelGameEngine* pge){
+void Player::detectKeysPlayer2(olc::PixelGameEngine* pge, float velPlayer){
 
     	// Mouvements player 2
         if (pge->IsFocused()) {
@@ -122,16 +134,23 @@ void Player::detectKeysPlayer2(olc::PixelGameEngine* pge){
         // Aller à gauche
         if (pge->GetKey(olc::Key::LEFT).bHeld) {
             fPlayerVelX = -velPlayer;
+            bDirection = 0;
+
         }
 
         // Aller à droite
         if (pge->GetKey(olc::Key::RIGHT).bHeld) {
             fPlayerVelX = velPlayer;
+            bDirection = 1;
+
         }
 
 
         }
 }
 
-
-
+float Player::distance(float x1, float y1, float x2, float y2) {
+    float dx = x2 - x1;
+    float dy = y2 - y1;
+    return sqrt(dx*dx + dy*dy);
+}

@@ -7,10 +7,8 @@
 using namespace std;
 
 /*!
-
 \brief Classe représentant un joueur dans le jeu Darwin's Odyssey.
 \details Cette classe gère les mouvements et les collisions du joueur, ainsi que sa position sur l'écran et la caméra.
-
 */
 
 class Player{
@@ -42,6 +40,8 @@ class Player{
         int nVisibleTilesX; /**< Nombre de tiles horizontalement visibles dans l'écran du joueur */
         int nVisibleTilesY; /**< Nombre de tiles verticalement visibles dans l'écran du joueur */
 
+
+        bool bDirection;  /**< Direction du joueur */
         
         float fOffsetX; /**< Décalage de la caméra en X */
         float fOffsetY; /**< Décalage de la caméra en Y */
@@ -50,6 +50,12 @@ class Player{
 
         
         unsigned int NbCelluleRecup; /**< Nombre de cellules récupérées par le joueur */
+
+        unsigned int NbCelluleRecupRes;
+
+        unsigned int level;
+
+        float numeroPoints;
 
         /**
          * @brief Constructeur par défaut de la classe Player
@@ -95,14 +101,16 @@ class Player{
          *
          * @param pge Pointeur vers la classe PixelGameEngine
          */
-        void detectKeysPlayer1(olc::PixelGameEngine* pge);
+        void detectKeysPlayer1(olc::PixelGameEngine* pge, float velPlayer);
 
         /**
         * @brief Détermine les touches du clavier pour le joueur 2.
         *
         * @param pge Pointeur vers l'instance de PixelGameEngine utilisée.
         */
-        void detectKeysPlayer2(olc::PixelGameEngine* pge);
+        void detectKeysPlayer2(olc::PixelGameEngine* pge, float velPlayer);
+
+        float distance(float x1, float y1, float x2, float y2);
 
 
 };
