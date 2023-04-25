@@ -8,6 +8,7 @@ Ennemi_Fish::Ennemi_Fish(){
 		fEnnemiVelY = 0.0f;
         nTileWidth = 32;
 		nTileHeight = 32;
+		touche = false;
 		
 }
 
@@ -20,6 +21,7 @@ Ennemi_Fish::Ennemi_Fish(float posX, float posY, int level_param){
         nTileWidth = 32;
 		nTileHeight = 32;
         ennemiLevel = level_param;
+		touche = false;
 }
 
 void Ennemi_Fish::move(float fElapsedTime){

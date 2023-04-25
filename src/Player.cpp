@@ -9,6 +9,8 @@ Player::Player(){
 		fPlayerVelY = 0.0f;
         nTileWidth = 32;
 		nTileHeight = 32;
+        level = 1;
+        numeroPoints = 0;
 }
 
 Player::Player(float posX, float posY){
@@ -20,6 +22,8 @@ Player::Player(float posX, float posY){
 		fPlayerVelY = 0.0f;
         nTileWidth = 32;
 		nTileHeight = 32;
+        level = 1;
+        numeroPoints = 0;
 }
 
 void Player::move(float fElapsedTime){
@@ -130,4 +134,10 @@ void Player::detectKeysPlayer2(olc::PixelGameEngine* pge, float velPlayer){
 
 
         }
+}
+
+float Player::distance(float x1, float y1, float x2, float y2) {
+    float dx = x2 - x1;
+    float dy = y2 - y1;
+    return sqrt(dx*dx + dy*dy);
 }

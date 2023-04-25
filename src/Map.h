@@ -133,6 +133,8 @@ class Map{
 
         void collisionsMap(Player &P);
 
+        void collisionsEnnemiFish(Player &P);
+
 
 };
 

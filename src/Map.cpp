@@ -546,20 +546,22 @@ void Map::setVelEnnemi(){
 
 void Map::replaceEnnemi(){
 	for(int i = 0; i<numeroFish/2; i++){
-		if(tabFish[i].fEnnemiPosX + 30 < 0.0f){
+		if((tabFish[i].fEnnemiPosX + 30 < 0.0f) || (tabFish[i].touche == true)){
 			tabFish[i].fEnnemiPosX = 800.0f;
 			tabFish[i].fEnnemiPosY = rand() % 371 + 30;
 			tabFish[i].fEnnemiVelX = -200 + (rand() % 191 - 10);
 			tabFish[i].ennemiLevel = rand() % 4;
+			tabFish[i].touche = false;
 		}
 	}
 
 	for(int i = numeroFish/2; i<numeroFish; i++){
-		if(tabFish[i].fEnnemiPosX > 800){
+		if((tabFish[i].fEnnemiPosX > 800) || (tabFish[i].touche == true)){
 			tabFish[i].fEnnemiPosX = 0.0f;
 			tabFish[i].fEnnemiPosY = rand() % 371 + 30;
 			tabFish[i].fEnnemiVelX = 10 + (rand() % 191);
 			tabFish[i].ennemiLevel = rand() % 4;
+			tabFish[i].touche = false;
 		}
 	}
 }
@@ -586,6 +588,29 @@ void Map::collisionsMap(Player &P){
 		P.fPlayerPosY = 450.0f - 30;
 	} 
 }
+
+void Map::collisionsEnnemiFish(Player &P){
+
+	// collisions
+
+	for(int i = 0; i < numeroFish; i++){
+				
+			if (P.fPlayerVelX <= 0) // Moving Left
+			{
+
+				if(P.distance(P.fPlayerPosX, P.fPlayerPosY, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 32){
+
+						if((((P.level == 1) && (tabFish[i].ennemiLevel == 0)) || ((P.level == 1) && (tabFish[i].ennemiLevel == 1))) && (tabFish[i].touche == false)){
+						P.numeroPoints ++;
+						tabFish[i].touche = true;
+						}
+				}
+
+			}
+			
+		}
+}
+
 void Map::drawLevel2(olc::PixelGameEngine* pge){
 
 	olc::vf2d SpritePosMultiCell1 = { 0, 0 };
@@ -597,12 +622,10 @@ void Map::drawLevel2(olc::PixelGameEngine* pge){
 	// Draw joueur 1
 	olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
 	pge->DrawDecal(posJ1, decPlayerLevel0);
-	pge->DrawPartialDecal(posJ1, { 32,32 }, decPlayerLevel0, {0,0}, { 32,32 });
 
 	// Player 2
 	olc::vf2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
 	pge->DrawDecal(posJ2, decPlayerLevel0);
-	pge->DrawPartialDecal(posJ2, { 32,32 }, decPlayerLevel0, {0,0}, { 32,32 });
 
 
 	// Draw ennemis
@@ -610,23 +633,19 @@ void Map::drawLevel2(olc::PixelGameEngine* pge){
 
 		olc::vf2d posEnnemi = {tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY};
 		if(tabFish[i].ennemiLevel == 0){
-			pge->DrawDecal(posEnnemi, decPlayerLevel0);
-			pge->DrawPartialDecal(posEnnemi, { 32,32 }, decPlayerLevel0, {0,0}, { 32,32 });
+			pge->DrawDecal(posEnnemi, decPlayerLevel0, {0.5f, 0.5f});
 		}
 
 		if(tabFish[i].ennemiLevel == 1){
-			pge->DrawDecal(posEnnemi, decPlayerLevel0);
-			pge->DrawPartialDecal(posEnnemi, { 32,32 }, decPlayerLevel0, {0,0}, { 32,32 });
+			pge->DrawDecal(posEnnemi, decPlayerLevel0, {0.5f, 0.5f});
 		}
 
 		if(tabFish[i].ennemiLevel == 2){
-			pge->DrawDecal(posEnnemi, decPlayerLevel2);
-			pge->DrawPartialDecal(posEnnemi, { 32,32 }, decPlayerLevel2, {0,0}, { 32,32 });
+			pge->DrawDecal(posEnnemi, decPlayerLevel2, {1.5f, 1.5f});
 		}
 
 		if(tabFish[i].ennemiLevel == 3){
-			pge->DrawDecal(posEnnemi, decPlayerLevel3);
-			pge->DrawPartialDecal(posEnnemi, { 32,32 }, decPlayerLevel3, {0,0}, { 32,32 });
+			pge->DrawDecal(posEnnemi, decPlayerLevel3, {2.0f, 2.0f});
 		}
 
 	

@@ -19,7 +19,7 @@ class Ennemi_Fish{
         float fEnnemiPosY;
 
         // Niveau du poisson
-        int ennemiLevel;
+        unsigned int ennemiLevel;
 
         float fEnnemiVelX; /**< Vitesse du joueur en X */
         float fEnnemiVelY; /**< Vitesse du joueur en Y */
@@ -27,6 +27,8 @@ class Ennemi_Fish{
         int nTileWidth; /**< Largeur en tiles de l'écran du joueur */
         int nTileHeight; /**< Hauteur en tiles de l'écran du joueur */
 
+        // Pour savoir s'il est touché
+        bool touche;
 
         /**
          * @brief Constructeur par défaut de la classe Player

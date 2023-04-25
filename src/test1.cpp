@@ -7,7 +7,7 @@
 #include <ctime>
 
 const float velPlayerLevel1 = 8.0f;
-const float velPlayerLevel2 = 500.0f;
+const float velPlayerLevel2 = 250.0f;
 
 /*!
  *  \brief		PROJET FINAL LIFAPCD: Darwin's Odyssey.
@@ -114,8 +114,12 @@ public:
 			
 			mapLevel1.collisionsMap(mapLevel1.player1);
 			mapLevel1.collisionsMap(mapLevel1.player2);
+
+			mapLevel1.collisionsEnnemiFish(mapLevel1.player1);
+			mapLevel1.collisionsEnnemiFish(mapLevel1.player2);
 			
 			mapLevel1.drawLevel2(this);
+			cout<<"Numero points = " << mapLevel1.player1.numeroPoints << endl;
 			
 		}
 		return true;

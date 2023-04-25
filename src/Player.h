@@ -51,6 +51,10 @@ class Player{
 
         unsigned int NbCelluleRecupRes;
 
+        unsigned int level;
+
+        float numeroPoints;
+
         /**
          * @brief Constructeur par défaut de la classe Player
          *
@@ -103,6 +107,8 @@ class Player{
         * @param pge Pointeur vers l'instance de PixelGameEngine utilisée.
         */
         void detectKeysPlayer2(olc::PixelGameEngine* pge, float velPlayer);
+
+        float distance(float x1, float y1, float x2, float y2);
 
 
 };
