@@ -119,8 +119,10 @@ public:
 			mapLevel1.collisionsEnnemiFish(mapLevel1.player2);
 			
 			mapLevel1.drawLevel2(this);
-			cout<<"Numero points = " << mapLevel1.player1.numeroPoints << endl;
-			
+			cout<<"Numero points player 1 = " << mapLevel1.player1.numeroPoints << endl;
+			cout<<"Numero points player 2 = " << mapLevel1.player2.numeroPoints << endl;
+			cout<< "Numero vies = " << mapLevel1.vies << endl;
+			 
 		}
 		return true;
 	}

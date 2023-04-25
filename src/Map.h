@@ -45,6 +45,7 @@ class Map{
         bool stop_a_droite;
         bool stop_a_gauche;
         int compt;
+        int vies;
 
         Ennemi_Fish tabFish[numeroFish];
 

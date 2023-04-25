@@ -11,6 +11,8 @@ Player::Player(){
 		nTileHeight = 32;
         level = 1;
         numeroPoints = 0;
+        bDirection = 1;
+
 }
 
 Player::Player(float posX, float posY){
@@ -24,6 +26,8 @@ Player::Player(float posX, float posY){
 		nTileHeight = 32;
         level = 1;
         numeroPoints = 0;
+        bDirection = 1;
+
 }
 
 void Player::move(float fElapsedTime){
@@ -87,6 +91,7 @@ void Player::detectKeysPlayer1(olc::PixelGameEngine* pge, float velPlayer){
         // aller en haut pour clavier qwerty et azerty
         if (pge->GetKey(olc::Key::W).bHeld || pge->GetKey(olc::Key::Z).bHeld) {
             fPlayerVelY = -velPlayer;
+          
         }
 
         // aller en bas
@@ -97,11 +102,15 @@ void Player::detectKeysPlayer1(olc::PixelGameEngine* pge, float velPlayer){
         // aller à gauche pour clavier qwerty et azerty
         if (pge->GetKey(olc::Key::A).bHeld || pge->GetKey(olc::Key::Q).bHeld) {
             fPlayerVelX = -velPlayer;
+            bDirection = 0;
+
         }
 
         // aller à droite
         if (pge->GetKey(olc::Key::D).bHeld) {
             fPlayerVelX = velPlayer;
+            bDirection = 1;
+        
         }
 
         }	
@@ -125,11 +134,15 @@ void Player::detectKeysPlayer2(olc::PixelGameEngine* pge, float velPlayer){
         // Aller à gauche
         if (pge->GetKey(olc::Key::LEFT).bHeld) {
             fPlayerVelX = -velPlayer;
+            bDirection = 0;
+
         }
 
         // Aller à droite
         if (pge->GetKey(olc::Key::RIGHT).bHeld) {
             fPlayerVelX = velPlayer;
+            bDirection = 1;
+
         }
 
 

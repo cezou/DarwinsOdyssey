@@ -40,6 +40,8 @@ class Player{
         int nVisibleTilesX; /**< Nombre de tiles horizontalement visibles dans l'écran du joueur */
         int nVisibleTilesY; /**< Nombre de tiles verticalement visibles dans l'écran du joueur */
 
+
+        bool bDirection;  /**< Direction du joueur */
         
         float fOffsetX; /**< Décalage de la caméra en X */
         float fOffsetY; /**< Décalage de la caméra en Y */
