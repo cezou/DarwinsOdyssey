@@ -1,8 +1,11 @@
 #include <iostream>
-#include<cstdlib>
+#include <cstdlib>
 #include <fstream>
+#include <ctime>
+#include <cmath>
 #include "./Map.h"
 #include "./Player.h"
+#include "./Ennemi_Fish.h"
 
 using namespace std;
 
@@ -12,6 +15,12 @@ Map::Map(){
 	nb_cellules_b_placees = 4;
 	nb_cellules_g_placees = 4;
 
+	rester_niveau1 = false;
+
+	stop_a_droite = false;
+	stop_a_gauche = false;
+	vies = 5;
+
 	
 	player1 = Player(3.0, 3.0);
 	player2 = Player(3.0, 3.0);
@@ -19,15 +28,12 @@ Map::Map(){
 
 }
 
-//constructeur avec parametres
-Map::Map(wstring sLevel_param, int nLevelWidth_param, int nLevelHeight_param){
-    sLevel = sLevel_param;
-    nLevelWidth = nLevelWidth_param;
-    nLevelHeight = nLevelHeight_param;
-}
-
+// initialisation des images
 void Map::initImages(olc::PixelGameEngine* pge){
 	spriteMap = new olc::Sprite("./data/MAP.png");
+
+	spriteMenu = new olc::Sprite("./data/menu.png");
+	decMenu = new olc::Decal(spriteMenu);
 
 	spriteTiles = new olc::Sprite("./data/parenchymadefault.png");
 	decTiles = new olc:: Decal(spriteTiles);
@@ -37,6 +43,15 @@ void Map::initImages(olc::PixelGameEngine* pge){
 
     spritePlayer2 = new olc::Sprite("./data/alt/Cell-J2.png");
 	decPlayer2 = new olc::Decal(spritePlayer2);
+
+    spritePlayerLevel0 = new olc::Sprite("./data/alt/fish.png");
+	decPlayerLevel0 = new olc::Decal(spritePlayerLevel0);
+
+    spritePlayerLevel2 = new olc::Sprite("./data/alt/shark.png");
+	decPlayerLevel2 = new olc::Decal(spritePlayerLevel2);
+
+    spritePlayerLevel3 = new olc::Sprite("./data/alt/whale.png");
+	decPlayerLevel3 = new olc::Decal(spritePlayerLevel3);
 
 	spriteMultiCell = new olc::Sprite("./data/Multi-Cell.png");
 	decMultiCell = new olc::Decal(spriteMultiCell);
@@ -53,12 +68,21 @@ void Map::initImages(olc::PixelGameEngine* pge){
 	spriteVirus = new olc::Sprite("./data/virus.png");
 	decVirus = new olc::Decal(spriteVirus);
 
-	
-	
+	spriteBackGroundLevel2 = new olc::Sprite("./data/underwaterbg.png");
 
 }
 
+void Map::drawLevel0(olc::PixelGameEngine* pge){
+	olc::vd2d posInitImage = {0,0};
 
+	// Draw le fond
+	pge->DrawDecal(posInitImage, decMenu);
+
+	
+		
+}
+
+// initialisation de la carte depuis une image png
 void Map::initMapFromImage(olc::PixelGameEngine* pge) {
 	// Calcule la largeur et la hauteur de la carte en blocs 
 	
@@ -87,45 +111,51 @@ void Map::initMapFromImage(olc::PixelGameEngine* pge) {
 		std::wstring wideRow = converter.from_bytes(row);
 		sLevel += wideRow ;
 	}
-	
-
-	// Affiche la carte dans la console
-	wcout << sLevel << endl;
 }
 
+auto Map::GetTile(int x, int y)
+{
+	if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+		return sLevel[y * nLevelWidth + x];
+	else
+		return L' ';
+};
+
+auto Map::SetTile(int x, int y, wchar_t c)
+{
+	if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+		sLevel[y * nLevelWidth + x] = c;
+};
 
 
+// mouvements joueurs et collisions
 void Map::move(float fElapsedTime, Player& P){
 
-	auto GetTile = [&](int x, int y)
-	{
-		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-			return sLevel[y * nLevelWidth + x];
-		else
-			return L' ';
-	};
-	auto SetTile = [&](int x, int y, wchar_t c)
-	{
-		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-			sLevel[y * nLevelWidth + x] = c;
-	};
+	P.fNewPlayerPosX = P.fPlayerPosX + P.fPlayerVelX * fElapsedTime;
+	P.fNewPlayerPosY = P.fPlayerPosY + P.fPlayerVelY * fElapsedTime;
 
-		float fNewPlayerPosX = P.fPlayerPosX + P.fPlayerVelX * fElapsedTime;
-		float fNewPlayerPosY = P.fPlayerPosY + P.fPlayerVelY * fElapsedTime;
+	P.fPlayerPosX = P.fNewPlayerPosX;
+	P.fPlayerPosY = P.fNewPlayerPosY;
 
+}
+
+void Map::collisions(float fElapsedTime, Player& P){
+
+	
+	
 		// Check for Collision
 		if (P.fPlayerVelX <= 0) // Moving Left
 		{
-			if (GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.2f) == L'#' || GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.7f) == L'#')
+			if (GetTile(P.fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.2f) == L'#' || GetTile(P.fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.7f) == L'#')
 			{
-				fNewPlayerPosX = (int)fNewPlayerPosX + 1;
+				P.fNewPlayerPosX = (int)P.fNewPlayerPosX + 1;
 				P.fPlayerVelX = 0;
 			}
 
-			if(GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.2f) == L'v' || GetTile(fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.7f) == L'v'){
+			if(GetTile(P.fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.2f) == L'v' || GetTile(P.fNewPlayerPosX + 0.0f, P.fPlayerPosY + 0.7f) == L'v'){
 
 				bool place = false;
-				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+				SetTile(P.fPlayerPosX - 0.2f , P.fPlayerPosY, L'.');
 
 				while(place == false){
 
@@ -133,8 +163,8 @@ void Map::move(float fElapsedTime, Player& P){
 					int y = rand() % nLevelHeight;
 
 					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
-						fNewPlayerPosX = x;
-						fNewPlayerPosY = y;
+						P.fNewPlayerPosX = x;
+						P.fNewPlayerPosY = y;
 						place = true;
 					}
 				}		
@@ -143,17 +173,17 @@ void Map::move(float fElapsedTime, Player& P){
 
 		else // Moving Right
 		{
-			if (GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.2f) == L'#' || GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.7f) == L'#')
+			if (GetTile(P.fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.2f) == L'#' || GetTile(P.fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.7f) == L'#')
 			{
-				fNewPlayerPosX = (int)fNewPlayerPosX;
+				P.fNewPlayerPosX = (int)P.fNewPlayerPosX;
 				P.fPlayerVelX = 0;
 				
 			}
 
-			if(GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.2f) == L'v' || GetTile(fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.7f) == L'v'){
+			if(GetTile(P.fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.2f) == L'v' || GetTile(P.fNewPlayerPosX + 1.0f, P.fPlayerPosY + 0.7f) == L'v'){
 
 				bool place = false;
-				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+				SetTile(P.fPlayerPosX +1.2f , P.fPlayerPosY, L'.');
 
 				while(place == false){
 
@@ -161,8 +191,8 @@ void Map::move(float fElapsedTime, Player& P){
 					int y = rand() % nLevelHeight;
 
 					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
-						fNewPlayerPosX = x;
-						fNewPlayerPosY = y;
+						P.fNewPlayerPosX = x;
+						P.fNewPlayerPosY = y;
 						place = true;
 					}
 				}		
@@ -171,16 +201,16 @@ void Map::move(float fElapsedTime, Player& P){
 		
 		if (P.fPlayerVelY <= 0) // Moving Up
 		{
-			if (GetTile(fNewPlayerPosX + 0.2f, fNewPlayerPosY) == L'#' || GetTile(fNewPlayerPosX + 0.7f, fNewPlayerPosY) == L'#')
+			if (GetTile(P.fNewPlayerPosX + 0.2f, P.fNewPlayerPosY) == L'#' || GetTile(P.fNewPlayerPosX + 0.7f, P.fNewPlayerPosY) == L'#')
 			{
-				fNewPlayerPosY = (int)fNewPlayerPosY + 1;
+				P.fNewPlayerPosY = (int)P.fNewPlayerPosY + 1;
 				P.fPlayerVelY = 0;
 			}
 
-			if(GetTile(fNewPlayerPosX + 0.2f, P.fPlayerPosY) == L'v' || GetTile(fNewPlayerPosX + 0.7f, P.fPlayerPosY) == L'v'){
+			if(GetTile(P.fNewPlayerPosX + 0.2f, P.fPlayerPosY) == L'v' || GetTile(P.fNewPlayerPosX + 0.7f, P.fPlayerPosY) == L'v'){
 
 				bool place = false;
-				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+				SetTile(P.fNewPlayerPosX, P.fPlayerPosY - 0.2f, L'.');
 
 				while(place == false){
 
@@ -188,8 +218,8 @@ void Map::move(float fElapsedTime, Player& P){
 					int y = rand() % nLevelHeight;
 
 					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
-						fNewPlayerPosX = x;
-						fNewPlayerPosY = y;
+						P.fNewPlayerPosX = x;
+						P.fNewPlayerPosY = y;
 						place = true;
 					}
 				}		
@@ -197,17 +227,17 @@ void Map::move(float fElapsedTime, Player& P){
 		}
 		else // Moving Down
 		{
-			if (GetTile(fNewPlayerPosX + 0.2f, fNewPlayerPosY + 1.0f) == L'#' || GetTile(fNewPlayerPosX + 0.7f, fNewPlayerPosY + 1.0f) == L'#')
+			if (GetTile(P.fNewPlayerPosX + 0.2f, P.fNewPlayerPosY + 1.0f) == L'#' || GetTile(P.fNewPlayerPosX + 0.7f, P.fNewPlayerPosY + 1.0f) == L'#')
 			{
-				fNewPlayerPosY = (int)fNewPlayerPosY;
+				P.fNewPlayerPosY = (int)P.fNewPlayerPosY;
 				P.fPlayerVelY = 0;
 				
 			}
 
-			if(GetTile(fNewPlayerPosX + 0.2f, P.fPlayerPosY + 1.0f) == L'v' || GetTile(fNewPlayerPosX + 0.7f, P.fPlayerPosY + 1.0f) == L'v'){
+			if(GetTile(P.fNewPlayerPosX + 0.2f, P.fPlayerPosY + 1.0f) == L'v' || GetTile(P.fNewPlayerPosX + 0.7f, P.fPlayerPosY + 1.0f) == L'v'){
 
 				bool place = false;
-				SetTile(fNewPlayerPosX, P.fPlayerPosY, L'.');
+				SetTile(P.fNewPlayerPosX, P.fPlayerPosY + 1.2f, L'.');
 
 				while(place == false){
 
@@ -215,8 +245,8 @@ void Map::move(float fElapsedTime, Player& P){
 					int y = rand() % nLevelHeight;
 
 					if ((GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v')){
-						fNewPlayerPosX = x;
-						fNewPlayerPosY = y;
+						P.fNewPlayerPosX = x;
+						P.fNewPlayerPosY = y;
 						place = true;
 						
 					}
@@ -224,58 +254,21 @@ void Map::move(float fElapsedTime, Player& P){
 			}
 		}
 
-		// Apply new position
-		P.fPlayerPosX = fNewPlayerPosX;
-		P.fPlayerPosY = fNewPlayerPosY;
+	// Apply new position
+	P.fPlayerPosX = P.fNewPlayerPosX;
+	P.fPlayerPosY = P.fNewPlayerPosY;
 
-		// Link camera to player position
-		P.fCameraPosX = P.fPlayerPosX;
-		P.fCameraPosY = P.fPlayerPosY;
-
+	// Link camera to player position
+	P.fCameraPosX = P.fPlayerPosX;
+	P.fCameraPosY = P.fPlayerPosY;
 }
 
-
-void Map::drawLevel(olc::PixelGameEngine* pge){
+// dessiner le niveau 1
+void Map::drawLevel1(olc::PixelGameEngine* pge){
 
 	srand((unsigned) time(NULL));
 	// Draw Level
 
-		auto GetTile = [&](int x, int y)
-		{
-			if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-				return sLevel[y * nLevelWidth + x];
-			else
-				return L' ';
-		};
-
-		auto SetTile = [&](int x, int y, wchar_t c)
-		{
-			if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-				sLevel[y * nLevelWidth + x] = c;
-		};
-		/*
-		// Placer les cellules 'b'
-
-		while (nb_cellules_b_placees>0)
-		{
-			int x = rand() % nLevelWidth;
-			int y = rand() % nLevelHeight;
-			if( (GetTile(x, y)!='#') && (GetTile(x, y)!='b') && (GetTile(x, y)!='v') && (GetTile(x, y)!='$')){
-				SetTile(x, y, 'b');
-				nb_cellules_b_placees--;
-			}
-		}
-		
-		// Placer les cellules 'g'
-		while (nb_cellules_g_placees>0)
-		{
-			int x = rand() % nLevelWidth;
-			int y = rand() % nLevelHeight;
-			if( (GetTile(x, y)!='#') && (GetTile(x, y)!='g') && (GetTile(x, y)!='v') && (GetTile(x, y)!='$')){
-				SetTile(x, y, 'g');
-				nb_cellules_g_placees--;
-			}
-		} */
 
 		// Void RecupCellJ1
 		if (pge->IsFocused()) {
@@ -284,7 +277,6 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 			if (pge->GetKey(olc::Key::E).bPressed && GetTile(player1.fPlayerPosX+0.5f, player1.fPlayerPosY+0.5f) == L'b') {
 
 				player1.NbCelluleRecup++;
-				cout << "YES" << endl;
 				SetTile(player1.fPlayerPosX + 0.5f, player1.fPlayerPosY + 0.5f, L'.');
 			}
 		}
@@ -296,10 +288,7 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 			if (pge->GetKey(olc::Key::SHIFT).bPressed && GetTile(player2.fPlayerPosX + 0.5f, player2.fPlayerPosY + 0.5f) == L'g') {
 
 				player2.NbCelluleRecup++;
-				cout << "YES" << endl;
 				SetTile(player2.fPlayerPosX + 0.5f, player2.fPlayerPosY + 0.5f, L'.');
-				cout << player2.NbCelluleRecup << endl;
-				cout << static_cast<float>(player2.NbCelluleRecup) << endl;
 			}
 		}
 		 
@@ -450,7 +439,6 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 		// et qu'ils sont aux bordures max en X de la map
 		// et que la différence de leurs positions est < 6.5
 		
-		//cout << "OFFSET J1 = " << player1.fOffsetX <<  "    OFFSET J2 = " << player2.fOffsetX << endl;
 		if ((player2.fOffsetX - player1.fOffsetX > -6.5 && player2.fOffsetX - player1.fOffsetX < 6.5)	
 			&& 
 				(player1.fOffsetX < (nLevelWidth - 12) && player2.fOffsetX < (nLevelWidth - 12) ||
@@ -508,4 +496,250 @@ void Map::drawLevel(olc::PixelGameEngine* pge){
 		// Revenir au calque par défaut
 		
 		pge->Clear(olc::BLANK);
+}
+
+int Map::checkLevel(olc::PixelGameEngine* pge, Player& P1, Player& P2){
+
+	int niveau;
+
+	if(((P1.NbCelluleRecup==0) || (P2.NbCelluleRecup==0))){
+		//cout<<"pased 1 "<<endl;
+	}
+
+	if((!rester_niveau1)){
+		//cout<<"pased 2"<<endl;
+	}
+
+	if((!rester_niveau1)){
+		niveau = 0;
+	} 
+
+	if ((pge->GetKey(olc::Key::SPACE).bPressed) || (rester_niveau1)){
+            niveau = 1;  
+			rester_niveau1 = true;
+    }
+	
+
+	if ((P1.NbCelluleRecup==1) || (P2.NbCelluleRecup==1)){
+		rester_niveau1 = false;
+		niveau = 2;
+	}
+
+	return niveau;
+}
+
+void Map::initEnnemis(){
+	
+	for(int i = 0; i<numeroFish/2; i++){
+
+		tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+		tabFish[i].fEnnemiPosX = 800;
+		tabFish[i].ennemiLevel = rand() % 4;
+	}
+	
+	for(int i = numeroFish/2; i<numeroFish; i++){
+		tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+		tabFish[i].fEnnemiPosX = 0.0f;
+		tabFish[i].ennemiLevel = rand() % 4;
+	}		
+	
+	for(int i = 0; i < numeroFish; i++){
+		if(i != 0){
+			for(int j = 0; j < i; j++){
+				while(abs(tabFish[i].fEnnemiPosY - tabFish[j].fEnnemiPosY) < 20.0f ){
+					tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+				}
+			}
+		}
+	}
+
+}
+
+void Map::setVelEnnemi(){
+	for(int i = 0; i < numeroFish / 2; i++){
+		tabFish[i].fEnnemiVelX = -200 + (rand() % 191 - 10);
+		tabFish[i].fEnnemiVelY = 0;
+	}
+
+	for(int i = numeroFish / 2; i < numeroFish; i++){
+		tabFish[i].fEnnemiVelX = 10 + (rand() % 191);
+		tabFish[i].fEnnemiVelY = 0;
+	}
+}
+
+void Map::replaceEnnemi(){
+	for(int i = 0; i<numeroFish/2; i++){
+		if((tabFish[i].fEnnemiPosX + 30 < 0.0f) || (tabFish[i].touche == true)){
+			tabFish[i].fEnnemiPosX = 800.0f;
+			tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+			tabFish[i].fEnnemiVelX = -200 + (rand() % 191 - 10);
+			tabFish[i].ennemiLevel = rand() % 4;
+			tabFish[i].touche = false;
+		}
+	}
+
+	for(int i = numeroFish/2; i<numeroFish; i++){
+		if((tabFish[i].fEnnemiPosX > 800) || (tabFish[i].touche == true)){
+			tabFish[i].fEnnemiPosX = 0.0f;
+			tabFish[i].fEnnemiPosY = rand() % 371 + 30;
+			tabFish[i].fEnnemiVelX = 10 + (rand() % 191);
+			tabFish[i].ennemiLevel = rand() % 4;
+			tabFish[i].touche = false;
+		}
+	}
+}
+
+void Map::collisionsMap(Player &P){
+
+	// a gauche
+	if(P.fPlayerPosX < 0.0f){
+		P.fPlayerPosX = 0.0f;
+	} 
+
+	// en haut
+	if(P.fPlayerPosY < 0.0f){
+		P.fPlayerPosY = 0.0f;
+	} 
+
+	// a droite
+	if(P.fPlayerPosX + 30 > 800.0f){
+		P.fPlayerPosX = 800.0f - 30;
+	} 
+
+	// en bas
+	if(P.fPlayerPosY + 30 > 450.0f){
+		P.fPlayerPosY = 450.0f - 30;
+	} 
+}
+
+void Map::collisionsEnnemiFish(Player &P){
+
+	// collisions
+
+	for(int i = 0; i < numeroFish; i++){
+				
+			if (P.fPlayerVelX <= 0) // Moving Left
+			{
+
+				if((P.distance(P.fPlayerPosX, P.fPlayerPosY, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 32) && (tabFish[i].ennemiLevel == 0)){
+
+						if((P.level > tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
+							P.numeroPoints ++;
+							tabFish[i].touche = true;
+						}
+
+						else if((P.level < tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+				}
+
+				if((P.distance(P.fPlayerPosX, P.fPlayerPosY, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 32) && (tabFish[i].ennemiLevel == 1)){
+
+						if((P.level > tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
+							P.numeroPoints ++;
+							tabFish[i].touche = true;
+						}
+
+						else if((P.level <= tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+
+				}
+
+				if((P.distance(P.fPlayerPosX, P.fPlayerPosY, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 32) && (tabFish[i].ennemiLevel == 2)){
+
+						if((P.level > tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
+							P.numeroPoints ++;
+							tabFish[i].touche = true;
+						}
+
+						else if((P.level < tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+
+				}
+
+			}
+			
+		}
+}
+
+void Map::drawLevel2(olc::PixelGameEngine* pge){
+
+	olc::vf2d SpritePosMultiCell1 = { 0, 0 };
+	olc::vd2d posInitImage = {0,0};
+
+	// Draw le fond
+	pge->DrawSprite(posInitImage, spriteBackGroundLevel2);
+
+	// Draw joueur 1
+	olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
+	if (player1.bDirection)
+	{
+		pge->DrawDecal(posJ1, decPlayerLevel0, { -1.0f, 1.0f });
+	}
+	else
+		pge->DrawDecal(posJ1, decPlayerLevel0, { 1.0f, 1.0f });
+	// Player 2
+	olc::vf2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
+
+	if (player2.bDirection)
+	{
+		pge->DrawDecal(posJ2, decPlayerLevel0, { -1.0f, 1.0f });
+	}
+	else
+		pge->DrawDecal(posJ2, decPlayerLevel0, { 1.0f, 1.0f });
+
+
+	// Draw ennemis
+	for(int i = 0; i < numeroFish; i++){
+
+		olc::vf2d posEnnemi = {tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY};
+		if(tabFish[i].ennemiLevel == 0){
+			if (tabFish[i].fEnnemiVelX > 0)
+			{ 
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, {-0.5f, 0.5f});
+			}
+			else
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 0.5f, 0.5f });
+
+		}
+
+		if(tabFish[i].ennemiLevel == 1){
+			if (tabFish[i].fEnnemiVelX > 0)
+			{
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { -1.0f, 1.0f });
+			}
+			else
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 1.0f, 1.0f });
+		}
+
+		if(tabFish[i].ennemiLevel == 2){
+			if (tabFish[i].fEnnemiVelX > 0)
+			{
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { -1.5f, 1.5f });
+			}
+			else
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 1.5f, 1.5f });
+		}
+
+		if(tabFish[i].ennemiLevel == 3){
+			if (tabFish[i].fEnnemiVelX > 0)
+			{
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { -2.0f, 2.0f });
+			}
+			else
+				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 2.0f, 2.0f });
+		}
+
+	
+	}
+
+
 }

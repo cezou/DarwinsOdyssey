@@ -19,12 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Ennemi_Fish.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\test1.cpp" />
+    <ClCompile Include="test2regression.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\olcPixelGameEngine-master\olcPixelGameEngine.h" />
+    <ClInclude Include="src\Ennemi_Fish.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\Player.h" />
   </ItemGroup>

@@ -9,6 +9,10 @@ Player::Player(){
 		fPlayerVelY = 0.0f;
         nTileWidth = 32;
 		nTileHeight = 32;
+        level = 1;
+        numeroPoints = 0;
+        bDirection = 1;
+
 }
 
 Player::Player(float posX, float posY){
@@ -20,6 +24,10 @@ Player::Player(float posX, float posY){
 		fPlayerVelY = 0.0f;
         nTileWidth = 32;
 		nTileHeight = 32;
+        level = 1;
+        numeroPoints = 0;
+        bDirection = 1;
+
 }
 
 void Player::move(float fElapsedTime){
@@ -32,7 +40,9 @@ void Player::move(float fElapsedTime){
 
 }
 
-void Player::collisions(){
+
+// Pour ne pas sortir de la carte.
+void Player::limites_map_collisions(){
 
 		if(fPlayerVelY <= 0){
 			if(fPlayerPosY <= 0){	
@@ -73,66 +83,74 @@ void Player::setNBCell() {
     NbCelluleRecup = 0;
 }
 
-void Player::detectKeysPlayer1(olc::PixelGameEngine* pge){
+void Player::detectKeysPlayer1(olc::PixelGameEngine* pge, float velPlayer){
 
         // Mouvements player 1
          if (pge->IsFocused()) {
 
         // aller en haut pour clavier qwerty et azerty
         if (pge->GetKey(olc::Key::W).bHeld || pge->GetKey(olc::Key::Z).bHeld) {
-            fPlayerVelY = -10.0f;
+            fPlayerVelY = -velPlayer;
+          
         }
 
         // aller en bas
         if (pge->GetKey(olc::Key::S).bHeld) {
-            fPlayerVelY = 10.0f;
+            fPlayerVelY = velPlayer;
         }
 
         // aller à gauche pour clavier qwerty et azerty
         if (pge->GetKey(olc::Key::A).bHeld || pge->GetKey(olc::Key::Q).bHeld) {
-            fPlayerVelX = -10.0f;
+            fPlayerVelX = -velPlayer;
+            bDirection = 0;
+
         }
 
         // aller à droite
         if (pge->GetKey(olc::Key::D).bHeld) {
-            fPlayerVelX = 10.0f;
+            fPlayerVelX = velPlayer;
+            bDirection = 1;
+        
         }
 
         }	
 }
 
-void Player::detectKeysPlayer2(olc::PixelGameEngine* pge){
+void Player::detectKeysPlayer2(olc::PixelGameEngine* pge, float velPlayer){
 
     	// Mouvements player 2
         if (pge->IsFocused()) {
 
         // Aller en haut
         if (pge->GetKey(olc::Key::UP).bHeld) {
-            fPlayerVelY = -4.0f;
+            fPlayerVelY = -velPlayer;
         }
 
         // Aller en bas
         if (pge->GetKey(olc::Key::DOWN).bHeld) {
-            fPlayerVelY = 4.0f;
+            fPlayerVelY = velPlayer;
         }
 
         // Aller à gauche
         if (pge->GetKey(olc::Key::LEFT).bHeld) {
-            fPlayerVelX = -4.0f;
+            fPlayerVelX = -velPlayer;
+            bDirection = 0;
+
         }
 
         // Aller à droite
         if (pge->GetKey(olc::Key::RIGHT).bHeld) {
-            fPlayerVelX = 4.0f;
+            fPlayerVelX = velPlayer;
+            bDirection = 1;
+
         }
 
 
         }
 }
 
-float Player::distance_collision(){
-    //float centreX = fPlayerPosX + nTileWidth / 2;
-    //float centreY = fPlayerPosY + nTileHeight / 2;
-    return nTileWidth / 2;
+float Player::distance(float x1, float y1, float x2, float y2) {
+    float dx = x2 - x1;
+    float dy = y2 - y1;
+    return sqrt(dx*dx + dy*dy);
 }
-

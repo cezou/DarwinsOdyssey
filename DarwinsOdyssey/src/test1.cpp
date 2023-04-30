@@ -4,11 +4,26 @@
 #include "./Map.h"
 #include <iostream>
 #include <string>
+#include <ctime>
 
-class Example : public olc::PixelGameEngine
+const float velPlayerLevel1 = 8.0f;
+const float velPlayerLevel2 = 250.0f;
+
+/*!
+ *  \brief		PROJET FINAL LIFAPCD: Darwin's Odyssey.
+ *  \details	Ce fichier est le fichier principal du jeu, où se trouve le main.
+				Ce projet est un jeu sous la forme d’un 2D Platformer en coop (2 joueurs sur un même ordinateur). 
+				Il faut résoudre des énigmes pour retracer l’évolution de l’homme. (en suivant la Théorie de Darwin)
+ *	\author		P2105932 Jofre COLL
+ *	\author		P2109844 Césaire VIEGAS
+ *  \date		Février-Mai 2023
+ */
+
+
+class DarwinsOdyssey : public olc::PixelGameEngine
 {
 public:
-	Example()
+	DarwinsOdyssey()
 	{
 		sAppName = "Darwin's Odyssey";
 	}
@@ -40,6 +55,9 @@ public:
 		SetLayerOffset(mapLevel1.lineLayerIndex, { 0.0f, 0.0f });
 		SetLayerScale(mapLevel1.lineLayerIndex, { 1.0f, 1.0f });
 		EnableLayer(mapLevel1.lineLayerIndex, true);
+
+		mapLevel1.setVelEnnemi();
+		mapLevel1.initEnnemis();
 		
 		
 		return true;
@@ -48,20 +66,70 @@ public:
 	bool OnUserUpdate(float fElapsedTime) override
 	{
 		
-		// Mouvements players
-		mapLevel1.player1.setVel0();
-		mapLevel1.player2.setVel0();
 
-		mapLevel1.player1.detectKeysPlayer1(this);
-		mapLevel1.player2.detectKeysPlayer2(this);
+		// LEVEL 0
 
-		mapLevel1.player1.collisions();
-		mapLevel1.player2.collisions();
-		mapLevel1.move(fElapsedTime, mapLevel1.player1);
-		mapLevel1.move(fElapsedTime, mapLevel1.player2);
+		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 0){
+			mapLevel1.drawLevel0(this);
+		}
+		
+		// LEVEL 1
+		
+		
+		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 1){
+			// Mouvements players
+			mapLevel1.player1.setVel0();
+			mapLevel1.player2.setVel0();
 
-		mapLevel1.drawLevel(this);
+			mapLevel1.player1.detectKeysPlayer1(this, velPlayerLevel1);
+			mapLevel1.player2.detectKeysPlayer2(this, velPlayerLevel1);
 
+			mapLevel1.player1.limites_map_collisions();
+			mapLevel1.player2.limites_map_collisions();
+			mapLevel1.move(fElapsedTime, mapLevel1.player1);
+			mapLevel1.move(fElapsedTime, mapLevel1.player2);
+			mapLevel1.collisions(fElapsedTime, mapLevel1.player1);
+			mapLevel1.collisions(fElapsedTime, mapLevel1.player2);
+
+			mapLevel1.drawLevel1(this);
+		}
+
+		// LEVEL 2
+
+		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 2){
+		
+			mapLevel1.player1.setVel0();
+			mapLevel1.player2.setVel0();
+
+			mapLevel1.player1.detectKeysPlayer1(this, velPlayerLevel2);
+			mapLevel1.player2.detectKeysPlayer2(this, velPlayerLevel2);
+
+			//mapLevel1.player1.limites_map_collisions();
+			//mapLevel1.player2.limites_map_collisions();
+			mapLevel1.move(fElapsedTime, mapLevel1.player1);
+			mapLevel1.move(fElapsedTime, mapLevel1.player2);
+			//mapLevel1.collisions2(fElapsedTime, mapLevel1.player1);
+			//mapLevel1.collisions2(fElapsedTime, mapLevel1.player2);
+
+			
+			for(int i = 0; i<numeroFish; i++){
+				mapLevel1.tabFish[i].move(fElapsedTime);
+			}
+		
+			mapLevel1.replaceEnnemi();
+			
+			mapLevel1.collisionsMap(mapLevel1.player1);
+			mapLevel1.collisionsMap(mapLevel1.player2);
+
+			mapLevel1.collisionsEnnemiFish(mapLevel1.player1);
+			mapLevel1.collisionsEnnemiFish(mapLevel1.player2);
+			
+			mapLevel1.drawLevel2(this);
+			cout<<"Numero points player 1 = " << mapLevel1.player1.numeroPoints << endl;
+			cout<<"Numero points player 2 = " << mapLevel1.player2.numeroPoints << endl;
+			cout<< "Numero vies = " << mapLevel1.vies << endl;
+			 
+		}
 		return true;
 	}
 };
@@ -69,9 +137,11 @@ public:
 
 int main()
 {
-	Example demo;
-	if (demo.Construct(800, 450, 2, 2, false, true))
-		demo.Start();
+	srand(time(NULL));
+
+	DarwinsOdyssey DO;
+	if (DO.Construct(800, 450, 2, 2, false, true))
+		DO.Start();
 
 	return 0;
 }
