@@ -149,7 +149,7 @@ class Map{
 
         void collisionsEnnemiFish(Player &P);
 
-        void checkLevelPlayer(Player &P);
+        void checkLevelPlayer(Player &P1, Player &P2);
 
         auto GetTile(int x, int y);
 

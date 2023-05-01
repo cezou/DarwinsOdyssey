@@ -494,9 +494,21 @@ void Map::drawLevel1(olc::PixelGameEngine* pge){
 		pge->SetDrawTarget(nullptr);
 		pge->FillRectDecal({ 800 / 2 - 16 , 0 }, { 32, 450 }, olc::VERY_DARK_BLUE);
 
+		
+
 		// Revenir au calque par défaut
 		
 		pge->Clear(olc::BLANK);
+		
+		// Dessiner le nombre de cellules recuperées
+
+		pge->DrawString({3,3}, "CELLULES PLAYER 1:", olc::YELLOW);
+		string cellules_player1_string = to_string(player1.NbCelluleRecup);
+		pge->DrawString({155, 3}, cellules_player1_string, olc::YELLOW);
+
+		pge->DrawString({630,3}, "CELLULES PLAYER 2:", olc::YELLOW);
+		string cellules_player2_string = to_string(player2.NbCelluleRecup);
+		pge->DrawString({780, 3}, cellules_player2_string, olc::YELLOW);
 }
 
 int Map::checkLevel(olc::PixelGameEngine* pge, Player& P1, Player& P2){
@@ -520,7 +532,7 @@ int Map::checkLevel(olc::PixelGameEngine* pge, Player& P1, Player& P2){
 
 	if(rester_niveau2){
 		niveau = 2;
-		if((P1.numeroPoints > 5) || (P2.numeroPoints > 5)){
+		if((P1.numeroPoints > 40) && (P2.numeroPoints > 40)){
 			rester_niveau2 = false;
 			niveau = 3;
 		}
@@ -626,12 +638,12 @@ void Map::collisionsEnnemiFish(Player &P){
 					if(tabFish[i].ennemiLevel == 0) {
 
 						// OK
-						if((P.level == 1) && (P.bDirection) && ((P.distance(P.fPlayerPosX - 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 12) && (tabFish[i].touche == false))){
+						if((P.level == 1) && (P.bDirection) && ((P.distance(P.fPlayerPosX - 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 17) && (tabFish[i].touche == false))){
 							P.numeroPoints = P.numeroPoints + 1;
 							tabFish[i].touche = true;
 						}
 
-						if((P.level == 1) && (!P.bDirection) && ((P.distance(P.fPlayerPosX + 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 12) && (tabFish[i].touche == false))){
+						if((P.level == 1) && (!P.bDirection) && ((P.distance(P.fPlayerPosX + 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 17) && (tabFish[i].touche == false))){
 							P.numeroPoints = P.numeroPoints + 1;
 							tabFish[i].touche = true;
 						}
@@ -650,12 +662,12 @@ void Map::collisionsEnnemiFish(Player &P){
 
 						// OK
 						if((P.level == 3) && (P.bDirection) && ((P.distance(P.fPlayerPosX - 20, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 20) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 0.25;
+							P.numeroPoints = P.numeroPoints + 1;
 							tabFish[i].touche = true;
 						}
 
 						if((P.level == 3) && (!P.bDirection) && ((P.distance(P.fPlayerPosX + 20, P.fPlayerPosY + 35 , tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 20) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 0.25;
+							P.numeroPoints = P.numeroPoints + 1;
 							tabFish[i].touche = true;
 						}
 					}
@@ -665,44 +677,44 @@ void Map::collisionsEnnemiFish(Player &P){
 						// collision ennemi level 1 player level 2
 						// OK
 						if((P.level == 2) && (P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX - 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX - 10, tabFish[i].fEnnemiPosY + 18  ) <= 17) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 2;
 							tabFish[i].touche = true;
 						}
 
 						if((P.level == 2) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX - 10, tabFish[i].fEnnemiPosY + 18 ) <= 17) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 2;
 							tabFish[i].touche = true;
 						}
 
 						if((P.level == 2) && (P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX - 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX + 10, tabFish[i].fEnnemiPosY + 18  ) <= 17) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 2;
 							tabFish[i].touche = true;
 						}
 
 						if((P.level == 2) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX + 10, tabFish[i].fEnnemiPosY + 18 ) <= 17) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 2;
 							tabFish[i].touche = true;
 						}
 
 						// OK
 
 						if((P.level == 3) && (P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX - 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX - 10, tabFish[i].fEnnemiPosY + 18  ) <= 20) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 2;
 							tabFish[i].touche = true;
 						}
 
 						if((P.level == 3) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX - 10, tabFish[i].fEnnemiPosY + 18 ) <= 20) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 2;
 							tabFish[i].touche = true;
 						}
 
 						if((P.level == 3) && (P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX - 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX + 10, tabFish[i].fEnnemiPosY + 18  ) <= 20) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 2;
 							tabFish[i].touche = true;
 						}
 
 						if((P.level == 3) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX + 10, tabFish[i].fEnnemiPosY + 18 ) <= 20) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 2;
 							tabFish[i].touche = true;
 						}
 
@@ -712,22 +724,22 @@ void Map::collisionsEnnemiFish(Player &P){
 
 						// OK
 						if((P.level == 3) && (P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX - 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX - 15, tabFish[i].fEnnemiPosY + 25  ) <= 20) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 4;
 							tabFish[i].touche = true;
 						}
 
 						if((P.level == 3) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX - 15, tabFish[i].fEnnemiPosY + 25 ) <= 20) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 4;
 							tabFish[i].touche = true;
 						}
 
 						if((P.level == 3) && (P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX - 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX + 15, tabFish[i].fEnnemiPosY + 25  ) <= 20) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 4;
 							tabFish[i].touche = true;
 						}
 
 						if((P.level == 3) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX + 15, tabFish[i].fEnnemiPosY + 25 ) <= 20) && (tabFish[i].touche == false))){
-							P.numeroPoints = P.numeroPoints + 1;
+							P.numeroPoints = P.numeroPoints + 4;
 							tabFish[i].touche = true;
 						}		
 					
@@ -878,18 +890,26 @@ void Map::collisionsEnnemiFish(Player &P){
 			}
 		}		
 	}	
+
+	if(vies == 0){
+		P.numeroPoints = 0;
+		P.level = 1;
+		vies = 5;
+	}
 }
 
 
 
-void Map::checkLevelPlayer(Player &P){
+void Map::checkLevelPlayer(Player &P1, Player &P2){
 
-	if(P.numeroPoints >= 5){
-		P.level = 2;
+	if((P1.numeroPoints >= 10) && (P2.numeroPoints >= 10)){
+		P1.level = 2;
+		P2.level = 2;
 	}
 
-	if(P.numeroPoints >= 10){
-		P.level = 3;
+	if((P1.numeroPoints >= 30) && (P2.numeroPoints >= 30)){
+		P1.level = 3;
+		P2.level = 3;
 	}
 }
 void Map::drawLevel2(olc::PixelGameEngine* pge){
@@ -1074,6 +1094,31 @@ void Map::drawLevel2(olc::PixelGameEngine* pge){
 
 	
 	}
+
+	pge->DrawString({3, 3}, "POINTS PLAYER 1", olc::YELLOW);
+	string points_player_1 = to_string(player1.numeroPoints);
+	string points_player_2 = to_string(player2.numeroPoints);
+	pge->DrawString({50, 20}, points_player_1, olc::YELLOW);
+	pge->DrawString({680, 3}, "POINTS PLAYER 2", olc::YELLOW);
+	pge->DrawString({730, 20}, points_player_2, olc::YELLOW);
+	pge->DrawString({300, 3}, "NEXT LEVEL:", olc::GREEN);
+
+	if((player1.numeroPoints < 10) && (player2.numeroPoints < 10)){
+		pge->DrawString({305, 20}, "10 POINTS", olc::GREEN);
+	}
+
+	else if((player1.numeroPoints < 30) && (player2.numeroPoints < 30)){
+		pge->DrawString({305, 20}, "30 POINTS", olc::GREEN);
+	}
+
+	else if((player1.numeroPoints < 40) && (player2.numeroPoints < 40)){
+		pge->DrawString({305, 20}, "40 POINTS", olc::GREEN);
+	}
+
+	string lives_string = to_string(vies);
+	pge->DrawString({450, 3}, "LIVES: ", olc::RED);
+	pge->DrawString({465, 20}, lives_string, olc::RED);
+
 
 
 }

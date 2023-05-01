@@ -124,8 +124,7 @@ public:
 			mapLevel1.collisionsEnnemiFish(mapLevel1.player1);
 			mapLevel1.collisionsEnnemiFish(mapLevel1.player2);
 
-			mapLevel1.checkLevelPlayer(mapLevel1.player1);
-			mapLevel1.checkLevelPlayer(mapLevel1.player2);
+			mapLevel1.checkLevelPlayer(mapLevel1.player1, mapLevel1.player2);
 
 			mapLevel1.drawLevel2(this);
 			cout<<"Numero points player 1 = " << mapLevel1.player1.numeroPoints << endl;
@@ -135,7 +134,7 @@ public:
 		}
 
 		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 3){
-
+			
 		}
 
 		return true;

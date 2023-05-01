@@ -55,7 +55,7 @@ class Player{
 
         unsigned int level;
 
-        float numeroPoints;
+        unsigned int numeroPoints;
 
         /**
          * @brief Constructeur par défaut de la classe Player
