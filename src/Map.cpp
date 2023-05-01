@@ -16,6 +16,7 @@ Map::Map(){
 	nb_cellules_g_placees = 4;
 
 	rester_niveau1 = false;
+	rester_niveau2 = false;
 
 	stop_a_droite = false;
 	stop_a_gauche = false;
@@ -33,6 +34,7 @@ void Map::initImages(olc::PixelGameEngine* pge){
 	spriteMap = new olc::Sprite("./data/MAP.png");
 
 	spriteMenu = new olc::Sprite("./data/menu.png");
+	decMenu = new olc::Decal(spriteMenu);
 
 	spriteTiles = new olc::Sprite("./data/parenchymadefault.png");
 	decTiles = new olc:: Decal(spriteTiles);
@@ -75,7 +77,10 @@ void Map::drawLevel0(olc::PixelGameEngine* pge){
 	olc::vd2d posInitImage = {0,0};
 
 	// Draw le fond
-	pge->DrawSprite(posInitImage, spriteMenu);
+	pge->DrawDecal(posInitImage, decMenu);
+
+	
+		
 }
 
 // initialisation de la carte depuis une image png
@@ -109,6 +114,20 @@ void Map::initMapFromImage(olc::PixelGameEngine* pge) {
 	}
 }
 
+auto Map::GetTile(int x, int y)
+{
+	if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+		return sLevel[y * nLevelWidth + x];
+	else
+		return L' ';
+};
+
+auto Map::SetTile(int x, int y, wchar_t c)
+{
+	if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+		sLevel[y * nLevelWidth + x] = c;
+};
+
 
 // mouvements joueurs et collisions
 void Map::move(float fElapsedTime, Player& P){
@@ -123,19 +142,8 @@ void Map::move(float fElapsedTime, Player& P){
 
 void Map::collisions(float fElapsedTime, Player& P){
 
-	auto GetTile = [&](int x, int y)
-	{
-		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-			return sLevel[y * nLevelWidth + x];
-		else
-			return L' ';
-	};
-	auto SetTile = [&](int x, int y, wchar_t c)
-	{
-		if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-			sLevel[y * nLevelWidth + x] = c;
-	};
-
+	
+	
 		// Check for Collision
 		if (P.fPlayerVelX <= 0) // Moving Left
 		{
@@ -262,19 +270,6 @@ void Map::drawLevel1(olc::PixelGameEngine* pge){
 	srand((unsigned) time(NULL));
 	// Draw Level
 
-		auto GetTile = [&](int x, int y)
-		{
-			if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-				return sLevel[y * nLevelWidth + x];
-			else
-				return L' ';
-		};
-
-		auto SetTile = [&](int x, int y, wchar_t c)
-		{
-			if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-				sLevel[y * nLevelWidth + x] = c;
-		};
 
 		// Void RecupCellJ1
 		if (pge->IsFocused()) {
@@ -508,15 +503,7 @@ int Map::checkLevel(olc::PixelGameEngine* pge, Player& P1, Player& P2){
 
 	int niveau;
 
-	if(((P1.NbCelluleRecup==0) || (P2.NbCelluleRecup==0))){
-		//cout<<"pased 1 "<<endl;
-	}
-
-	if((!rester_niveau1)){
-		//cout<<"pased 2"<<endl;
-	}
-
-	if((!rester_niveau1)){
+	if((!rester_niveau1) && (!rester_niveau2)){
 		niveau = 0;
 	} 
 
@@ -528,7 +515,15 @@ int Map::checkLevel(olc::PixelGameEngine* pge, Player& P1, Player& P2){
 
 	if ((P1.NbCelluleRecup==1) || (P2.NbCelluleRecup==1)){
 		rester_niveau1 = false;
+		rester_niveau2 = true;
+	}
+
+	if(rester_niveau2){
 		niveau = 2;
+		if((P1.numeroPoints > 5) || (P2.numeroPoints > 5)){
+			rester_niveau2 = false;
+			niveau = 3;
+		}
 	}
 
 	return niveau;
@@ -623,59 +618,280 @@ void Map::collisionsEnnemiFish(Player &P){
 	// collisions
 
 	for(int i = 0; i < numeroFish; i++){
-				
-			if (P.fPlayerVelX <= 0) // Moving Left
-			{
 
-				if((P.distance(P.fPlayerPosX, P.fPlayerPosY, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 32) && (tabFish[i].ennemiLevel == 0)){
+		if(P.level > tabFish[i].ennemiLevel){
 
-						if((P.level > tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
-							P.numeroPoints ++;
+			if((P.fPlayerVelX <= 0) || (P.fPlayerVelX > 0) || (P.fPlayerVelY <= 0) || (P.fPlayerVelY > 0)){
+
+					if(tabFish[i].ennemiLevel == 0) {
+
+						// OK
+						if((P.level == 1) && (P.bDirection) && ((P.distance(P.fPlayerPosX - 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 12) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
 							tabFish[i].touche = true;
 						}
 
-						else if((P.level < tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
-							vies --;
+						if((P.level == 1) && (!P.bDirection) && ((P.distance(P.fPlayerPosX + 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 12) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
 							tabFish[i].touche = true;
 						}
 
-				}
+						// OK
 
-				if((P.distance(P.fPlayerPosX, P.fPlayerPosY, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 32) && (tabFish[i].ennemiLevel == 1)){
-
-						if((P.level > tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
-							P.numeroPoints ++;
+						if((P.level == 2) && (P.bDirection) && ((P.distance(P.fPlayerPosX - 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 17) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
 							tabFish[i].touche = true;
 						}
 
-						else if((P.level <= tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
-							vies --;
+						if((P.level == 2) && (!P.bDirection) && ((P.distance(P.fPlayerPosX + 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 17) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
 							tabFish[i].touche = true;
 						}
 
-
-				}
-
-				if((P.distance(P.fPlayerPosX, P.fPlayerPosY, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 32) && (tabFish[i].ennemiLevel == 2)){
-
-						if((P.level > tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
-							P.numeroPoints ++;
+						// OK
+						if((P.level == 3) && (P.bDirection) && ((P.distance(P.fPlayerPosX - 20, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 20) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 0.25;
 							tabFish[i].touche = true;
 						}
 
-						else if((P.level < tabFish[i].ennemiLevel) && (tabFish[i].touche == false)){
-							vies --;
+						if((P.level == 3) && (!P.bDirection) && ((P.distance(P.fPlayerPosX + 20, P.fPlayerPosY + 35 , tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY ) <= 20) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 0.25;
+							tabFish[i].touche = true;
+						}
+					}
+
+					if(tabFish[i].ennemiLevel == 1){
+
+						// collision ennemi level 1 player level 2
+						// OK
+						if((P.level == 2) && (P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX - 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX - 10, tabFish[i].fEnnemiPosY + 18  ) <= 17) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
 							tabFish[i].touche = true;
 						}
 
+						if((P.level == 2) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX - 10, tabFish[i].fEnnemiPosY + 18 ) <= 17) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
+							tabFish[i].touche = true;
+						}
 
-				}
+						if((P.level == 2) && (P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX - 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX + 10, tabFish[i].fEnnemiPosY + 18  ) <= 17) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
+							tabFish[i].touche = true;
+						}
 
-			}
-			
+						if((P.level == 2) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX + 10, tabFish[i].fEnnemiPosY + 18 ) <= 17) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
+							tabFish[i].touche = true;
+						}
+
+						// OK
+
+						if((P.level == 3) && (P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX - 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX - 10, tabFish[i].fEnnemiPosY + 18  ) <= 20) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 3) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX - 10, tabFish[i].fEnnemiPosY + 18 ) <= 20) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 3) && (P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX - 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX + 10, tabFish[i].fEnnemiPosY + 18  ) <= 20) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 3) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX + 10, tabFish[i].fEnnemiPosY + 18 ) <= 20) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
+							tabFish[i].touche = true;
+						}
+
+					}
+
+					if(tabFish[i].ennemiLevel == 2){
+
+						// OK
+						if((P.level == 3) && (P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX - 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX - 15, tabFish[i].fEnnemiPosY + 25  ) <= 20) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 3) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX - 15, tabFish[i].fEnnemiPosY + 25 ) <= 20) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 3) && (P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX - 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX + 15, tabFish[i].fEnnemiPosY + 25  ) <= 20) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 3) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX + 15, tabFish[i].fEnnemiPosY + 25 ) <= 20) && (tabFish[i].touche == false))){
+							P.numeroPoints = P.numeroPoints + 1;
+							tabFish[i].touche = true;
+						}		
+					
+					}
+			}	
 		}
+
+		else{
+			if((P.fPlayerVelX <= 0) || (P.fPlayerVelX > 0) || (P.fPlayerVelY <= 0) || (P.fPlayerVelY > 0)){
+
+					if(tabFish[i].ennemiLevel == 1){
+
+						//OK
+
+						if((P.level == 1) && (tabFish[i].fEnnemiVelX > 0) && (P.bDirection) && ((P.distance(P.fPlayerPosX - 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX - 10, tabFish[i].fEnnemiPosY + 18 ) <= 12) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 1) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX + 10, tabFish[i].fEnnemiPosY + 18 ) <= 12) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 1) && (tabFish[i].fEnnemiVelX < 0) && (P.bDirection) && ((P.distance(P.fPlayerPosX - 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX - 10, tabFish[i].fEnnemiPosY + 18 ) <= 12) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 1) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX + 10, tabFish[i].fEnnemiPosY + 18 ) <= 12) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+					}
+
+					if(tabFish[i].ennemiLevel == 2){
+
+						// OK
+						if((P.level == 1) && (P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX - 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX - 15, tabFish[i].fEnnemiPosY + 25 ) <= 12) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 1) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX + 15, tabFish[i].fEnnemiPosY + 25 ) <= 12) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 1) && (P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX - 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX - 15, tabFish[i].fEnnemiPosY + 25 ) <= 12) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 1) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX + 15, tabFish[i].fEnnemiPosY + 25 ) <= 12) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						// collision ennemi level 2 et player level 2
+
+						// OK
+
+						if((P.level == 2) && (P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX - 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX - 15, tabFish[i].fEnnemiPosY + 25  ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 2) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX - 15, tabFish[i].fEnnemiPosY + 25 ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 2) && (P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX - 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX + 15, tabFish[i].fEnnemiPosY + 25  ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 2) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX + 15, tabFish[i].fEnnemiPosY + 25 ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+					}
+
+					if(tabFish[i].ennemiLevel == 3){
+
+						if((P.level == 1) && (P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX - 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX - 25, tabFish[i].fEnnemiPosY + 35 ) <= 20) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 1) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX + 25, tabFish[i].fEnnemiPosY + 35 ) <= 20) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 1) && (P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX - 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX - 25, tabFish[i].fEnnemiPosY + 35 ) <= 20) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 1) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 10, P.fPlayerPosY + 18, tabFish[i].fEnnemiPosX + 25, tabFish[i].fEnnemiPosY + 35 ) <= 20) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 2) && (P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX - 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX - 25, tabFish[i].fEnnemiPosY + 35  ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 2) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX - 25, tabFish[i].fEnnemiPosY + 35 ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 2) && (P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX - 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX + 25, tabFish[i].fEnnemiPosY + 35  ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 2) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 15, P.fPlayerPosY + 25, tabFish[i].fEnnemiPosX + 25, tabFish[i].fEnnemiPosY + 35 ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 3) && (P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX - 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX - 25, tabFish[i].fEnnemiPosY + 25  ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 3) && (!P.bDirection) && (tabFish[i].fEnnemiVelX > 0) && ((P.distance(P.fPlayerPosX + 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX - 25, tabFish[i].fEnnemiPosY + 35 ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 3) && (P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX - 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX + 25, tabFish[i].fEnnemiPosY + 35  ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+						if((P.level == 3) && (!P.bDirection) && (tabFish[i].fEnnemiVelX < 0) && ((P.distance(P.fPlayerPosX + 25, P.fPlayerPosY + 35, tabFish[i].fEnnemiPosX + 25, tabFish[i].fEnnemiPosY + 35 ) <= 17) && (tabFish[i].touche == false))){
+							vies --;
+							tabFish[i].touche = true;
+						}
+
+					}			
+			}
+		}		
+	}	
 }
 
+
+
+void Map::checkLevelPlayer(Player &P){
+
+	if(P.numeroPoints >= 5){
+		P.level = 2;
+	}
+
+	if(P.numeroPoints >= 10){
+		P.level = 3;
+	}
+}
 void Map::drawLevel2(olc::PixelGameEngine* pge){
 
 	olc::vf2d SpritePosMultiCell1 = { 0, 0 };
@@ -685,63 +901,175 @@ void Map::drawLevel2(olc::PixelGameEngine* pge){
 	pge->DrawSprite(posInitImage, spriteBackGroundLevel2);
 
 	// Draw joueur 1
-	olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
-	if (player1.bDirection)
-	{
-		pge->DrawDecal(posJ1, decPlayerLevel0, { -1.0f, 1.0f });
+
+	if(player1.level == 0){
+		olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
+		if (player1.bDirection)
+		{
+			pge->DrawDecal(posJ1, decPlayerLevel0, { -0.5f, 0.5f });
+		}
+		else
+			pge->DrawDecal(posJ1, decPlayerLevel0, { 0.5f, 0.5f });
 	}
-	else
-		pge->DrawDecal(posJ1, decPlayerLevel0, { 1.0f, 1.0f });
+
+	if(player1.level == 1){
+		olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
+		if (player1.bDirection)
+		{
+			pge->DrawDecal(posJ1, decPlayerLevel0, { -1.0f, 1.0f });
+		}
+		else
+			pge->DrawDecal(posJ1, decPlayerLevel0, { 1.0f, 1.0f });
+	}
+
+	if(player1.level == 2){
+		olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
+		if (player1.bDirection)
+		{
+			pge->DrawDecal(posJ1, decPlayerLevel0, { -1.5f, 1.5f });
+		}
+		else
+			pge->DrawDecal(posJ1, decPlayerLevel0, { 1.5f, 1.5f });
+	}
+
+	if(player1.level == 3){
+		olc::vd2d posJ1 = {player1.fPlayerPosX, player1.fPlayerPosY};
+		if (player1.bDirection)
+		{
+			pge->DrawDecal(posJ1, decPlayerLevel0, { -2.0f, 2.0f });
+		}
+		else
+			pge->DrawDecal(posJ1, decPlayerLevel0, { 2.0f, 2.0f });
+	}
+
 	// Player 2
-	olc::vf2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
-
-	if (player2.bDirection)
-	{
-		pge->DrawDecal(posJ2, decPlayerLevel0, { -1.0f, 1.0f });
+	if(player2.level == 0){
+		olc::vd2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
+		if (player2.bDirection)
+		{
+			pge->DrawDecal(posJ2, decPlayerLevel0, { -0.5f, 0.5f });
+		}
+		else
+			pge->DrawDecal(posJ2, decPlayerLevel0, { 0.5f, 0.5f });
 	}
-	else
-		pge->DrawDecal(posJ2, decPlayerLevel0, { 1.0f, 1.0f });
 
+	if(player2.level == 1){
+		olc::vd2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
+		olc::vd2d posCircleR = {player2.fPlayerPosX - 10 , player2.fPlayerPosY + 18 };
+		olc::vd2d posCircleL = {player2.fPlayerPosX + 10, player2.fPlayerPosY + 18};
+		if (player2.bDirection)
+		{
+			pge->DrawDecal(posJ2, decPlayerLevel0, { -1.0f, 1.0f });
+			//pge->DrawCircle(posCircleR, 12, olc::RED );
+		}
+		else{
+			pge->DrawDecal(posJ2, decPlayerLevel0, { 1.0f, 1.0f });
+			//pge->DrawCircle(posCircleL, 12, olc::GREEN );
+		}
+
+	}
+
+	if(player2.level == 2){
+		olc::vd2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
+		olc::vd2d posCircleR = {player2.fPlayerPosX - 15 , player2.fPlayerPosY + 25 };
+		olc::vd2d posCircleL = {player2.fPlayerPosX + 15, player2.fPlayerPosY + 25};
+		if (player2.bDirection)
+		{
+			pge->DrawDecal(posJ2, decPlayerLevel0, { -1.5f, 1.5f });
+			//pge->DrawCircle(posCircleR, 17, olc::RED );
+		}
+		else{
+			pge->DrawDecal(posJ2, decPlayerLevel0, { 1.5f, 1.5f });
+			//pge->DrawCircle(posCircleL, 17, olc::GREEN );
+		}
+			
+	}
+
+	if(player2.level == 3){
+		olc::vd2d posJ2 = {player2.fPlayerPosX, player2.fPlayerPosY};
+		olc::vd2d posCircleR = {player2.fPlayerPosX - 20.0f, player2.fPlayerPosY + 35.0f};
+		olc::vd2d posCircleL = {player2.fPlayerPosX + 20.0f, player2.fPlayerPosY + 35.0f};
+		if (player2.bDirection)
+		{
+			pge->DrawDecal(posJ2, decPlayerLevel0, { -2.0f, 2.0f });
+			//pge->DrawCircle(posCircleR, 20, olc::RED );
+		}
+		else{
+			pge->DrawDecal(posJ2, decPlayerLevel0, { 2.0f, 2.0f });
+			//pge->DrawCircle(posCircleL, 20, olc::GREEN );
+		}
+			
+	}
 
 	// Draw ennemis
 	for(int i = 0; i < numeroFish; i++){
 
 		olc::vf2d posEnnemi = {tabFish[i].fEnnemiPosX, tabFish[i].fEnnemiPosY};
 		if(tabFish[i].ennemiLevel == 0){
+
+			olc::vd2d posCircleR = {tabFish[i].fEnnemiPosX - 5 , tabFish[i].fEnnemiPosY + 10 };
+			olc::vd2d posCircleL = {tabFish[i].fEnnemiPosX + 5 , tabFish[i].fEnnemiPosY + 10 };
+
 			if (tabFish[i].fEnnemiVelX > 0)
 			{ 
 				pge->DrawDecal(posEnnemi, decPlayerLevel0, {-0.5f, 0.5f});
+				//pge->DrawCircle(posCircleR, 20, olc::RED );
 			}
-			else
+			else{
 				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 0.5f, 0.5f });
+				//pge->DrawCircle(posCircleL, 20, olc::GREEN );
+			}
+				
 
 		}
 
 		if(tabFish[i].ennemiLevel == 1){
+
+			olc::vd2d posCircleR = {tabFish[i].fEnnemiPosX - 10 , tabFish[i].fEnnemiPosY + 18 };
+			olc::vd2d posCircleL = {tabFish[i].fEnnemiPosX + 10 , tabFish[i].fEnnemiPosY + 18 };
 			if (tabFish[i].fEnnemiVelX > 0)
 			{
 				pge->DrawDecal(posEnnemi, decPlayerLevel0, { -1.0f, 1.0f });
+				//pge->DrawCircle(posCircleR, 12, olc::RED );
 			}
-			else
+			else{
 				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 1.0f, 1.0f });
+				//pge->DrawCircle(posCircleL, 12, olc::GREEN );
+			}
+				
 		}
 
 		if(tabFish[i].ennemiLevel == 2){
+
+			olc::vd2d posCircleR = {tabFish[i].fEnnemiPosX - 15 , tabFish[i].fEnnemiPosY + 25 };
+			olc::vd2d posCircleL = {tabFish[i].fEnnemiPosX + 15 , tabFish[i].fEnnemiPosY + 25 };
+
 			if (tabFish[i].fEnnemiVelX > 0)
 			{
 				pge->DrawDecal(posEnnemi, decPlayerLevel0, { -1.5f, 1.5f });
+				//pge->DrawCircle(posCircleR, 17, olc::RED );
 			}
-			else
+			else{
 				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 1.5f, 1.5f });
+				//pge->DrawCircle(posCircleL, 17, olc::GREEN );
+			}
+				
 		}
 
 		if(tabFish[i].ennemiLevel == 3){
+
+			olc::vd2d posCircleR = {tabFish[i].fEnnemiPosX - 20 , tabFish[i].fEnnemiPosY + 35 };
+			olc::vd2d posCircleL = {tabFish[i].fEnnemiPosX + 20 , tabFish[i].fEnnemiPosY + 35 };
 			if (tabFish[i].fEnnemiVelX > 0)
 			{
 				pge->DrawDecal(posEnnemi, decPlayerLevel0, { -2.0f, 2.0f });
+				//pge->DrawCircle(posCircleR, 20, olc::RED );
 			}
-			else
+			else{
 				pge->DrawDecal(posEnnemi, decPlayerLevel0, { 2.0f, 2.0f });
+				//pge->DrawCircle(posCircleL, 20, olc::GREEN );
+			}
+				
 		}
 
 	

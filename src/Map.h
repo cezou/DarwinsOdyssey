@@ -43,6 +43,7 @@ class Map{
         int lineLayerIndex;
 
         bool rester_niveau1;
+        bool rester_niveau2;
 
         bool stop_a_droite;
         bool stop_a_gauche;
@@ -147,6 +148,12 @@ class Map{
         void collisionsMap(Player &P);
 
         void collisionsEnnemiFish(Player &P);
+
+        void checkLevelPlayer(Player &P);
+
+        auto GetTile(int x, int y);
+
+        auto SetTile(int x, int y, wchar_t c);
 
 
 };

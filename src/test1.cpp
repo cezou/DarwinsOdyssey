@@ -123,13 +123,21 @@ public:
 
 			mapLevel1.collisionsEnnemiFish(mapLevel1.player1);
 			mapLevel1.collisionsEnnemiFish(mapLevel1.player2);
-			
+
+			mapLevel1.checkLevelPlayer(mapLevel1.player1);
+			mapLevel1.checkLevelPlayer(mapLevel1.player2);
+
 			mapLevel1.drawLevel2(this);
 			cout<<"Numero points player 1 = " << mapLevel1.player1.numeroPoints << endl;
 			cout<<"Numero points player 2 = " << mapLevel1.player2.numeroPoints << endl;
 			cout<< "Numero vies = " << mapLevel1.vies << endl;
 			 
 		}
+
+		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 3){
+
+		}
+
 		return true;
 	}
 };
@@ -142,6 +150,10 @@ int main()
 	DarwinsOdyssey DO;
 	if (DO.Construct(800, 450, 2, 2, false, true))
 		DO.Start();
+
+	else{
+		DO.mapLevel1.~Map();
+	}
 
 	return 0;
 }

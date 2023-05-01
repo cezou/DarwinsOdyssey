@@ -9,7 +9,7 @@ Player::Player(){
 		fPlayerVelY = 0.0f;
         nTileWidth = 32;
 		nTileHeight = 32;
-        level = 1;
+        level = 2;
         numeroPoints = 0;
         bDirection = 1;
 
@@ -24,7 +24,7 @@ Player::Player(float posX, float posY){
 		fPlayerVelY = 0.0f;
         nTileWidth = 32;
 		nTileHeight = 32;
-        level = 1;
+        level = 2;
         numeroPoints = 0;
         bDirection = 1;
 
