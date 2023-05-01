@@ -72,17 +72,17 @@ public:
 	{
 
 
+
 		// LEVEL 0
-		
-		
-		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 0){
+
+		if (mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 0) {
 			mapLevel1.drawLevel0(this);
 		}
-		
+
 		// LEVEL 1
-		
-		
-		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 1){
+
+
+		if (mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 1) {
 			// Mouvements players
 			mapLevel1.player1.setVel0();
 			mapLevel1.player2.setVel0();
@@ -93,19 +93,15 @@ public:
 			mapLevel1.player1.limites_map_collisions();
 			mapLevel1.player2.limites_map_collisions();
 			mapLevel1.drawLevel1(this);
-
 			menu.bMenuPause(this);
-			if (!menu.bMenu){
+			if (!menu.bMenu) {
 				mapLevel1.move(fElapsedTime, mapLevel1.player1);
 				mapLevel1.move(fElapsedTime, mapLevel1.player2);
 			}
-
-			if (menu.bMenu){
-				
+			else {
 				menu.afficherMenuPause(this);
 				SetDrawTarget(mapLevel1.splitScreenLayerIndex);
 			}
-			
 			mapLevel1.collisions(fElapsedTime, mapLevel1.player1);
 			mapLevel1.collisions(fElapsedTime, mapLevel1.player2);
 
@@ -114,56 +110,47 @@ public:
 
 		// LEVEL 2
 
-		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 2){
-		
+		if (mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 2) {
+
 			mapLevel1.player1.setVel0();
 			mapLevel1.player2.setVel0();
 
 			mapLevel1.player1.detectKeysPlayer1(this, velPlayerLevel2);
 			mapLevel1.player2.detectKeysPlayer2(this, velPlayerLevel2);
 			menu.bMenuPause(this);
+			if (!menu.bMenu){
+				mapLevel1.move(fElapsedTime, mapLevel1.player1);
+				mapLevel1.move(fElapsedTime, mapLevel1.player2);
+			
 
-			mapLevel1.drawLevel2(this);
-			
-			
+
+				for (int i = 0; i < numeroFish; i++) {
+					mapLevel1.tabFish[i].move(fElapsedTime);
+				}
+			}
+			else {
+				menu.afficherMenuPause(this);
+			}
+			mapLevel1.replaceEnnemi();
+
 			mapLevel1.collisionsMap(mapLevel1.player1);
 			mapLevel1.collisionsMap(mapLevel1.player2);
 
 			mapLevel1.collisionsEnnemiFish(mapLevel1.player1);
 			mapLevel1.collisionsEnnemiFish(mapLevel1.player2);
 
-			mapLevel1.checkLevelPlayer(mapLevel1.player1);
-			mapLevel1.checkLevelPlayer(mapLevel1.player2);
-			mapLevel1.replaceEnnemi();
-			if (!menu.bMenu){
-				mapLevel1.move(fElapsedTime, mapLevel1.player1);
-				mapLevel1.move(fElapsedTime, mapLevel1.player2);
-			for(int i = 0; i<numeroFish; i++){
-				mapLevel1.tabFish[i].move(fElapsedTime);
-			}
-	
-			
-			}
-			if (menu.bMenu){
-				
-				menu.afficherMenuPause(this);
-				SetDrawTarget(mapLevel1.splitScreenLayerIndex);
-			}
-			
+			mapLevel1.checkLevelPlayer(mapLevel1.player1, mapLevel1.player2);
 
-			
-
-			
-			cout<<"Numero points player 1 = " << mapLevel1.player1.numeroPoints << endl;
-			cout<<"Numero points player 2 = " << mapLevel1.player2.numeroPoints << endl;
-			cout<< "Numero vies = " << mapLevel1.vies << endl;
-			 
-		}
-
-		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 3){
+			mapLevel1.drawLevel2(this);
+			cout << "Numero points player 1 = " << mapLevel1.player1.numeroPoints << endl;
+			cout << "Numero points player 2 = " << mapLevel1.player2.numeroPoints << endl;
+			cout << "Numero vies = " << mapLevel1.vies << endl;
 
 		}
 
+		if (mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 3) {
+
+		}
 		return true;
 	}
 };
@@ -171,6 +158,7 @@ public:
 
 int main()
 {
+	srand(time(NULL));
 
 	DarwinsOdyssey DO;
 	if (DO.Construct(800, 450, 2, 2, false, true))
