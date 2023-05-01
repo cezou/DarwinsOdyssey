@@ -2,6 +2,7 @@
 #define OLC_PGE_APPLICATION
 #include "../inc/olcPixelGameEngine-master/olcPixelGameEngine.h"
 #include "./Map.h"
+#include "./Menu.h"
 #include <iostream>
 #include <string>
 #include <ctime>
@@ -26,24 +27,27 @@ public:
 	DarwinsOdyssey()
 	{
 		sAppName = "Darwin's Odyssey";
+		
 	}
 
 	//int nLayerEcranGauche = 0;
 	//int nLayerEcranDroit = 0;
 	//int nLayerLigne = 3;
     Map mapLevel1;
-	
+	Menu menu;
 
 public:
 	bool OnUserCreate() override
 	{
-
+		
+		menu.initImageMenu(this);
 		mapLevel1.initImages(this);
 		mapLevel1.initMapFromImage(this);
 		// Set du NB de Cellules Récupérées à zéro
 		mapLevel1.player1.setNBCell();
 		mapLevel1.player2.setNBCell();
 
+		
 		// Créer un calque pour l'écran scindé
 		mapLevel1.splitScreenLayerIndex = CreateLayer();
 		SetLayerOffset(mapLevel1.splitScreenLayerIndex, { 0.0f, 0.0f });
@@ -56,6 +60,7 @@ public:
 		SetLayerScale(mapLevel1.lineLayerIndex, { 1.0f, 1.0f });
 		EnableLayer(mapLevel1.lineLayerIndex, true);
 
+		
 		mapLevel1.setVelEnnemi();
 		mapLevel1.initEnnemis();
 		
@@ -65,18 +70,19 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		
+
+
 
 		// LEVEL 0
 
-		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 0){
+		if (mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 0) {
 			mapLevel1.drawLevel0(this);
 		}
-		
+
 		// LEVEL 1
-		
-		
-		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 1){
+
+
+		if (mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 1) {
 			// Mouvements players
 			mapLevel1.player1.setVel0();
 			mapLevel1.player2.setVel0();
@@ -86,38 +92,47 @@ public:
 
 			mapLevel1.player1.limites_map_collisions();
 			mapLevel1.player2.limites_map_collisions();
-			mapLevel1.move(fElapsedTime, mapLevel1.player1);
-			mapLevel1.move(fElapsedTime, mapLevel1.player2);
+			mapLevel1.drawLevel1(this);
+			menu.bMenuPause(this);
+			if (!menu.bMenu) {
+				mapLevel1.move(fElapsedTime, mapLevel1.player1);
+				mapLevel1.move(fElapsedTime, mapLevel1.player2);
+			}
+			else {
+				menu.afficherMenuPause(this);
+				SetDrawTarget(mapLevel1.splitScreenLayerIndex);
+			}
 			mapLevel1.collisions(fElapsedTime, mapLevel1.player1);
 			mapLevel1.collisions(fElapsedTime, mapLevel1.player2);
 
-			mapLevel1.drawLevel1(this);
+			
 		}
 
 		// LEVEL 2
 
-		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 2){
-		
+		if (mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 2) {
+
 			mapLevel1.player1.setVel0();
 			mapLevel1.player2.setVel0();
 
 			mapLevel1.player1.detectKeysPlayer1(this, velPlayerLevel2);
 			mapLevel1.player2.detectKeysPlayer2(this, velPlayerLevel2);
-
-			//mapLevel1.player1.limites_map_collisions();
-			//mapLevel1.player2.limites_map_collisions();
-			mapLevel1.move(fElapsedTime, mapLevel1.player1);
-			mapLevel1.move(fElapsedTime, mapLevel1.player2);
-			//mapLevel1.collisions2(fElapsedTime, mapLevel1.player1);
-			//mapLevel1.collisions2(fElapsedTime, mapLevel1.player2);
-
+			menu.bMenuPause(this);
+			if (!menu.bMenu){
+				mapLevel1.move(fElapsedTime, mapLevel1.player1);
+				mapLevel1.move(fElapsedTime, mapLevel1.player2);
 			
-			for(int i = 0; i<numeroFish; i++){
-				mapLevel1.tabFish[i].move(fElapsedTime);
+
+
+				for (int i = 0; i < numeroFish; i++) {
+					mapLevel1.tabFish[i].move(fElapsedTime);
+				}
 			}
-		
+			else {
+				menu.afficherMenuPause(this);
+			}
 			mapLevel1.replaceEnnemi();
-			
+
 			mapLevel1.collisionsMap(mapLevel1.player1);
 			mapLevel1.collisionsMap(mapLevel1.player2);
 
@@ -127,16 +142,15 @@ public:
 			mapLevel1.checkLevelPlayer(mapLevel1.player1, mapLevel1.player2);
 
 			mapLevel1.drawLevel2(this);
-			cout<<"Numero points player 1 = " << mapLevel1.player1.numeroPoints << endl;
-			cout<<"Numero points player 2 = " << mapLevel1.player2.numeroPoints << endl;
-			cout<< "Numero vies = " << mapLevel1.vies << endl;
-			 
+			cout << "Numero points player 1 = " << mapLevel1.player1.numeroPoints << endl;
+			cout << "Numero points player 2 = " << mapLevel1.player2.numeroPoints << endl;
+			cout << "Numero vies = " << mapLevel1.vies << endl;
+
 		}
 
-		if(mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 3){
-			
-		}
+		if (mapLevel1.checkLevel(this, mapLevel1.player1, mapLevel1.player2) == 3) {
 
+		}
 		return true;
 	}
 };
