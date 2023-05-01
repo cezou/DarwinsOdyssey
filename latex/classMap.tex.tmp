@@ -1,0 +1,201 @@
+\hypertarget{classMap}{}\doxysection{Map Class Reference}
+\label{classMap}\index{Map@{Map}}
+
+
+Collaboration diagram for Map\+:
+% FIG 0
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMap_a12c29fb3ac7c00d5f355ace031d923a5}\label{classMap_a12c29fb3ac7c00d5f355ace031d923a5}} 
+void {\bfseries init\+Images} (olc\+::\+Pixel\+Game\+Engine $\ast$pge)
+\item 
+\mbox{\Hypertarget{classMap_aab24a671bd16425f64e0d8f3ed8e3776}\label{classMap_aab24a671bd16425f64e0d8f3ed8e3776}} 
+void {\bfseries init\+Map\+From\+Image} (olc\+::\+Pixel\+Game\+Engine $\ast$pge)
+\item 
+\mbox{\Hypertarget{classMap_ad845f26276999f5a1d72ecbb97d0d007}\label{classMap_ad845f26276999f5a1d72ecbb97d0d007}} 
+void {\bfseries move} (float f\+Elapsed\+Time, \mbox{\hyperlink{classPlayer}{Player}} \&P)
+\item 
+\mbox{\Hypertarget{classMap_a7edb6977e4d66c06766caae89e15ff71}\label{classMap_a7edb6977e4d66c06766caae89e15ff71}} 
+void {\bfseries collisions} (float f\+Elapsed\+Time, \mbox{\hyperlink{classPlayer}{Player}} \&P)
+\item 
+\mbox{\Hypertarget{classMap_a9544cda26ece5a7cde21a10b588ba208}\label{classMap_a9544cda26ece5a7cde21a10b588ba208}} 
+void {\bfseries draw\+Level0} (olc\+::\+Pixel\+Game\+Engine $\ast$pge)
+\item 
+\mbox{\Hypertarget{classMap_a247c95d2d21dba375793e2a5b1b8b14c}\label{classMap_a247c95d2d21dba375793e2a5b1b8b14c}} 
+void {\bfseries draw\+Level1} (olc\+::\+Pixel\+Game\+Engine $\ast$pge)
+\item 
+\mbox{\Hypertarget{classMap_af5c4c59213b618e6e12eef51c0a9d3a7}\label{classMap_af5c4c59213b618e6e12eef51c0a9d3a7}} 
+void {\bfseries draw\+Level2} (olc\+::\+Pixel\+Game\+Engine $\ast$pge)
+\item 
+\mbox{\Hypertarget{classMap_a572c95df842c9607b76872e04ccb0c1b}\label{classMap_a572c95df842c9607b76872e04ccb0c1b}} 
+int {\bfseries check\+Level} (olc\+::\+Pixel\+Game\+Engine $\ast$pge, \mbox{\hyperlink{classPlayer}{Player}} \&P1, \mbox{\hyperlink{classPlayer}{Player}} \&P2)
+\item 
+\mbox{\Hypertarget{classMap_a40df7a4c79271f04333c3df2cba21ddd}\label{classMap_a40df7a4c79271f04333c3df2cba21ddd}} 
+void {\bfseries init\+Ennemis} ()
+\item 
+\mbox{\Hypertarget{classMap_a68366606fc66767b3c5d577b14c8be1f}\label{classMap_a68366606fc66767b3c5d577b14c8be1f}} 
+void {\bfseries set\+Vel\+Ennemi} ()
+\item 
+\mbox{\Hypertarget{classMap_a46d7cc84b07743d1baee74c751f5ac67}\label{classMap_a46d7cc84b07743d1baee74c751f5ac67}} 
+void {\bfseries replace\+Ennemi} ()
+\item 
+\mbox{\Hypertarget{classMap_a09cafc6e24b35d1975360f39ee97e197}\label{classMap_a09cafc6e24b35d1975360f39ee97e197}} 
+void {\bfseries collisions\+Map} (\mbox{\hyperlink{classPlayer}{Player}} \&P)
+\item 
+\mbox{\Hypertarget{classMap_a56eae500184ae9ac7e81a49ad8686128}\label{classMap_a56eae500184ae9ac7e81a49ad8686128}} 
+void {\bfseries collisions\+Ennemi\+Fish} (\mbox{\hyperlink{classPlayer}{Player}} \&P)
+\item 
+\mbox{\Hypertarget{classMap_a12731fabd138c77ea8580b7a517b810d}\label{classMap_a12731fabd138c77ea8580b7a517b810d}} 
+void {\bfseries check\+Level\+Player} (\mbox{\hyperlink{classPlayer}{Player}} \&P1, \mbox{\hyperlink{classPlayer}{Player}} \&P2)
+\item 
+\mbox{\Hypertarget{classMap_a3d9488d7fea83fa2532f883edc50450d}\label{classMap_a3d9488d7fea83fa2532f883edc50450d}} 
+auto {\bfseries Get\+Tile} (int x, int y)
+\item 
+\mbox{\Hypertarget{classMap_a5c416bbc11c204aaa525d090ce4524b5}\label{classMap_a5c416bbc11c204aaa525d090ce4524b5}} 
+auto {\bfseries Set\+Tile} (int x, int y, wchar\+\_\+t c)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMap_a45405145725a5d3ee75a8a104bfc0556}\label{classMap_a45405145725a5d3ee75a8a104bfc0556}} 
+wstring {\bfseries s\+Level}
+\item 
+\mbox{\Hypertarget{classMap_a57ed4c8800ee421ff3d9d6c6e24984f7}\label{classMap_a57ed4c8800ee421ff3d9d6c6e24984f7}} 
+int {\bfseries n\+Level\+Width}
+\item 
+\mbox{\Hypertarget{classMap_a7f9bddf425c9ab232b7f8eb293083e5a}\label{classMap_a7f9bddf425c9ab232b7f8eb293083e5a}} 
+int {\bfseries n\+Level\+Height}
+\item 
+\mbox{\Hypertarget{classMap_adfde2496aa8c5ee9d38f03bd7a6bfe8a}\label{classMap_adfde2496aa8c5ee9d38f03bd7a6bfe8a}} 
+int {\bfseries niveau\+Map}
+\item 
+\mbox{\Hypertarget{classMap_a082d06613c5486e816e9258b4c240ad0}\label{classMap_a082d06613c5486e816e9258b4c240ad0}} 
+int {\bfseries nb\+\_\+cellules\+\_\+b\+\_\+placees}
+\item 
+\mbox{\Hypertarget{classMap_a0bff6022a5d4ebf223a4d6c27d1d416c}\label{classMap_a0bff6022a5d4ebf223a4d6c27d1d416c}} 
+int {\bfseries nb\+\_\+cellules\+\_\+g\+\_\+placees}
+\item 
+\mbox{\Hypertarget{classMap_ad705b00cab32cffc0d4f4eef2de6475f}\label{classMap_ad705b00cab32cffc0d4f4eef2de6475f}} 
+\mbox{\hyperlink{classPlayer}{Player}} {\bfseries player1}
+\item 
+\mbox{\Hypertarget{classMap_a1f871cc32db16eadc8d99d82875358f2}\label{classMap_a1f871cc32db16eadc8d99d82875358f2}} 
+\mbox{\hyperlink{classPlayer}{Player}} {\bfseries player2}
+\item 
+\mbox{\Hypertarget{classMap_ad852d0e30ec7a4b795e691c0239e43c6}\label{classMap_ad852d0e30ec7a4b795e691c0239e43c6}} 
+int {\bfseries split\+Screen\+Layer\+Index}
+\item 
+\mbox{\Hypertarget{classMap_a1d8c3d3bd96d557c12f3895407f5f47d}\label{classMap_a1d8c3d3bd96d557c12f3895407f5f47d}} 
+int {\bfseries line\+Layer\+Index}
+\item 
+\mbox{\Hypertarget{classMap_ade78b60aa6d4850eabeae6cf86fdd85a}\label{classMap_ade78b60aa6d4850eabeae6cf86fdd85a}} 
+bool {\bfseries rester\+\_\+niveau1}
+\item 
+\mbox{\Hypertarget{classMap_a7377ba6be79aeb2d775587d32ca48b3f}\label{classMap_a7377ba6be79aeb2d775587d32ca48b3f}} 
+bool {\bfseries rester\+\_\+niveau2}
+\item 
+\mbox{\Hypertarget{classMap_a81b0ff0cc6031bf9bf094664245ae1a8}\label{classMap_a81b0ff0cc6031bf9bf094664245ae1a8}} 
+bool {\bfseries stop\+\_\+a\+\_\+droite}
+\item 
+\mbox{\Hypertarget{classMap_a6b40a5d68be0e2d4cd538536dac82629}\label{classMap_a6b40a5d68be0e2d4cd538536dac82629}} 
+bool {\bfseries stop\+\_\+a\+\_\+gauche}
+\item 
+\mbox{\Hypertarget{classMap_a566099d65c97d6b4f8b67c18e0dfdde6}\label{classMap_a566099d65c97d6b4f8b67c18e0dfdde6}} 
+int {\bfseries compt}
+\item 
+\mbox{\Hypertarget{classMap_a916c95fd558ee8582ba64ffc46c29460}\label{classMap_a916c95fd558ee8582ba64ffc46c29460}} 
+int {\bfseries vies}
+\item 
+\mbox{\Hypertarget{classMap_ab2beaf844961f5224db5bb5ccde86019}\label{classMap_ab2beaf844961f5224db5bb5ccde86019}} 
+\mbox{\hyperlink{classEnnemi__Fish}{Ennemi\+\_\+\+Fish}} {\bfseries tab\+Fish} \mbox{[}numero\+Fish\mbox{]}
+\item 
+\mbox{\Hypertarget{classMap_a7f097eab9dd0a2bf413cc5c5725cb62c}\label{classMap_a7f097eab9dd0a2bf413cc5c5725cb62c}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Menu} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_acc0693cbbe30c092ace781c6644de3ef}\label{classMap_acc0693cbbe30c092ace781c6644de3ef}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Menu} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_adf20bef4e1d43ff6c73b9114e3f1a138}\label{classMap_adf20bef4e1d43ff6c73b9114e3f1a138}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Tiles} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a68bb7e66a23ac3eb44cdafd40a464f0c}\label{classMap_a68bb7e66a23ac3eb44cdafd40a464f0c}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Tiles} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a3781ea0848bad78c1a4f79dcd1daae19}\label{classMap_a3781ea0848bad78c1a4f79dcd1daae19}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Player1} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_aaa4767338f2e95123ac0173d4452f896}\label{classMap_aaa4767338f2e95123ac0173d4452f896}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Player1} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a8b8a271ec37d46b340021ddb803b2555}\label{classMap_a8b8a271ec37d46b340021ddb803b2555}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Player2} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_aa08d66d60aa569ad500cf28eb4a198bb}\label{classMap_aa08d66d60aa569ad500cf28eb4a198bb}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Player2} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a9ce5e0eeed3844fc23e6b6b42cf991cd}\label{classMap_a9ce5e0eeed3844fc23e6b6b42cf991cd}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Player\+Level0} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a7142818c41468ba77158db718a6c434f}\label{classMap_a7142818c41468ba77158db718a6c434f}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Player\+Level0} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a8b55b0a7617fcab3250a8ce47684376e}\label{classMap_a8b55b0a7617fcab3250a8ce47684376e}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Player\+Level1} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_abea6c3649ba18eaa45b31244c0f5197f}\label{classMap_abea6c3649ba18eaa45b31244c0f5197f}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Player\+Level1} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a8a9636cb189b8b3184a8790d3541b353}\label{classMap_a8a9636cb189b8b3184a8790d3541b353}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Player\+Level2} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a0751e3f940d15224851dfe5bb9f4d013}\label{classMap_a0751e3f940d15224851dfe5bb9f4d013}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Player\+Level2} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_afc73928829b5bedcba85f2e66fcb024d}\label{classMap_afc73928829b5bedcba85f2e66fcb024d}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Player\+Level3} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a6f35d415f59202517c3e0c12b752e14a}\label{classMap_a6f35d415f59202517c3e0c12b752e14a}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Player\+Level3} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a9e73f5a86fe7fc6f5e8598befef01703}\label{classMap_a9e73f5a86fe7fc6f5e8598befef01703}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Fond} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_aafbc676057f860ece4dd0dcfff9918aa}\label{classMap_aafbc676057f860ece4dd0dcfff9918aa}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Fond} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_ac93f55636071156efebbcbb70f3dc6a7}\label{classMap_ac93f55636071156efebbcbb70f3dc6a7}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Multi\+Cell} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a1035f0eb2a60b218f655fa7afee692a7}\label{classMap_a1035f0eb2a60b218f655fa7afee692a7}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Multi\+Cell} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a3e2ad81cf189e57c8311113720a513ca}\label{classMap_a3e2ad81cf189e57c8311113720a513ca}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Cell\+Recup\+Player1} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a4520f13efb2a5fb847af6baf14014e95}\label{classMap_a4520f13efb2a5fb847af6baf14014e95}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Cell\+Recup\+Player1} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a8c00bd33d93f723dc9781f07c6de4a39}\label{classMap_a8c00bd33d93f723dc9781f07c6de4a39}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Cell\+Recup\+Player2} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_ad64aa17cf8f2edd2020e8e36e36ce553}\label{classMap_ad64aa17cf8f2edd2020e8e36e36ce553}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Cell\+Recup\+Player2} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_a00bab9f12c134cb562ff2947726ac4eb}\label{classMap_a00bab9f12c134cb562ff2947726ac4eb}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Virus} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_aed0f09f2fd9878072ec92ba688d586c0}\label{classMap_aed0f09f2fd9878072ec92ba688d586c0}} 
+olc\+::\+Decal $\ast$ {\bfseries dec\+Virus} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_aaab68eacf0db888c55cd0f845f748923}\label{classMap_aaab68eacf0db888c55cd0f845f748923}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Map} = nullptr
+\item 
+\mbox{\Hypertarget{classMap_af5fc0887260ba76e1d5d9708753b4df6}\label{classMap_af5fc0887260ba76e1d5d9708753b4df6}} 
+olc\+::\+Sprite $\ast$ {\bfseries sprite\+Back\+Ground\+Level2} = nullptr
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/Map.\+h\item 
+src/Map.\+cpp\end{DoxyCompactItemize}

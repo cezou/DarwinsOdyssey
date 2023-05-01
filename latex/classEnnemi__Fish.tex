@@ -1,0 +1,123 @@
+\hypertarget{classEnnemi__Fish}{}\doxysection{Ennemi\+\_\+\+Fish Class Reference}
+\label{classEnnemi__Fish}\index{Ennemi\_Fish@{Ennemi\_Fish}}
+
+
+Classe représentant un ennemi du niveau 2 dans le jeu Darwin\textquotesingle{}s Odyssey.  
+
+
+
+
+{\ttfamily \#include $<$Ennemi\+\_\+\+Fish.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classEnnemi__Fish_a7ead60c53bd0d29a62e9ec164a7564c2}\label{classEnnemi__Fish_a7ead60c53bd0d29a62e9ec164a7564c2}} 
+\mbox{\hyperlink{classEnnemi__Fish_a7ead60c53bd0d29a62e9ec164a7564c2}{Ennemi\+\_\+\+Fish}} ()
+\begin{DoxyCompactList}\small\item\em Constructeur par défaut de la classe \mbox{\hyperlink{classPlayer}{Player}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classEnnemi__Fish_af5e8750560e40834ba9c10e9cae4a97b}{Ennemi\+\_\+\+Fish}} (float posX, float posY, int level\+\_\+param)
+\begin{DoxyCompactList}\small\item\em Constructeur avec position comme paramètre. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classEnnemi__Fish_a440cb98b43b8c53f5607f907b9974b64}{move}} (float f\+Elapsed\+Time)
+\begin{DoxyCompactList}\small\item\em Fonction permettant de mettre à jour la position du joueur en fonction de sa vitesse et du temps écoulé \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classEnnemi__Fish_aadd612dc53c9a47e8c91f767cb9fd367}\label{classEnnemi__Fish_aadd612dc53c9a47e8c91f767cb9fd367}} 
+void \mbox{\hyperlink{classEnnemi__Fish_aadd612dc53c9a47e8c91f767cb9fd367}{set\+Vel}} (float vel\+Param)
+\begin{DoxyCompactList}\small\item\em Fonction permettant de mettre la vitesse du joueur à vel\+Param. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classEnnemi__Fish_ae2fe7f50f7563bdc69b55cf610b3152e}\label{classEnnemi__Fish_ae2fe7f50f7563bdc69b55cf610b3152e}} 
+float {\bfseries f\+Ennemi\+PosX}
+\item 
+\mbox{\Hypertarget{classEnnemi__Fish_ae9ea4448dd15b1c664d7d9ddd8856c34}\label{classEnnemi__Fish_ae9ea4448dd15b1c664d7d9ddd8856c34}} 
+float {\bfseries f\+Ennemi\+PosY}
+\item 
+\mbox{\Hypertarget{classEnnemi__Fish_a3b92408820ad5f07775fcd2ad0bb2f7f}\label{classEnnemi__Fish_a3b92408820ad5f07775fcd2ad0bb2f7f}} 
+unsigned int {\bfseries ennemi\+Level}
+\item 
+float \mbox{\hyperlink{classEnnemi__Fish_a882dccdb8584a2ebd674345457248748}{f\+Ennemi\+VelX}}
+\item 
+float \mbox{\hyperlink{classEnnemi__Fish_a37ca7c0b9bbaa6904af93a68301c3405}{f\+Ennemi\+VelY}}
+\item 
+int \mbox{\hyperlink{classEnnemi__Fish_a6533fd27881382de55b03f7988c53f13}{n\+Tile\+Width}}
+\item 
+int \mbox{\hyperlink{classEnnemi__Fish_a74c213d430792b8fede5b05b4e4f154f}{n\+Tile\+Height}}
+\item 
+\mbox{\Hypertarget{classEnnemi__Fish_a7e8dc247180491950f4aa51e4f42a714}\label{classEnnemi__Fish_a7e8dc247180491950f4aa51e4f42a714}} 
+bool {\bfseries touche}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Classe représentant un ennemi du niveau 2 dans le jeu Darwin\textquotesingle{}s Odyssey. 
+
+Cette classe gère les mouvements et les collisions du joueur, ainsi que sa position sur l\textquotesingle{}écran. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classEnnemi__Fish_af5e8750560e40834ba9c10e9cae4a97b}\label{classEnnemi__Fish_af5e8750560e40834ba9c10e9cae4a97b}} 
+\index{Ennemi\_Fish@{Ennemi\_Fish}!Ennemi\_Fish@{Ennemi\_Fish}}
+\index{Ennemi\_Fish@{Ennemi\_Fish}!Ennemi\_Fish@{Ennemi\_Fish}}
+\doxysubsubsection{\texorpdfstring{Ennemi\_Fish()}{Ennemi\_Fish()}}
+{\footnotesize\ttfamily Ennemi\+\_\+\+Fish\+::\+Ennemi\+\_\+\+Fish (\begin{DoxyParamCaption}\item[{float}]{posX,  }\item[{float}]{posY,  }\item[{int}]{level\+\_\+param }\end{DoxyParamCaption})}
+
+
+
+Constructeur avec position comme paramètre. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em posX} & Position en X du joueur \\
+\hline
+{\em posY} & Position en Y du joueur \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classEnnemi__Fish_a440cb98b43b8c53f5607f907b9974b64}\label{classEnnemi__Fish_a440cb98b43b8c53f5607f907b9974b64}} 
+\index{Ennemi\_Fish@{Ennemi\_Fish}!move@{move}}
+\index{move@{move}!Ennemi\_Fish@{Ennemi\_Fish}}
+\doxysubsubsection{\texorpdfstring{move()}{move()}}
+{\footnotesize\ttfamily void Ennemi\+\_\+\+Fish\+::move (\begin{DoxyParamCaption}\item[{float}]{f\+Elapsed\+Time }\end{DoxyParamCaption})}
+
+
+
+Fonction permettant de mettre à jour la position du joueur en fonction de sa vitesse et du temps écoulé 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f\+Elapsed\+Time} & Temps écoulé depuis la dernière mise à jour (entre une image et la suivante) \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classEnnemi__Fish_a882dccdb8584a2ebd674345457248748}\label{classEnnemi__Fish_a882dccdb8584a2ebd674345457248748}} 
+\index{Ennemi\_Fish@{Ennemi\_Fish}!fEnnemiVelX@{fEnnemiVelX}}
+\index{fEnnemiVelX@{fEnnemiVelX}!Ennemi\_Fish@{Ennemi\_Fish}}
+\doxysubsubsection{\texorpdfstring{fEnnemiVelX}{fEnnemiVelX}}
+{\footnotesize\ttfamily float Ennemi\+\_\+\+Fish\+::f\+Ennemi\+VelX}
+
+Vitesse du joueur en X \mbox{\Hypertarget{classEnnemi__Fish_a37ca7c0b9bbaa6904af93a68301c3405}\label{classEnnemi__Fish_a37ca7c0b9bbaa6904af93a68301c3405}} 
+\index{Ennemi\_Fish@{Ennemi\_Fish}!fEnnemiVelY@{fEnnemiVelY}}
+\index{fEnnemiVelY@{fEnnemiVelY}!Ennemi\_Fish@{Ennemi\_Fish}}
+\doxysubsubsection{\texorpdfstring{fEnnemiVelY}{fEnnemiVelY}}
+{\footnotesize\ttfamily float Ennemi\+\_\+\+Fish\+::f\+Ennemi\+VelY}
+
+Vitesse du joueur en Y \mbox{\Hypertarget{classEnnemi__Fish_a74c213d430792b8fede5b05b4e4f154f}\label{classEnnemi__Fish_a74c213d430792b8fede5b05b4e4f154f}} 
+\index{Ennemi\_Fish@{Ennemi\_Fish}!nTileHeight@{nTileHeight}}
+\index{nTileHeight@{nTileHeight}!Ennemi\_Fish@{Ennemi\_Fish}}
+\doxysubsubsection{\texorpdfstring{nTileHeight}{nTileHeight}}
+{\footnotesize\ttfamily int Ennemi\+\_\+\+Fish\+::n\+Tile\+Height}
+
+Hauteur en tiles de l\textquotesingle{}écran du joueur \mbox{\Hypertarget{classEnnemi__Fish_a6533fd27881382de55b03f7988c53f13}\label{classEnnemi__Fish_a6533fd27881382de55b03f7988c53f13}} 
+\index{Ennemi\_Fish@{Ennemi\_Fish}!nTileWidth@{nTileWidth}}
+\index{nTileWidth@{nTileWidth}!Ennemi\_Fish@{Ennemi\_Fish}}
+\doxysubsubsection{\texorpdfstring{nTileWidth}{nTileWidth}}
+{\footnotesize\ttfamily int Ennemi\+\_\+\+Fish\+::n\+Tile\+Width}
+
+Largeur en tiles de l\textquotesingle{}écran du joueur 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/Ennemi\+\_\+\+Fish.\+h\item 
+src/Ennemi\+\_\+\+Fish.\+cpp\end{DoxyCompactItemize}

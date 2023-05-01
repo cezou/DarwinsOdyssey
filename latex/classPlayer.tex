@@ -1,0 +1,276 @@
+\hypertarget{classPlayer}{}\doxysection{Player Class Reference}
+\label{classPlayer}\index{Player@{Player}}
+
+
+Classe représentant un joueur dans le jeu Darwin\textquotesingle{}s Odyssey.  
+
+
+
+
+{\ttfamily \#include $<$Player.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPlayer_affe0cc3cb714f6deb4e62f0c0d3f1fd8}\label{classPlayer_affe0cc3cb714f6deb4e62f0c0d3f1fd8}} 
+\mbox{\hyperlink{classPlayer_affe0cc3cb714f6deb4e62f0c0d3f1fd8}{Player}} ()
+\begin{DoxyCompactList}\small\item\em Constructeur par défaut de la classe \mbox{\hyperlink{classPlayer}{Player}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classPlayer_a4658bd579103dd9749385804babe2a7c}{Player}} (float posX, float posY)
+\begin{DoxyCompactList}\small\item\em Constructeur avec position comme paramètre. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPlayer_af11258102bfdd2db1f1e037bd54bbc37}{move}} (float f\+Elapsed\+Time)
+\begin{DoxyCompactList}\small\item\em Fonction permettant de mettre à jour la position du joueur en fonction de sa vitesse et du temps écoulé \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPlayer_ae45f23ea353330b8fab834e4ec128537}\label{classPlayer_ae45f23ea353330b8fab834e4ec128537}} 
+void \mbox{\hyperlink{classPlayer_ae45f23ea353330b8fab834e4ec128537}{limites\+\_\+map\+\_\+collisions}} ()
+\begin{DoxyCompactList}\small\item\em Fonction gérant les collisions du joueur avec les limites de la carte. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPlayer_a7f934731c72ec21a4089e78d3f1a2d37}\label{classPlayer_a7f934731c72ec21a4089e78d3f1a2d37}} 
+void \mbox{\hyperlink{classPlayer_a7f934731c72ec21a4089e78d3f1a2d37}{set\+Vel0}} ()
+\begin{DoxyCompactList}\small\item\em Fonction permettant de mettre la vitesse du joueur à 0. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPlayer_aec5dc032cc5632c5531fce6370ad4966}\label{classPlayer_aec5dc032cc5632c5531fce6370ad4966}} 
+void \mbox{\hyperlink{classPlayer_aec5dc032cc5632c5531fce6370ad4966}{set\+NBCell}} ()
+\begin{DoxyCompactList}\small\item\em Fonction permettant d\textquotesingle{}initialiser le nombre de cellules récupérées à 0. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPlayer_a05f33f4c4c554f5560f27b0dd0f5772f}{detect\+Keys\+Player1}} (olc\+::\+Pixel\+Game\+Engine $\ast$pge, float vel\+Player)
+\begin{DoxyCompactList}\small\item\em Fonction permettant de détecter les touches du clavier pour le joueur 1. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPlayer_aa237de47e0fa19c06055c2cb2ada7553}{detect\+Keys\+Player2}} (olc\+::\+Pixel\+Game\+Engine $\ast$pge, float vel\+Player)
+\begin{DoxyCompactList}\small\item\em Détermine les touches du clavier pour le joueur 2. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPlayer_a8229079eb0b90fe4d6fb82745e680adc}\label{classPlayer_a8229079eb0b90fe4d6fb82745e680adc}} 
+float {\bfseries distance} (float x1, float y1, float x2, float y2)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{classPlayer_a53e8d79f2eb6cbcf5933de3c8eb494fd}{f\+Camera\+PosX}}
+\item 
+float \mbox{\hyperlink{classPlayer_a90366c899688b988abf880c6c885f69b}{f\+Camera\+PosY}}
+\item 
+float \mbox{\hyperlink{classPlayer_a945908570d878573f0ca56c069e0278b}{f\+Player\+PosX}}
+\item 
+float \mbox{\hyperlink{classPlayer_a559bd0b679cf697917211e2ec47b42f0}{f\+Player\+PosY}}
+\item 
+float \mbox{\hyperlink{classPlayer_aa80610e999084459668debb8a1f5b9de}{f\+New\+Player\+PosX}}
+\item 
+float \mbox{\hyperlink{classPlayer_a14639987484a9b49c9e670237b15ed62}{f\+New\+Player\+PosY}}
+\item 
+float \mbox{\hyperlink{classPlayer_ab2c2aebf144e122dd9c0108e872e1157}{f\+Player\+VelX}}
+\item 
+float \mbox{\hyperlink{classPlayer_a68397b621e5e7b8c3fa916fc6b08dcb8}{f\+Player\+VelY}}
+\item 
+int \mbox{\hyperlink{classPlayer_a53dcd472c5e15b7aad030bf865fe2dad}{n\+Tile\+Width}}
+\item 
+int \mbox{\hyperlink{classPlayer_abe5117c0b54a9f0848e826a7dd615793}{n\+Tile\+Height}}
+\item 
+int \mbox{\hyperlink{classPlayer_a9c9b77978efa5c63b1ce77a1dffe8ea8}{n\+Visible\+TilesX}}
+\item 
+int \mbox{\hyperlink{classPlayer_a00d6588d693f242d8ebcb116c73f45d8}{n\+Visible\+TilesY}}
+\item 
+bool \mbox{\hyperlink{classPlayer_a9d4ade09b1da8476784d39fd820381b8}{b\+Direction}}
+\item 
+float \mbox{\hyperlink{classPlayer_a340a8e65076528eeb8cfec134acb3d94}{f\+OffsetX}}
+\item 
+float \mbox{\hyperlink{classPlayer_a3e448739caeb42a95dd0f8670fd4b91b}{f\+OffsetY}}
+\item 
+float \mbox{\hyperlink{classPlayer_aa190b06d2168ee22563a5885ffa69b48}{f\+Tile\+OffsetX}}
+\item 
+float \mbox{\hyperlink{classPlayer_a6b2fcff8f3175ca2560a8be29e22b2f0}{f\+Tile\+OffsetY}}
+\item 
+unsigned int \mbox{\hyperlink{classPlayer_a6b5c2ecece3b2cea7e6e6f5f45cfce2c}{Nb\+Cellule\+Recup}}
+\item 
+\mbox{\Hypertarget{classPlayer_a3bf04dac6b445a8103ea19d927054106}\label{classPlayer_a3bf04dac6b445a8103ea19d927054106}} 
+unsigned int {\bfseries Nb\+Cellule\+Recup\+Res}
+\item 
+\mbox{\Hypertarget{classPlayer_acb34cfb81bc017ad346f8c6ab69828db}\label{classPlayer_acb34cfb81bc017ad346f8c6ab69828db}} 
+unsigned int {\bfseries level}
+\item 
+\mbox{\Hypertarget{classPlayer_a7a59b2f72588fdc0e9904ce036882100}\label{classPlayer_a7a59b2f72588fdc0e9904ce036882100}} 
+unsigned int {\bfseries numero\+Points}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Classe représentant un joueur dans le jeu Darwin\textquotesingle{}s Odyssey. 
+
+Cette classe gère les mouvements et les collisions du joueur, ainsi que sa position sur l\textquotesingle{}écran et la caméra. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classPlayer_a4658bd579103dd9749385804babe2a7c}\label{classPlayer_a4658bd579103dd9749385804babe2a7c}} 
+\index{Player@{Player}!Player@{Player}}
+\index{Player@{Player}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{Player()}{Player()}}
+{\footnotesize\ttfamily Player\+::\+Player (\begin{DoxyParamCaption}\item[{float}]{posX,  }\item[{float}]{posY }\end{DoxyParamCaption})}
+
+
+
+Constructeur avec position comme paramètre. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em posX} & Position en X du joueur \\
+\hline
+{\em posY} & Position en Y du joueur \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classPlayer_a05f33f4c4c554f5560f27b0dd0f5772f}\label{classPlayer_a05f33f4c4c554f5560f27b0dd0f5772f}} 
+\index{Player@{Player}!detectKeysPlayer1@{detectKeysPlayer1}}
+\index{detectKeysPlayer1@{detectKeysPlayer1}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{detectKeysPlayer1()}{detectKeysPlayer1()}}
+{\footnotesize\ttfamily void Player\+::detect\+Keys\+Player1 (\begin{DoxyParamCaption}\item[{olc\+::\+Pixel\+Game\+Engine $\ast$}]{pge,  }\item[{float}]{vel\+Player }\end{DoxyParamCaption})}
+
+
+
+Fonction permettant de détecter les touches du clavier pour le joueur 1. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pge} & Pointeur vers la classe Pixel\+Game\+Engine \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classPlayer_aa237de47e0fa19c06055c2cb2ada7553}\label{classPlayer_aa237de47e0fa19c06055c2cb2ada7553}} 
+\index{Player@{Player}!detectKeysPlayer2@{detectKeysPlayer2}}
+\index{detectKeysPlayer2@{detectKeysPlayer2}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{detectKeysPlayer2()}{detectKeysPlayer2()}}
+{\footnotesize\ttfamily void Player\+::detect\+Keys\+Player2 (\begin{DoxyParamCaption}\item[{olc\+::\+Pixel\+Game\+Engine $\ast$}]{pge,  }\item[{float}]{vel\+Player }\end{DoxyParamCaption})}
+
+
+
+Détermine les touches du clavier pour le joueur 2. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pge} & Pointeur vers l\textquotesingle{}instance de Pixel\+Game\+Engine utilisée. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classPlayer_af11258102bfdd2db1f1e037bd54bbc37}\label{classPlayer_af11258102bfdd2db1f1e037bd54bbc37}} 
+\index{Player@{Player}!move@{move}}
+\index{move@{move}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{move()}{move()}}
+{\footnotesize\ttfamily void Player\+::move (\begin{DoxyParamCaption}\item[{float}]{f\+Elapsed\+Time }\end{DoxyParamCaption})}
+
+
+
+Fonction permettant de mettre à jour la position du joueur en fonction de sa vitesse et du temps écoulé 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f\+Elapsed\+Time} & Temps écoulé depuis la dernière mise à jour (entre une image et la suivante) \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classPlayer_a9d4ade09b1da8476784d39fd820381b8}\label{classPlayer_a9d4ade09b1da8476784d39fd820381b8}} 
+\index{Player@{Player}!bDirection@{bDirection}}
+\index{bDirection@{bDirection}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{bDirection}{bDirection}}
+{\footnotesize\ttfamily bool Player\+::b\+Direction}
+
+Direction du joueur \mbox{\Hypertarget{classPlayer_a53e8d79f2eb6cbcf5933de3c8eb494fd}\label{classPlayer_a53e8d79f2eb6cbcf5933de3c8eb494fd}} 
+\index{Player@{Player}!fCameraPosX@{fCameraPosX}}
+\index{fCameraPosX@{fCameraPosX}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fCameraPosX}{fCameraPosX}}
+{\footnotesize\ttfamily float Player\+::f\+Camera\+PosX}
+
+Position de la caméra en X \mbox{\Hypertarget{classPlayer_a90366c899688b988abf880c6c885f69b}\label{classPlayer_a90366c899688b988abf880c6c885f69b}} 
+\index{Player@{Player}!fCameraPosY@{fCameraPosY}}
+\index{fCameraPosY@{fCameraPosY}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fCameraPosY}{fCameraPosY}}
+{\footnotesize\ttfamily float Player\+::f\+Camera\+PosY}
+
+Position de la caméra en Y \mbox{\Hypertarget{classPlayer_aa80610e999084459668debb8a1f5b9de}\label{classPlayer_aa80610e999084459668debb8a1f5b9de}} 
+\index{Player@{Player}!fNewPlayerPosX@{fNewPlayerPosX}}
+\index{fNewPlayerPosX@{fNewPlayerPosX}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fNewPlayerPosX}{fNewPlayerPosX}}
+{\footnotesize\ttfamily float Player\+::f\+New\+Player\+PosX}
+
+Nouvelle Position du joueur en X ~\newline
+ \mbox{\Hypertarget{classPlayer_a14639987484a9b49c9e670237b15ed62}\label{classPlayer_a14639987484a9b49c9e670237b15ed62}} 
+\index{Player@{Player}!fNewPlayerPosY@{fNewPlayerPosY}}
+\index{fNewPlayerPosY@{fNewPlayerPosY}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fNewPlayerPosY}{fNewPlayerPosY}}
+{\footnotesize\ttfamily float Player\+::f\+New\+Player\+PosY}
+
+Nouvelle Position du joueur en Y \mbox{\Hypertarget{classPlayer_a340a8e65076528eeb8cfec134acb3d94}\label{classPlayer_a340a8e65076528eeb8cfec134acb3d94}} 
+\index{Player@{Player}!fOffsetX@{fOffsetX}}
+\index{fOffsetX@{fOffsetX}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fOffsetX}{fOffsetX}}
+{\footnotesize\ttfamily float Player\+::f\+OffsetX}
+
+Décalage de la caméra en X \mbox{\Hypertarget{classPlayer_a3e448739caeb42a95dd0f8670fd4b91b}\label{classPlayer_a3e448739caeb42a95dd0f8670fd4b91b}} 
+\index{Player@{Player}!fOffsetY@{fOffsetY}}
+\index{fOffsetY@{fOffsetY}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fOffsetY}{fOffsetY}}
+{\footnotesize\ttfamily float Player\+::f\+OffsetY}
+
+Décalage de la caméra en Y \mbox{\Hypertarget{classPlayer_a945908570d878573f0ca56c069e0278b}\label{classPlayer_a945908570d878573f0ca56c069e0278b}} 
+\index{Player@{Player}!fPlayerPosX@{fPlayerPosX}}
+\index{fPlayerPosX@{fPlayerPosX}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fPlayerPosX}{fPlayerPosX}}
+{\footnotesize\ttfamily float Player\+::f\+Player\+PosX}
+
+Position du joueur en X \mbox{\Hypertarget{classPlayer_a559bd0b679cf697917211e2ec47b42f0}\label{classPlayer_a559bd0b679cf697917211e2ec47b42f0}} 
+\index{Player@{Player}!fPlayerPosY@{fPlayerPosY}}
+\index{fPlayerPosY@{fPlayerPosY}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fPlayerPosY}{fPlayerPosY}}
+{\footnotesize\ttfamily float Player\+::f\+Player\+PosY}
+
+Position du joueur en Y \mbox{\Hypertarget{classPlayer_ab2c2aebf144e122dd9c0108e872e1157}\label{classPlayer_ab2c2aebf144e122dd9c0108e872e1157}} 
+\index{Player@{Player}!fPlayerVelX@{fPlayerVelX}}
+\index{fPlayerVelX@{fPlayerVelX}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fPlayerVelX}{fPlayerVelX}}
+{\footnotesize\ttfamily float Player\+::f\+Player\+VelX}
+
+Vitesse du joueur en X \mbox{\Hypertarget{classPlayer_a68397b621e5e7b8c3fa916fc6b08dcb8}\label{classPlayer_a68397b621e5e7b8c3fa916fc6b08dcb8}} 
+\index{Player@{Player}!fPlayerVelY@{fPlayerVelY}}
+\index{fPlayerVelY@{fPlayerVelY}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fPlayerVelY}{fPlayerVelY}}
+{\footnotesize\ttfamily float Player\+::f\+Player\+VelY}
+
+Vitesse du joueur en Y \mbox{\Hypertarget{classPlayer_aa190b06d2168ee22563a5885ffa69b48}\label{classPlayer_aa190b06d2168ee22563a5885ffa69b48}} 
+\index{Player@{Player}!fTileOffsetX@{fTileOffsetX}}
+\index{fTileOffsetX@{fTileOffsetX}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fTileOffsetX}{fTileOffsetX}}
+{\footnotesize\ttfamily float Player\+::f\+Tile\+OffsetX}
+
+Décalage des tiles en X \mbox{\Hypertarget{classPlayer_a6b2fcff8f3175ca2560a8be29e22b2f0}\label{classPlayer_a6b2fcff8f3175ca2560a8be29e22b2f0}} 
+\index{Player@{Player}!fTileOffsetY@{fTileOffsetY}}
+\index{fTileOffsetY@{fTileOffsetY}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{fTileOffsetY}{fTileOffsetY}}
+{\footnotesize\ttfamily float Player\+::f\+Tile\+OffsetY}
+
+Décalage des tiles en Y \mbox{\Hypertarget{classPlayer_a6b5c2ecece3b2cea7e6e6f5f45cfce2c}\label{classPlayer_a6b5c2ecece3b2cea7e6e6f5f45cfce2c}} 
+\index{Player@{Player}!NbCelluleRecup@{NbCelluleRecup}}
+\index{NbCelluleRecup@{NbCelluleRecup}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{NbCelluleRecup}{NbCelluleRecup}}
+{\footnotesize\ttfamily unsigned int Player\+::\+Nb\+Cellule\+Recup}
+
+Nombre de cellules récupérées par le joueur \mbox{\Hypertarget{classPlayer_abe5117c0b54a9f0848e826a7dd615793}\label{classPlayer_abe5117c0b54a9f0848e826a7dd615793}} 
+\index{Player@{Player}!nTileHeight@{nTileHeight}}
+\index{nTileHeight@{nTileHeight}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{nTileHeight}{nTileHeight}}
+{\footnotesize\ttfamily int Player\+::n\+Tile\+Height}
+
+Hauteur en tiles de l\textquotesingle{}écran du joueur \mbox{\Hypertarget{classPlayer_a53dcd472c5e15b7aad030bf865fe2dad}\label{classPlayer_a53dcd472c5e15b7aad030bf865fe2dad}} 
+\index{Player@{Player}!nTileWidth@{nTileWidth}}
+\index{nTileWidth@{nTileWidth}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{nTileWidth}{nTileWidth}}
+{\footnotesize\ttfamily int Player\+::n\+Tile\+Width}
+
+Largeur en tiles de l\textquotesingle{}écran du joueur \mbox{\Hypertarget{classPlayer_a9c9b77978efa5c63b1ce77a1dffe8ea8}\label{classPlayer_a9c9b77978efa5c63b1ce77a1dffe8ea8}} 
+\index{Player@{Player}!nVisibleTilesX@{nVisibleTilesX}}
+\index{nVisibleTilesX@{nVisibleTilesX}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{nVisibleTilesX}{nVisibleTilesX}}
+{\footnotesize\ttfamily int Player\+::n\+Visible\+TilesX}
+
+Nombre de tiles horizontalement visibles dans l\textquotesingle{}écran du joueur \mbox{\Hypertarget{classPlayer_a00d6588d693f242d8ebcb116c73f45d8}\label{classPlayer_a00d6588d693f242d8ebcb116c73f45d8}} 
+\index{Player@{Player}!nVisibleTilesY@{nVisibleTilesY}}
+\index{nVisibleTilesY@{nVisibleTilesY}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{nVisibleTilesY}{nVisibleTilesY}}
+{\footnotesize\ttfamily int Player\+::n\+Visible\+TilesY}
+
+Nombre de tiles verticalement visibles dans l\textquotesingle{}écran du joueur 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/Player.\+h\item 
+src/Player.\+cpp\end{DoxyCompactItemize}
